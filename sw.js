@@ -1,5 +1,5 @@
 // Service Worker com estratégia Network-First (sem travar versão antiga)
-const CACHE_NAME = 'careeros-cache-v7';
+const CACHE_NAME = 'careeros-cache-v8';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
