@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Godoy Tech OS | Interactive Engineering Tree</title>
+  <title>Godoy Tech OS | Interactive Roadmap Tree</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#080c14">
+  <meta name="theme-color" content="#070a13">
   <link rel="icon" type="image/png" href="icon.png">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -19,105 +19,121 @@
       theme: {
         extend: {
           colors: {
-            canvasBg: '#080c14',
-            panelBg: '#0f172a',
-            cardBg: '#131e36',
-            borderSubtle: '#1e293b',
-            accentCyan: '#38bdf8',
-            accentIndigo: '#6366f1',
-            accentPurple: '#a855f7',
-            accentEmerald: '#10b981'
+            canvasBg: '#070a13',
+            cardBg: '#0f172a',
+            nodeBorder: '#334155',
+            nodeDone: '#10b981',
+            accentSky: '#38bdf8',
+            accentPurple: '#a855f7'
           }
         }
       }
     }
   </script>
   <style>
-    body { background-color: #080c14; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
-    .bg-grid { background-size: 28px 28px; background-image: radial-gradient(circle, rgba(56, 189, 248, 0.09) 1px, transparent 1px); }
-    .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .glass-header { background: rgba(8, 12, 20, 0.85); backdrop-filter: blur(20px); }
-
-    /* SVG Lines styling */
-    .roadmap-circuit-svg {
+    body { background-color: #070a13; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .roadmap-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    
+    /* Linha Central Contínua da Árvore */
+    .tree-trunk {
       position: absolute;
+      left: 28px;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, #38bdf8 0%, #818cf8 40%, #c084fc 70%, #34d399 100%);
+      border-radius: 9999px;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
       z-index: 1;
     }
-    .flow-line {
-      fill: none;
-      stroke: #334155;
-      stroke-width: 3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 6 6;
-      transition: all 0.4s ease;
-    }
-    .flow-line-done {
-      stroke: #10b981;
-      stroke-width: 3.5;
-      stroke-dasharray: none;
-      filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.6));
-    }
-    .flow-line-active {
-      stroke: #38bdf8;
-      stroke-width: 3.5;
-      stroke-dasharray: none;
-      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.7));
+    @media (min-width: 768px) {
+      .tree-trunk {
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
 
-    /* Node Box */
-    .graph-node {
+    /* Cartão de Nó Estilo roadmap.sh Oficial */
+    .rm-node {
       position: relative;
-      z-index: 10;
-      background: linear-gradient(145deg, #131e36 0%, #0d1527 100%);
+      background: #0f172a;
       border: 2px solid #1e293b;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
     }
-    .graph-node:hover {
+    .rm-node:hover {
       border-color: #38bdf8;
-      transform: translateY(-3px) scale(1.015);
-      box-shadow: 0 16px 30px -10px rgba(56, 189, 248, 0.25), 0 0 0 1px rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -10px rgba(56, 189, 248, 0.3);
     }
-    .graph-node-done {
-      background: linear-gradient(145deg, rgba(16, 185, 129, 0.14) 0%, #0d1527 100%);
-      border-color: #10b981;
-      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
+    .rm-node-done {
+      border-color: #10b981 !important;
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, #0f172a 100%);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
     }
 
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #080c14; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 9999px; }
+    /* Conector Horizontal de Galho para o Nó */
+    .tree-branch {
+      position: absolute;
+      height: 3px;
+      background: #334155;
+      top: 36px;
+      z-index: 5;
+      transition: background 0.3s;
+    }
+    .tree-branch-done {
+      background: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+    }
+
+    /* Círculo Conector Central no Tronco */
+    .trunk-node-point {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 9999px;
+      background: #070a13;
+      border: 3.5px solid #38bdf8;
+      top: 28px;
+      z-index: 20;
+      transition: all 0.3s;
+    }
+    .trunk-node-point-done {
+      border-color: #10b981;
+      background: #10b981;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.9);
+    }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col bg-grid pb-20">
+<body class="text-slate-100 min-h-screen flex flex-col roadmap-grid pb-24">
 
-  <!-- Header Futurista -->
-  <header class="sticky top-0 z-50 glass-header border-b border-white/5 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+  <!-- Header Fixo Topo -->
+  <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-white/10 px-4 lg:px-8 py-3.5 flex items-center justify-between">
     <div class="flex items-center space-x-3.5">
       <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-400 via-indigo-500 to-purple-500 p-0.5 shadow-lg shadow-sky-500/25">
-        <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center font-black text-xs tracking-tighter text-sky-400">
-          GOS
+        <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center font-black text-xs text-sky-400">
+          OS
         </div>
       </div>
       <div>
-        <div class="flex items-center gap-2">
-          <h1 class="text-sm lg:text-base font-extrabold tracking-tight text-white">Godoy Tech OS</h1>
-          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 uppercase tracking-widest">Roadmap Graph</span>
-        </div>
-        <p class="text-[11px] text-slate-400">Árvore de Competências de Engenharia & IA</p>
+        <h1 class="text-sm lg:text-base font-black tracking-tight text-white flex items-center gap-2">
+          Godoy Tech OS
+          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30 uppercase">roadmap.sh View</span>
+        </h1>
+        <p class="text-[11px] text-slate-400">Árvore Conectada de Competências & IA</p>
       </div>
     </div>
 
-    <!-- Quick Tools: Pomodoro Timer + Sync Cloud + Settings -->
+    <!-- Quick Tools: Timer & Settings -->
     <div class="flex items-center space-x-2">
-      <!-- Mini Timer Moderno -->
-      <div class="flex items-center bg-slate-900/90 border border-white/10 rounded-xl px-2.5 py-1 text-xs shadow-inner">
+      <div class="flex items-center bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1 text-xs">
         <button onclick="toggleTimer()" id="timer-btn" class="text-sky-400 hover:text-sky-300 py-0.5 px-1 flex items-center gap-1.5 font-mono font-bold">
           <i data-lucide="play" id="timer-icon" class="w-3.5 h-3.5 fill-current"></i>
           <span id="timer-display">25:00</span>
@@ -127,207 +143,121 @@
         </button>
       </div>
 
-      <button onclick="toggleSettingsModal()" class="p-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-white/10 text-slate-300 transition-colors" title="Configurar Conexão">
+      <button onclick="toggleSettingsModal()" class="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-white/10 text-slate-300 transition-colors" title="Configurar Supabase">
         <i data-lucide="settings" class="w-4 h-4"></i>
       </button>
     </div>
   </header>
 
-  <!-- Hero Status / HUD Banner -->
-  <div class="max-w-6xl w-full mx-auto px-4 lg:px-6 pt-5">
-    <div class="glass-panel rounded-2xl p-5 relative overflow-hidden shadow-2xl">
-      <div class="absolute -right-16 -top-16 w-56 h-56 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      
-      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-        <div class="space-y-1.5">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 text-[10px] font-bold text-sky-400 uppercase tracking-wider bg-sky-500/10 px-2 py-0.5 rounded-md border border-sky-500/20">
-              <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-ping"></span>
-              Grafo Visual Interativo
-            </span>
-            <span class="text-xs text-slate-500">•</span>
-            <span class="text-xs text-slate-400">Meta: Transição Degrau 1 ➔ Degrau 2</span>
-          </div>
-          <h2 class="text-2xl lg:text-3xl font-black text-white tracking-tight flex items-center gap-3">
+  <!-- Painel de Status HUD -->
+  <div class="max-w-5xl w-full mx-auto px-4 lg:px-6 pt-5">
+    <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 shadow-2xl relative overflow-hidden backdrop-blur-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-[10px] font-bold text-sky-400 uppercase tracking-widest bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
+            Trilha de Engenharia 2026
+          </span>
+          <h2 class="text-2xl font-black text-white mt-1 flex items-center gap-3">
             <span id="progress-percent">0%</span>
-            <span class="text-xs font-medium text-slate-400">do grafo de nós dominado</span>
+            <span class="text-xs font-normal text-slate-400">da árvore dominada</span>
           </h2>
         </div>
 
-        <!-- Metrics Badges -->
-        <div class="grid grid-cols-3 gap-2.5 sm:gap-4 bg-slate-950/70 p-2.5 sm:p-3 rounded-xl border border-white/5">
-          <div class="px-2 text-center">
-            <span class="text-lg lg:text-xl font-black text-emerald-400 block" id="stat-completed">0</span>
-            <span class="text-[9px] uppercase tracking-wider text-slate-500 font-semibold">Nós Ativos</span>
+        <div class="flex items-center gap-3 bg-slate-950 p-2.5 rounded-xl border border-white/5">
+          <div class="text-center px-2">
+            <span class="text-base font-black text-emerald-400 block" id="stat-completed">0</span>
+            <span class="text-[9px] uppercase tracking-wider text-slate-500">Nós OK</span>
           </div>
-          <div class="border-l border-white/5 px-2 text-center">
-            <span class="text-lg lg:text-xl font-black text-sky-400 block" id="stat-remaining">18</span>
-            <span class="text-[9px] uppercase tracking-wider text-slate-500 font-semibold">Bloqueados</span>
+          <div class="w-px h-6 bg-slate-800"></div>
+          <div class="text-center px-2">
+            <span class="text-base font-black text-sky-400 block" id="stat-remaining">18</span>
+            <span class="text-[9px] uppercase tracking-wider text-slate-500">Restam</span>
           </div>
-          <div class="border-l border-white/5 px-2 text-center">
-            <span class="text-lg lg:text-xl font-black text-purple-400 block" id="stat-hours">0.0h</span>
-            <span class="text-[9px] uppercase tracking-wider text-slate-500 font-semibold">Horas Foco</span>
+          <div class="w-px h-6 bg-slate-800"></div>
+          <div class="text-center px-2">
+            <span class="text-base font-black text-purple-400 block" id="stat-hours">0.0h</span>
+            <span class="text-[9px] uppercase tracking-wider text-slate-500">Horas</span>
           </div>
         </div>
       </div>
 
       <!-- Barra de Progresso -->
-      <div class="mt-4 w-full h-2.5 bg-slate-950/80 rounded-full overflow-hidden p-0.5 border border-white/5">
-        <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-sky-400 via-indigo-500 to-emerald-400 rounded-full transition-all duration-700 ease-out shadow-sm" style="width: 0%"></div>
+      <div class="mt-4 w-full h-2 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-white/5">
+        <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-sky-400 via-indigo-500 to-emerald-400 rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
       </div>
 
-      <!-- Sync Live Signal -->
       <div class="mt-3 flex items-center justify-between text-[11px] text-slate-400">
         <div class="flex items-center gap-2">
           <span id="sync-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="sync-text">Supabase Cloud Sync: Ativo</span>
+          <span id="sync-text">Supabase Cloud Sync: Conectado</span>
         </div>
-        <div class="flex items-center gap-2">
-          <a href="https://app.viverdeia.ai/formacoes" target="_blank" class="hover:text-sky-400 transition-colors flex items-center gap-1">
-            <i data-lucide="play-circle" class="w-3.5 h-3.5 text-red-400"></i> Viver de IA
+        <div class="flex items-center gap-3 text-[11px]">
+          <a href="https://app.viverdeia.ai/formacoes" target="_blank" class="hover:text-sky-400 text-slate-300 flex items-center gap-1">
+            <i data-lucide="play" class="w-3 h-3 text-red-400"></i> Viver de IA
           </a>
-          <span class="text-slate-600">|</span>
-          <a href="https://learn.n8n.io" target="_blank" class="hover:text-sky-400 transition-colors flex items-center gap-1">
-            <i data-lucide="award" class="w-3.5 h-3.5 text-orange-400"></i> n8n Academy
+          <a href="https://learn.n8n.io" target="_blank" class="hover:text-sky-400 text-slate-300 flex items-center gap-1">
+            <i data-lucide="award" class="w-3 h-3 text-orange-400"></i> n8n Academy
           </a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Navigation Switcher (Visual Tree vs Labs vs Vault) -->
-  <div class="max-w-6xl w-full mx-auto px-4 lg:px-6 pt-5">
-    <div class="flex items-center gap-2 border-b border-white/5 pb-3">
-      <button onclick="switchView('tree')" id="tab-btn-tree" class="nav-tab-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20">
-        <i data-lucide="git-merge" class="w-4 h-4"></i>
-        Árvore Visual com Linhas (roadmap.sh)
+  <!-- Switcher de Abas -->
+  <div class="max-w-5xl w-full mx-auto px-4 lg:px-6 pt-5">
+    <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+      <button onclick="switchView('tree')" id="tab-btn-tree" class="px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20">
+        <i data-lucide="git-commit" class="w-4 h-4"></i>
+        Árvore Visual com Nós & Tronco
       </button>
-      <button onclick="switchView('labs')" id="tab-btn-labs" class="nav-tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-900/80 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2">
+      <button onclick="switchView('labs')" id="tab-btn-labs" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2">
         <i data-lucide="flask-conical" class="w-4 h-4 text-purple-400"></i>
-        Laboratórios & Repos (3 Provas)
+        Laboratórios (3 Projetos)
       </button>
-      <button onclick="switchView('vault')" id="tab-btn-vault" class="nav-tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-900/80 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2">
-        <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i>
+      <button onclick="switchView('vault')" id="tab-btn-vault" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2">
+        <i data-lucide="code" class="w-4 h-4 text-emerald-400"></i>
         Cheat-Sheet Vault
       </button>
     </div>
   </div>
 
-  <!-- Main View Container -->
-  <main class="max-w-6xl w-full mx-auto p-4 lg:p-6 flex-1">
+  <!-- CONTAINER PRINCIPAL -->
+  <main class="max-w-5xl w-full mx-auto p-4 lg:p-6 flex-1">
 
-    <!-- ======================================================= -->
-    <!-- VIEW 1: ÁRVORE VISUAL DE NÓS COM LINHAS CONECTORAS SVG  -->
-    <!-- ======================================================= -->
-    <section id="view-tree" class="space-y-16 relative">
-      <div class="text-center max-w-xl mx-auto space-y-1 mb-8">
-        <span class="text-[10px] font-bold text-sky-400 uppercase tracking-widest font-mono">Interactive Vector Circuit</span>
-        <h2 class="text-xl lg:text-2xl font-black text-white">Trilha de Conexões em Engenharia</h2>
-        <p class="text-xs text-slate-400">Cada nó é conectado visualmente por circuitos. Clique para marcar como dominado ou salvar anotações técnicas.</p>
-      </div>
-
-      <!-- FASE 1: O MOTOR DE AUTOMAÇÃO COM N8N -->
-      <div class="relative glass-panel rounded-3xl p-6 lg:p-8 space-y-6" id="phase-container-1">
-        <div class="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 flex items-center justify-center font-black text-sm">
-              01
-            </div>
-            <div>
-              <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-                Fase 1: O Motor de Automação com n8n
-                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-300 border border-sky-500/20">Semanas 1 & 2</span>
-              </h3>
-              <p class="text-xs text-slate-400">Orquestração de nós lógicos, consumo de APIs REST e certificação oficial de entrada.</p>
-            </div>
-          </div>
-          <span class="text-xs font-mono font-bold text-sky-400 bg-slate-900 px-3 py-1 rounded-xl border border-white/5" id="phase1-counter">0/6 Nós</span>
-        </div>
-
-        <!-- Canvas Container com SVG de Linhas Conectoras e Nós Grid -->
-        <div class="relative w-full" id="phase-1-wrapper">
-          <!-- SVG Layer (Linhas curvas conectando os nós) -->
-          <svg class="roadmap-circuit-svg hidden md:block" id="svg-phase-1"></svg>
-
-          <!-- Grid dos 6 Nós -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10" id="phase-1-nodes"></div>
+    <!-- ============================================================= -->
+    <!-- VIEW 1: ÁRVORE CONECTADA REAL (ROADMAP.SH VERTICAL TRUNK)     -->
+    <!-- ============================================================= -->
+    <section id="view-tree" class="relative">
+      
+      <!-- Cabeçalho de Início da Árvore -->
+      <div class="text-center pb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-sky-400/40 text-sky-400 text-xs font-mono font-bold shadow-lg shadow-sky-500/10">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> PONTO DE PARTIDA: DEGRAU 1
         </div>
       </div>
 
-      <!-- CIRCUITO CONECTOR GIGANTE ENTRE FASE 1 E FASE 2 -->
-      <div class="flex flex-col items-center justify-center -my-8 relative z-0">
-        <div class="w-1 h-14 bg-gradient-to-b from-sky-400 to-indigo-500 shadow-lg shadow-sky-500/50"></div>
-        <div class="px-4 py-1.5 rounded-full bg-slate-900 border border-indigo-500/40 text-xs font-mono text-indigo-300 font-extrabold flex items-center gap-2 shadow-2xl">
-          <i data-lucide="arrow-down" class="w-3.5 h-3.5 animate-bounce"></i>
-          Branch: Agentes Autônomos de IA
-        </div>
-        <div class="w-1 h-14 bg-gradient-to-b from-indigo-500 to-purple-500 shadow-lg shadow-purple-500/50"></div>
+      <!-- Estrutura da Árvore com Tronco Central -->
+      <div class="relative w-full py-4" id="roadmap-tree-wrapper">
+        <!-- O TRONCO CENTRAL VETORIAL -->
+        <div class="tree-trunk"></div>
+
+        <!-- LISTA DOS NÓS GERADA VIA JAVASCRIPT -->
+        <div class="space-y-12 relative z-10" id="nodes-tree-container"></div>
       </div>
 
-      <!-- FASE 2: AGENTES DE IA & GOOGLE ANTIGRAVITY -->
-      <div class="relative glass-panel rounded-3xl p-6 lg:p-8 space-y-6" id="phase-container-2">
-        <div class="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center font-black text-sm">
-              02
-            </div>
-            <div>
-              <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-                Fase 2: Agentes de IA & Google Antigravity
-                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">Semanas 3 & 4</span>
-              </h3>
-              <p class="text-xs text-slate-400">Orquestração de LLMs (Claude/Gemini), agentes autônomos e prompting avançado.</p>
-            </div>
-          </div>
-          <span class="text-xs font-mono font-bold text-purple-400 bg-slate-900 px-3 py-1 rounded-xl border border-white/5" id="phase2-counter">0/6 Nós</span>
-        </div>
-
-        <div class="relative w-full" id="phase-2-wrapper">
-          <svg class="roadmap-circuit-svg hidden md:block" id="svg-phase-2"></svg>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10" id="phase-2-nodes"></div>
-        </div>
-      </div>
-
-      <!-- CIRCUITO CONECTOR GIGANTE ENTRE FASE 2 E FASE 3 -->
-      <div class="flex flex-col items-center justify-center -my-8 relative z-0">
-        <div class="w-1 h-14 bg-gradient-to-b from-purple-500 to-emerald-500 shadow-lg shadow-emerald-500/50"></div>
-        <div class="px-4 py-1.5 rounded-full bg-slate-900 border border-emerald-500/40 text-xs font-mono text-emerald-300 font-extrabold flex items-center gap-2 shadow-2xl">
-          <i data-lucide="arrow-down" class="w-3.5 h-3.5 animate-bounce"></i>
-          Branch: Bancos Relacionais & Case Ouro
-        </div>
-        <div class="w-1 h-14 bg-gradient-to-b from-emerald-500 to-emerald-400 shadow-lg shadow-emerald-500/50"></div>
-      </div>
-
-      <!-- FASE 3: SQL, SUPABASE & O GRANDE PORTFÓLIO -->
-      <div class="relative glass-panel rounded-3xl p-6 lg:p-8 space-y-6" id="phase-container-3">
-        <div class="flex items-center justify-between border-b border-white/10 pb-4 relative z-10">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-black text-sm">
-              03
-            </div>
-            <div>
-              <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-                Fase 3: SQL, Supabase & O Grande Portfólio
-                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">Semanas 5 & 6</span>
-              </h3>
-              <p class="text-xs text-slate-400">Domínio relacional, conexão de banco em nuvem e case final unindo ERP + Automação com IA.</p>
-            </div>
-          </div>
-          <span class="text-xs font-mono font-bold text-emerald-400 bg-slate-900 px-3 py-1 rounded-xl border border-white/5" id="phase3-counter">0/6 Nós</span>
-        </div>
-
-        <div class="relative w-full" id="phase-3-wrapper">
-          <svg class="roadmap-circuit-svg hidden md:block" id="svg-phase-3"></svg>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10" id="phase-3-nodes"></div>
+      <!-- Fim da Árvore -->
+      <div class="text-center pt-10">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-400/40 text-emerald-400 text-xs font-mono font-black shadow-lg shadow-emerald-500/10">
+          <i data-lucide="trophy" class="w-4 h-4"></i> OBJETIVO ALCANÇADO: ANALISTA DE IA & AUTOMAÇÃO (DEGRAU 2)
         </div>
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- VIEW 2: LABORATORIES & REPOS               -->
-    <!-- ========================================== -->
+    <!-- ============================================================= -->
+    <!-- VIEW 2: LABORATORIES & REPOS (3 PROVAS DE TRABALHO)           -->
+    <!-- ============================================================= -->
     <section id="view-labs" class="space-y-6 hidden">
-      <div class="glass-panel rounded-2xl p-4 flex items-center justify-between">
+      <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
         <div>
           <h2 class="text-sm font-bold text-white flex items-center gap-2">
             <i data-lucide="flask-conical" class="w-4 h-4 text-purple-400"></i>
@@ -339,14 +269,14 @@
 
       <div class="grid grid-cols-1 gap-6">
         <!-- LAB 1 -->
-        <div class="glass-panel rounded-2xl p-5 space-y-4">
+        <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
             <div>
               <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono">LAB 01 • SPRINT 1</span>
               <h3 class="text-base font-bold text-white mt-1">Webhook Ingest & Validador de Regras no n8n</h3>
               <p class="text-xs text-slate-400">Gatilho Webhook recebendo payload JSON externo, aplicando nó de validação IF e gravando no Supabase.</p>
             </div>
-            <select onchange="updateLabStatus('lab1', this.value)" id="lab1-status" class="bg-slate-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-sky-400 focus:outline-none">
+            <select onchange="updateLabStatus('lab1', this.value)" id="lab1-status" class="bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-sky-400 focus:outline-none">
               <option value="pending">🟡 Em Planejamento</option>
               <option value="building">🔵 Construindo Fluxo</option>
               <option value="testing">🟣 Homologando / Testes</option>
@@ -356,19 +286,19 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-2">
               <span class="text-xs font-semibold text-slate-300 block">Checklist Técnico:</span>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab1', 0, this.checked)" id="lab1-step-0" class="rounded bg-slate-800 text-sky-400">
                 <span>Criar Webhook Trigger Node (método POST)</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab1', 1, this.checked)" id="lab1-step-1" class="rounded bg-slate-800 text-sky-400">
                 <span>Tratar e sanitizar JSON de entrada (nó Code/Set)</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab1', 2, this.checked)" id="lab1-step-2" class="rounded bg-slate-800 text-sky-400">
                 <span>Inserir registro via nó HTTP Request no Supabase</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab1', 3, this.checked)" id="lab1-step-3" class="rounded bg-slate-800 text-sky-400">
                 <span>Exportar JSON do workflow e commitar no GitHub</span>
               </label>
@@ -376,24 +306,24 @@
             <div class="space-y-2 flex flex-col justify-between">
               <div>
                 <label class="text-xs font-semibold text-slate-300 block mb-1">Repositório GitHub:</label>
-                <input type="text" id="lab1-repo" placeholder="https://github.com/GodoyDevv/n8n-webhook-lab" onblur="saveLabRepo('lab1', this.value)" class="w-full bg-slate-900 border border-white/10 rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-sky-400 focus:outline-none">
+                <input type="text" id="lab1-repo" placeholder="https://github.com/GodoyDevv/n8n-webhook-lab" onblur="saveLabRepo('lab1', this.value)" class="w-full bg-slate-950 border border-white/10 rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-sky-400 focus:outline-none">
               </div>
-              <div class="bg-slate-900/40 p-3 rounded-xl border border-white/5 text-[11px] text-slate-400">
-                💡 <b class="text-slate-200">Dica de Engenharia:</b> Teste o disparo do Webhook via PowerShell com `curl -X POST` ou extensão Thunder Client.
+              <div class="bg-slate-950/40 p-3 rounded-xl border border-white/5 text-[11px] text-slate-400">
+                💡 <b class="text-slate-200">Dica:</b> Teste o disparo via PowerShell ou cURL.
               </div>
             </div>
           </div>
         </div>
 
         <!-- LAB 2 -->
-        <div class="glass-panel rounded-2xl p-5 space-y-4">
+        <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
             <div>
               <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono">LAB 02 • SPRINT 2</span>
               <h3 class="text-base font-bold text-white mt-1">Agente Autônomo com IA para Triagem de Incidentes</h3>
-              <p class="text-xs text-slate-400">Agente n8n usando nós de LLM (Claude/Gemini) para ler descrição de chamado de TI, classificar gravidade e sugerir correção técnica.</p>
+              <p class="text-xs text-slate-400">Agente n8n usando nós de LLM (Claude/Gemini) para ler chamado, classificar e indicar resolução.</p>
             </div>
-            <select onchange="updateLabStatus('lab2', this.value)" id="lab2-status" class="bg-slate-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-purple-400 focus:outline-none">
+            <select onchange="updateLabStatus('lab2', this.value)" id="lab2-status" class="bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-purple-400 focus:outline-none">
               <option value="pending">🟡 Em Planejamento</option>
               <option value="building">🔵 Construindo Fluxo</option>
               <option value="testing">🟣 Homologando / Testes</option>
@@ -403,19 +333,19 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-2">
               <span class="text-xs font-semibold text-slate-300 block">Checklist Técnico:</span>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab2', 0, this.checked)" id="lab2-step-0" class="rounded bg-slate-800 text-purple-400">
                 <span>Configurar nó AI Agent no n8n</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab2', 1, this.checked)" id="lab2-step-1" class="rounded bg-slate-800 text-purple-400">
-                <span>Conectar nó Anthropic / Claude ou Google Gemini</span>
+                <span>Conectar nó Claude ou Gemini</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab2', 2, this.checked)" id="lab2-step-2" class="rounded bg-slate-800 text-purple-400">
-                <span>Engenharia de Prompt estruturada com Output JSON</span>
+                <span>Prompt com schema rigoroso de saída em JSON</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab2', 3, this.checked)" id="lab2-step-3" class="rounded bg-slate-800 text-purple-400">
                 <span>Gravação da análise e rota no Supabase</span>
               </label>
@@ -423,24 +353,21 @@
             <div class="space-y-2 flex flex-col justify-between">
               <div>
                 <label class="text-xs font-semibold text-slate-300 block mb-1">Repositório GitHub:</label>
-                <input type="text" id="lab2-repo" placeholder="https://github.com/GodoyDevv/ai-ticket-triage" onblur="saveLabRepo('lab2', this.value)" class="w-full bg-slate-900 border border-white/10 rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-purple-400 focus:outline-none">
-              </div>
-              <div class="bg-slate-900/40 p-3 rounded-xl border border-white/5 text-[11px] text-slate-400">
-                💡 <b class="text-slate-200">Dica de Engenharia:</b> Use schemas JSON rigorosos para forçar a LLM a nunca alucinar no output.
+                <input type="text" id="lab2-repo" placeholder="https://github.com/GodoyDevv/ai-ticket-triage" onblur="saveLabRepo('lab2', this.value)" class="w-full bg-slate-950 border border-white/10 rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-purple-400 focus:outline-none">
               </div>
             </div>
           </div>
         </div>
 
         <!-- LAB 3 -->
-        <div class="glass-panel rounded-2xl p-5 space-y-4">
+        <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
             <div>
               <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">LAB 03 • PROVA OURO</span>
               <h3 class="text-base font-bold text-white mt-1">Agente de Auditoria & Saneamento de Master Data</h3>
               <p class="text-xs text-slate-400">União de ERP/Datasul com IA: leitura em lote de cadastros, identificação de inconsistências fiscais e saneamento.</p>
             </div>
-            <select onchange="updateLabStatus('lab3', this.value)" id="lab3-status" class="bg-slate-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-emerald-400 focus:outline-none">
+            <select onchange="updateLabStatus('lab3', this.value)" id="lab3-status" class="bg-slate-950 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-emerald-400 focus:outline-none">
               <option value="pending">🟡 Em Planejamento</option>
               <option value="building">🔵 Construindo Fluxo</option>
               <option value="testing">🟣 Homologando / Testes</option>
@@ -450,19 +377,19 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-2">
               <span class="text-xs font-semibold text-slate-300 block">Checklist Técnico:</span>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab3', 0, this.checked)" id="lab3-step-0" class="rounded bg-slate-800 text-emerald-400">
                 <span>Consulta SQL via nó Supabase buscando itens</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab3', 1, this.checked)" id="lab3-step-1" class="rounded bg-slate-800 text-emerald-400">
                 <span>Nó de IA analisando padrão PDM, duplicatas e NCM</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab3', 2, this.checked)" id="lab3-step-2" class="rounded bg-slate-800 text-emerald-400">
                 <span>Geração de relatório executivo em JSON e tabela</span>
               </label>
-              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
+              <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-white/5 cursor-pointer">
                 <input type="checkbox" onchange="toggleLabStep('lab3', 3, this.checked)" id="lab3-step-3" class="rounded bg-slate-800 text-emerald-400">
                 <span>README no GitHub com prints, diagrama e métricas</span>
               </label>
@@ -470,10 +397,7 @@
             <div class="space-y-2 flex flex-col justify-between">
               <div>
                 <label class="text-xs font-semibold text-slate-300 block mb-1">Repositório GitHub:</label>
-                <input type="text" id="lab3-repo" placeholder="https://github.com/GodoyDevv/masterdata-ai-audit" onblur="saveLabRepo('lab3', this.value)" class="w-full bg-slate-900 border border-white/10 rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-emerald-400 focus:outline-none">
-              </div>
-              <div class="bg-slate-900/40 p-3 rounded-xl border border-white/5 text-[11px] text-slate-400">
-                💎 <b class="text-slate-200">Projeto Carro-Chefe:</b> O case definitivo que conecta sua vivência na Nitro com a nova vaga de IA.
+                <input type="text" id="lab3-repo" placeholder="https://github.com/GodoyDevv/masterdata-ai-audit" onblur="saveLabRepo('lab3', this.value)" class="w-full bg-slate-950 border border-white/10 rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-emerald-400 focus:outline-none">
               </div>
             </div>
           </div>
@@ -481,13 +405,13 @@
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- VIEW 3: CHEAT-SHEET VAULT                  -->
-    <!-- ========================================== -->
+    <!-- ============================================================= -->
+    <!-- VIEW 3: CHEAT-SHEET VAULT                                     -->
+    <!-- ============================================================= -->
     <section id="view-vault" class="space-y-4 hidden">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Card 1 -->
-        <div class="glass-panel rounded-2xl p-4 space-y-3">
+        <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-4 space-y-3">
           <div class="flex items-center justify-between border-b border-white/10 pb-2">
             <h3 class="text-xs font-bold text-orange-400 flex items-center gap-1.5 font-mono">
               <i data-lucide="cpu" class="w-4 h-4"></i> n8n & Manipulação JSON
@@ -495,15 +419,15 @@
             <span class="text-[10px] text-slate-500 font-mono">Expressions</span>
           </div>
           <div class="space-y-2 text-xs font-mono">
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block">// Acessar campo vindo do Webhook:</span>
               <code class="text-sky-300">{{ $json.body.cliente }}</code>
             </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block">// Iterar array de itens com map:</span>
               <code class="text-emerald-300">{{ $json.itens.map(i => i.nome) }}</code>
             </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block">// Data atual formatada (ISO):</span>
               <code class="text-purple-300">{{ $now.toISO() }}</code>
             </div>
@@ -511,7 +435,7 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="glass-panel rounded-2xl p-4 space-y-3">
+        <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-4 space-y-3">
           <div class="flex items-center justify-between border-b border-white/10 pb-2">
             <h3 class="text-xs font-bold text-sky-400 flex items-center gap-1.5 font-mono">
               <i data-lucide="database" class="w-4 h-4"></i> SQL & Consultas Supabase
@@ -519,15 +443,15 @@
             <span class="text-[10px] text-slate-500 font-mono">PostgreSQL</span>
           </div>
           <div class="space-y-2 text-xs font-mono">
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block">-- Consulta com Filtro & Ordenação:</span>
               <code class="text-sky-300">SELECT * FROM materiais WHERE status = 'ativo' ORDER BY id DESC LIMIT 50;</code>
             </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block">-- Cruzamento de Tabelas (JOIN):</span>
               <code class="text-emerald-300">SELECT m.cod, f.nome FROM materiais m INNER JOIN fornecedores f ON m.fornecedor_id = f.id;</code>
             </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block">-- Atualização Segura:</span>
               <code class="text-purple-300">UPDATE materiais SET validado = true, updated_at = NOW() WHERE id = 'xyz';</code>
             </div>
@@ -535,7 +459,7 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="glass-panel rounded-2xl p-4 space-y-3">
+        <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-4 space-y-3">
           <div class="flex items-center justify-between border-b border-white/10 pb-2">
             <h3 class="text-xs font-bold text-purple-400 flex items-center gap-1.5 font-mono">
               <i data-lucide="git-branch" class="w-4 h-4"></i> Git & Versionamento
@@ -543,23 +467,19 @@
             <span class="text-[10px] text-slate-500 font-mono">CLI</span>
           </div>
           <div class="space-y-2 text-xs font-mono">
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block"># Criar e migrar para nova branch:</span>
               <code class="text-sky-300">git checkout -b feature/n8n-webhook-test</code>
             </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block"># Commit semântico padrão:</span>
               <code class="text-emerald-300">git commit -m "feat(n8n): add incident triage workflow"</code>
-            </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
-              <span class="text-slate-400 text-[10px] block"># Atualizar branch com a main:</span>
-              <code class="text-purple-300">git pull origin main --rebase</code>
             </div>
           </div>
         </div>
 
         <!-- Card 4 -->
-        <div class="glass-panel rounded-2xl p-4 space-y-3">
+        <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-4 space-y-3">
           <div class="flex items-center justify-between border-b border-white/10 pb-2">
             <h3 class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
               <i data-lucide="key" class="w-4 h-4"></i> APIs & Headers Padrão
@@ -567,12 +487,12 @@
             <span class="text-[10px] text-slate-500 font-mono">REST</span>
           </div>
           <div class="space-y-2 text-xs font-mono">
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
               <span class="text-slate-400 text-[10px] block">// Headers Supabase REST:</span>
               <code class="text-sky-300">apikey: YOUR_ANON_KEY<br>Authorization: Bearer YOUR_ANON_KEY</code>
             </div>
-            <div class="bg-slate-950/80 p-2.5 rounded-xl border border-white/5">
-              <span class="text-slate-400 text-[10px] block">// Headers Claude API (Anthropic):</span>
+            <div class="bg-slate-950 p-2.5 rounded-xl border border-white/5">
+              <span class="text-slate-400 text-[10px] block">// Headers Claude API:</span>
               <code class="text-emerald-300">x-api-key: YOUR_KEY<br>anthropic-version: 2023-06-01</code>
             </div>
           </div>
@@ -582,9 +502,9 @@
 
   </main>
 
-  <!-- DRAWER / MODAL LATERAL DE ANOTAÇÕES TÉCNICAS -->
+  <!-- MODAL / DRAWER DE ANOTAÇÕES TÉCNICAS -->
   <div id="notes-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel bg-slate-950 border border-white/10 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+    <div class="bg-slate-950 border border-white/15 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
       <div class="flex justify-between items-start border-b border-white/10 pb-3">
         <div>
           <span id="notes-modal-badge" class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono"></span>
@@ -599,7 +519,7 @@
         <label class="block text-xs font-semibold text-slate-300 mb-1">
           Caderno de Estudos & Snippets de Código
         </label>
-        <textarea id="notes-textarea" rows="8" placeholder="Escreva aqui suas anotações técnicas, dúvidas, parâmetros JSON testados ou links de repositórios..." class="w-full bg-slate-900/90 border border-white/10 rounded-xl p-3 text-xs text-slate-100 font-mono focus:outline-none focus:border-sky-400 resize-none"></textarea>
+        <textarea id="notes-textarea" rows="8" placeholder="Escreva aqui suas anotações técnicas, dúvidas, parâmetros JSON testados ou links de repositórios..." class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-xs text-slate-100 font-mono focus:outline-none focus:border-sky-400 resize-none"></textarea>
       </div>
 
       <div class="flex justify-between items-center pt-2">
@@ -618,7 +538,7 @@
 
   <!-- MODAL DE CONFIGURAÇÃO DO SUPABASE -->
   <div id="settings-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel bg-slate-950 border border-white/10 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+    <div class="bg-slate-950 border border-white/15 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-3">
         <h3 class="text-base font-bold text-white flex items-center gap-2">
           <i data-lucide="cloud" class="w-5 h-5 text-sky-400"></i>
@@ -650,49 +570,30 @@
     const DEFAULT_SUPABASE_URL = 'https://yioanftwelrhyiuwmnrq.supabase.co';
     const DEFAULT_SUPABASE_KEY = 'sb_publishable_bkg3h3f-pQHi1XVxfPxv8Q_8Y-YAmAQ';
 
-    const ROADMAP_DATA = [
-      {
-        id: 'fase1',
-        title: 'Fase 1: O Motor de Automação com n8n',
-        badge: 'Semanas 1 & 2',
-        description: 'Construção da base de orquestração de fluxos, nós lógicos, consumo de APIs REST e certificação de entrada.',
-        items: [
-          { id: 'f1_1', title: 'Fundamentos de nós e interface do n8n', platform: 'Viver de IA', duration: 'Aulas 1 a 4', tag: 'Core', step: 1 },
-          { id: 'f1_2', title: 'Estruturação de Webhooks e requisições HTTP', platform: 'Viver de IA', duration: 'Módulo Webhooks', tag: 'Prática', step: 2 },
-          { id: 'f1_3', title: 'Manipulação de dados em formato JSON & filtros', platform: 'Viver de IA', duration: 'Aulas de Dados', tag: 'Técnico', step: 3 },
-          { id: 'f1_4', title: 'Curso e Badge Oficial: n8n Quickstart (QS101)', platform: 'n8n Academy', duration: 'learn.n8n.io', tag: 'Certificação', step: 4 },
-          { id: 'f1_5', title: 'Certificação Oficial: n8n Essentials (N8N101)', platform: 'n8n Academy', duration: 'Exame Oficial', tag: 'Certificação', step: 5 },
-          { id: 'f1_6', title: 'PROVA DE TRABALHO 1: 1º Fluxo automatizado recebendo Webhook e gravando dados', platform: 'Projeto Pessoal', duration: 'Entregável', tag: 'Entregável', step: 6 }
-        ]
-      },
-      {
-        id: 'fase2',
-        title: 'Fase 2: Agentes de IA & Google Antigravity',
-        badge: 'Semanas 3 & 4',
-        description: 'Orquestração de modelos de linguagem (Claude / Gemini), agentes multi-ferramentas e automação autônoma.',
-        items: [
-          { id: 'f2_1', title: 'Formação Completa de Google Antigravity', platform: 'Viver de IA', duration: 'Módulo Antigravity', tag: 'Core', step: 1 },
-          { id: 'f2_2', title: 'Criação de rotinas com Agentes Autônomos', platform: 'Viver de IA', duration: 'Aulas Práticas', tag: 'Agentes', step: 2 },
-          { id: 'f2_3', title: 'Curso Oficial: AI in Action (n8n N8N103)', platform: 'n8n Academy', duration: 'learn.n8n.io', tag: 'Certificação', step: 3 },
-          { id: 'f2_4', title: 'Conexão de nós de IA do n8n com APIs de LLM (Claude/Gemini)', platform: 'Prática Técnica', duration: 'Lab Pessoal', tag: 'Prática', step: 4 },
-          { id: 'f2_5', title: 'Engenharia de Prompts Estruturada para Agentes', platform: 'Viver de IA', duration: 'Módulo Prompting', tag: 'Técnico', step: 5 },
-          { id: 'f2_6', title: 'PROVA DE TRABALHO 2: Agente com IA para triagem e classificação automática de chamados', platform: 'Projeto Pessoal', duration: 'Entregável', tag: 'Entregável', step: 6 }
-        ]
-      },
-      {
-        id: 'fase3',
-        title: 'Fase 3: SQL, Supabase & O Grande Portfólio',
-        badge: 'Semanas 5 & 6',
-        description: 'Domínio de consultas relacionais e construção do case definitivo unindo Master Data/ERP + Automação com IA.',
-        items: [
-          { id: 'f3_1', title: 'Fundamentos de SQL: SELECT, WHERE e Filtros', platform: 'Viver de IA', duration: 'Módulo SQL (Início)', tag: 'Core', step: 1 },
-          { id: 'f3_2', title: 'Relacionamento de Tabelas: INNER/LEFT JOIN & Agrupamentos', platform: 'Viver de IA', duration: 'Módulo SQL (Avançado)', tag: 'Técnico', step: 2 },
-          { id: 'f3_3', title: 'Conexão direta Supabase (Postgres) com n8n via SQL', platform: 'Lab Prático', duration: 'Integração', tag: 'Prática', step: 3 },
-          { id: 'f3_4', title: 'Exame de Certificação Final: n8n Foundations Certified', platform: 'n8n Academy', duration: 'Selo Oficial', tag: 'Certificação', step: 4 },
-          { id: 'f3_5', title: 'PROVA DE TRABALHO 3: Agente de Saneamento & Auditoria de Master Data com IA', platform: 'GitHub Portfólio', duration: 'Entregável Ouro', tag: 'Entregável', step: 5 },
-          { id: 'f3_6', title: 'Publicação do 2º Case Técnico no LinkedIn & Atualização de Perfil', platform: 'LinkedIn', duration: 'Visibilidade', tag: 'Carreira', step: 6 }
-        ]
-      }
+    const ROADMAP_TREE_ITEMS = [
+      // FASE 1
+      { id: 'f1_1', phase: 'Fase 1: Motor n8n', step: 1, title: 'Fundamentos de nós e interface do n8n', platform: 'Viver de IA', duration: 'Aulas 1 a 4', tag: 'Core', side: 'left' },
+      { id: 'f1_2', phase: 'Fase 1: Motor n8n', step: 2, title: 'Estruturação de Webhooks e requisições HTTP', platform: 'Viver de IA', duration: 'Módulo Webhooks', tag: 'Prática', side: 'right' },
+      { id: 'f1_3', phase: 'Fase 1: Motor n8n', step: 3, title: 'Manipulação de dados em formato JSON & filtros', platform: 'Viver de IA', duration: 'Aulas de Dados', tag: 'Técnico', side: 'left' },
+      { id: 'f1_4', phase: 'Fase 1: Motor n8n', step: 4, title: 'Curso e Badge Oficial: n8n Quickstart (QS101)', platform: 'n8n Academy', duration: 'learn.n8n.io', tag: 'Certificação', side: 'right' },
+      { id: 'f1_5', phase: 'Fase 1: Motor n8n', step: 5, title: 'Certificação Oficial: n8n Essentials (N8N101)', platform: 'n8n Academy', duration: 'Exame Oficial', tag: 'Certificação', side: 'left' },
+      { id: 'f1_6', phase: 'Fase 1: Motor n8n', step: 6, title: 'PROVA DE TRABALHO 1: Webhook Ingest gravando dados', platform: 'Projeto Pessoal', duration: 'Entregável', tag: 'Entregável', side: 'right' },
+      
+      // FASE 2
+      { id: 'f2_1', phase: 'Fase 2: Agentes & Antigravity', step: 7, title: 'Formação Completa de Google Antigravity', platform: 'Viver de IA', duration: 'Módulo Antigravity', tag: 'Core', side: 'left' },
+      { id: 'f2_2', phase: 'Fase 2: Agentes & Antigravity', step: 8, title: 'Criação de rotinas com Agentes Autônomos', platform: 'Viver de IA', duration: 'Aulas Práticas', tag: 'Agentes', side: 'right' },
+      { id: 'f2_3', phase: 'Fase 2: Agentes & Antigravity', step: 9, title: 'Curso Oficial: AI in Action (n8n N8N103)', platform: 'n8n Academy', duration: 'learn.n8n.io', tag: 'Certificação', side: 'left' },
+      { id: 'f2_4', phase: 'Fase 2: Agentes & Antigravity', step: 10, title: 'Conexão de nós de IA do n8n com APIs de LLM (Claude/Gemini)', platform: 'Prática Técnica', duration: 'Lab Pessoal', tag: 'Prática', side: 'right' },
+      { id: 'f2_5', phase: 'Fase 2: Agentes & Antigravity', step: 11, title: 'Engenharia de Prompts Estruturada para Agentes', platform: 'Viver de IA', duration: 'Módulo Prompting', tag: 'Técnico', side: 'left' },
+      { id: 'f2_6', phase: 'Fase 2: Agentes & Antigravity', step: 12, title: 'PROVA DE TRABALHO 2: Agente de Triagem de Incidentes', platform: 'Projeto Pessoal', duration: 'Entregável', tag: 'Entregável', side: 'right' },
+
+      // FASE 3
+      { id: 'f3_1', phase: 'Fase 3: SQL & Portfólio', step: 13, title: 'Fundamentos de SQL: SELECT, WHERE e Filtros', platform: 'Viver de IA', duration: 'Módulo SQL (Início)', tag: 'Core', side: 'left' },
+      { id: 'f3_2', phase: 'Fase 3: SQL & Portfólio', step: 14, title: 'Relacionamento de Tabelas: INNER/LEFT JOIN & Agrupamentos', platform: 'Viver de IA', duration: 'Módulo SQL (Avançado)', tag: 'Técnico', side: 'right' },
+      { id: 'f3_3', phase: 'Fase 3: SQL & Portfólio', step: 15, title: 'Conexão direta Supabase (Postgres) com n8n via SQL', platform: 'Lab Prático', duration: 'Integração', tag: 'Prática', side: 'left' },
+      { id: 'f3_4', phase: 'Fase 3: SQL & Portfólio', step: 16, title: 'Exame de Certificação Final: n8n Foundations Certified', platform: 'n8n Academy', duration: 'Selo Oficial', tag: 'Certificação', side: 'right' },
+      { id: 'f3_5', phase: 'Fase 3: SQL & Portfólio', step: 17, title: 'PROVA DE TRABALHO 3: Agente de Saneamento de Master Data', platform: 'GitHub Portfólio', duration: 'Entregável Ouro', tag: 'Entregável', side: 'left' },
+      { id: 'f3_6', phase: 'Fase 3: SQL & Portfólio', step: 18, title: 'Publicação do 2º Case no LinkedIn & Atualização de Perfil', platform: 'LinkedIn', duration: 'Visibilidade', tag: 'Carreira', side: 'right' }
     ];
 
     let completedItems = new Set();
@@ -709,13 +610,10 @@
       lucide.createIcons();
       loadProgressFromStorage();
       initSupabase();
-      renderInteractiveGraph();
+      renderVerticalRoadmapTree();
       renderLabs();
       updateProgressStats();
       loadStudyHours();
-
-      window.addEventListener('resize', drawConnectingSvgLines);
-      setTimeout(drawConnectingSvgLines, 300);
     });
 
     if ('serviceWorker' in navigator) {
@@ -750,7 +648,7 @@
         try {
           supabaseClient = window.supabase.createClient(url, key);
           document.getElementById('sync-dot').className = 'w-2 h-2 rounded-full bg-emerald-400';
-          document.getElementById('sync-text').innerText = 'Supabase Cloud Sync: Ativo';
+          document.getElementById('sync-text').innerText = 'Supabase Cloud Sync: Conectado';
           syncFromSupabase();
         } catch (err) {
           console.error('Supabase init error:', err);
@@ -769,7 +667,7 @@
             if (row.notes) itemNotes[row.item_id] = row.notes;
           });
           saveProgressToStorage();
-          renderInteractiveGraph();
+          renderVerticalRoadmapTree();
           updateProgressStats();
         }
       } catch (e) { console.error('Fetch Supabase fail:', e); }
@@ -788,160 +686,116 @@
       } catch (e) { console.error('Save to Supabase error:', e); }
     }
 
-    // Switch Views
     function switchView(viewName) {
       document.getElementById('view-tree').classList.add('hidden');
       document.getElementById('view-labs').classList.add('hidden');
       document.getElementById('view-vault').classList.add('hidden');
 
-      document.querySelectorAll('.nav-tab-btn').forEach(b => {
-        b.className = 'nav-tab-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-900/80 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2';
+      document.querySelectorAll('#tab-btn-tree, #tab-btn-labs, #tab-btn-vault').forEach(b => {
+        b.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2';
       });
 
       if (viewName === 'tree') {
         document.getElementById('view-tree').classList.remove('hidden');
-        document.getElementById('tab-btn-tree').className = 'nav-tab-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
-        renderInteractiveGraph();
-        setTimeout(drawConnectingSvgLines, 100);
+        document.getElementById('tab-btn-tree').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
+        renderVerticalRoadmapTree();
       } else if (viewName === 'labs') {
         document.getElementById('view-labs').classList.remove('hidden');
-        document.getElementById('tab-btn-labs').className = 'nav-tab-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
+        document.getElementById('tab-btn-labs').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
         renderLabs();
       } else {
         document.getElementById('view-vault').classList.remove('hidden');
-        document.getElementById('tab-btn-vault').className = 'nav-tab-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
+        document.getElementById('tab-btn-vault').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
       }
       lucide.createIcons();
     }
 
-    // RENDERIZADOR DO GRAFO INTERATIVO DE NÓS COM NÓS HTML
-    function renderInteractiveGraph() {
-      ROADMAP_DATA.forEach((phase, phaseIdx) => {
-        const container = document.getElementById(`phase-${phaseIdx + 1}-nodes`);
-        if (!container) return;
-        container.innerHTML = '';
+    // RENDERIZADOR DA ÁRVORE VERTICAL REAL ESTILO ROADMAP.SH
+    function renderVerticalRoadmapTree() {
+      const container = document.getElementById('nodes-tree-container');
+      if (!container) return;
+      container.innerHTML = '';
 
-        let doneCount = 0;
+      ROADMAP_TREE_ITEMS.forEach((item, index) => {
+        const isDone = completedItems.has(item.id);
+        const hasNotes = !!itemNotes[item.id];
+        const isLeft = item.side === 'left';
 
-        phase.items.forEach((item, itemIdx) => {
-          const isDone = completedItems.has(item.id);
-          if (isDone) doneCount++;
-          const hasNotes = !!itemNotes[item.id];
+        // Linha da Árvore
+        const nodeRow = document.createElement('div');
+        nodeRow.className = 'relative flex items-center justify-between md:justify-center w-full';
 
-          const nodeCard = document.createElement('div');
-          nodeCard.id = `node-${item.id}`;
-          nodeCard.className = `graph-node rounded-2xl p-4 flex flex-col justify-between select-none ${
-            isDone ? 'graph-node-done' : ''
-          }`;
+        // Conector Horizontal (Galho)
+        let branchHtml = '';
+        let trunkPointHtml = '';
 
-          nodeCard.innerHTML = `
-            <div>
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <div class="flex items-center gap-2">
-                  <span class="w-6 h-6 rounded-lg ${isDone ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300 font-bold'} flex items-center justify-center text-[11px] font-mono shadow-sm">
-                    ${isDone ? '✓' : `0${item.step}`}
-                  </span>
-                  <span class="text-[10px] font-mono text-slate-400 font-semibold uppercase tracking-wider">${item.platform}</span>
-                </div>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                  item.tag === 'Certificação' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30' :
-                  item.tag === 'Entregável' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                }">${item.tag}</span>
+        // Ponto no Tronco Central
+        trunkPointHtml = `
+          <div class="trunk-node-point ${isDone ? 'trunk-node-point-done' : ''} left-[19px] md:left-1/2 md:-translate-x-1/2"></div>
+        `;
+
+        // Galho conectando o tronco até o cartão
+        if (window.innerWidth >= 768) {
+          if (isLeft) {
+            branchHtml = `<div class="tree-branch ${isDone ? 'tree-branch-done' : ''} right-1/2 w-8" style="top:36px;"></div>`;
+          } else {
+            branchHtml = `<div class="tree-branch ${isDone ? 'tree-branch-done' : ''} left-1/2 w-8" style="top:36px;"></div>`;
+          }
+        } else {
+          branchHtml = `<div class="tree-branch ${isDone ? 'tree-branch-done' : ''} left-[28px] w-6" style="top:36px;"></div>`;
+        }
+
+        // Card do Nó
+        const cardHtml = `
+          <div class="rm-node ${isDone ? 'rm-node-done' : ''} p-4 w-[calc(100%-60px)] ml-auto md:w-[420px] ${
+            isLeft ? 'md:mr-auto md:ml-0' : 'md:ml-auto md:mr-0'
+          }">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg ${isDone ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300 font-bold'} flex items-center justify-center text-[11px] font-mono shadow-sm">
+                  ${isDone ? '✓' : item.step}
+                </span>
+                <span class="text-[10px] font-mono text-slate-400 font-semibold uppercase tracking-wider">${item.platform}</span>
               </div>
-
-              <h4 class="text-xs lg:text-[13px] font-bold ${isDone ? 'line-through text-slate-400' : 'text-white'} leading-snug tracking-tight">
-                ${item.title}
-              </h4>
-              <p class="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1 font-mono">
-                <i data-lucide="clock" class="w-3 h-3 text-slate-500"></i>
-                ${item.duration}
-              </p>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                item.tag === 'Certificação' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30' :
+                item.tag === 'Entregável' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+              }">${item.tag}</span>
             </div>
 
-            <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-4">
+            <h4 class="text-xs lg:text-[13px] font-bold ${isDone ? 'line-through text-slate-400' : 'text-white'} leading-snug tracking-tight">
+              ${item.title}
+            </h4>
+            <div class="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-mono">
+              <span class="flex items-center gap-1">
+                <i data-lucide="clock" class="w-3 h-3 text-slate-500"></i> ${item.duration}
+              </span>
+              <span class="text-[10px] font-semibold text-slate-400">${item.phase}</span>
+            </div>
+
+            <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-3">
               <button onclick="toggleItem('${item.id}')" class="flex items-center gap-1.5 text-xs font-bold ${
                 isDone ? 'text-emerald-400' : 'text-slate-400 hover:text-sky-400'
               } transition-colors">
                 <span class="w-4 h-4 rounded border ${isDone ? 'bg-emerald-400 border-emerald-400 text-slate-950 flex items-center justify-center text-[10px] font-black' : 'border-slate-600 bg-slate-900'}">
                   ${isDone ? '✓' : ''}
                 </span>
-                <span>${isDone ? 'Dominado' : 'Marcar'}</span>
+                <span>${isDone ? 'Dominado' : 'Marcar Dominado'}</span>
               </button>
 
-              <button onclick="openNotesModal('${item.id}', '${item.title}', '${item.tag}')" class="p-1.5 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-400 hover:text-sky-400 transition-colors flex items-center gap-1 text-[11px]" title="Abrir Anotações e Código">
+              <button onclick="openNotesModal('${item.id}', '${item.title}', '${item.tag}')" class="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-sky-400 transition-colors flex items-center gap-1 text-[11px]" title="Abrir Anotações e Código">
                 <i data-lucide="${hasNotes ? 'file-text' : 'edit-3'}" class="w-3.5 h-3.5 ${hasNotes ? 'text-sky-400' : ''}"></i>
-                <span>${hasNotes ? 'Notas' : 'Anotar'}</span>
+                <span>${hasNotes ? 'Notas Salvas' : 'Anotar'}</span>
               </button>
             </div>
-          `;
+          </div>
+        `;
 
-          container.appendChild(nodeCard);
-        });
-
-        const counterEl = document.getElementById(`phase${phaseIdx + 1}-counter`);
-        if (counterEl) {
-          counterEl.innerText = `${doneCount}/${phase.items.length} Nós Ativos`;
-        }
+        nodeRow.innerHTML = trunkPointHtml + branchHtml + cardHtml;
+        container.appendChild(nodeRow);
       });
 
       lucide.createIcons();
-      setTimeout(drawConnectingSvgLines, 80);
-    }
-
-    // DESENHADOR REAL DE LINHAS CONECTORAS SVG ESTILO ROADMAP.SH
-    function drawConnectingSvgLines() {
-      ROADMAP_DATA.forEach((phase, phaseIdx) => {
-        const svg = document.getElementById(`svg-phase-${phaseIdx + 1}`);
-        const wrapper = document.getElementById(`phase-${phaseIdx + 1}-wrapper`);
-        if (!svg || !wrapper || window.innerWidth < 768) {
-          if (svg) svg.innerHTML = '';
-          return;
-        }
-
-        const wrapperRect = wrapper.getBoundingClientRect();
-        svg.setAttribute('width', wrapperRect.width);
-        svg.setAttribute('height', wrapperRect.height);
-        svg.innerHTML = '';
-
-        // Conectar Nó 1 -> Nó 2 -> Nó 3, e Nó 3 para Nó 4 (curva S), e Nó 4 -> Nó 5 -> Nó 6
-        const items = phase.items;
-        for (let i = 0; i < items.length - 1; i++) {
-          const elA = document.getElementById(`node-${items[i].id}`);
-          const elB = document.getElementById(`node-${items[i + 1].id}`);
-          if (!elA || !elB) continue;
-
-          const rectA = elA.getBoundingClientRect();
-          const rectB = elB.getBoundingClientRect();
-
-          const isRowA = Math.floor(i / 3);
-          const isRowB = Math.floor((i + 1) / 3);
-
-          let startX, startY, endX, endY, pathD;
-
-          if (isRowA === isRowB) {
-            // Conexão horizontal na mesma linha: da direita de A para a esquerda de B
-            startX = rectA.right - wrapperRect.left;
-            startY = rectA.top + rectA.height / 2 - wrapperRect.top;
-            endX = rectB.left - wrapperRect.left;
-            endY = rectB.top + rectB.height / 2 - wrapperRect.top;
-            pathD = `M ${startX} ${startY} L ${endX} ${endY}`;
-          } else {
-            // Conexão de quebra de linha: curva elegante em S descendo de A para B
-            startX = rectA.left + rectA.width / 2 - wrapperRect.left;
-            startY = rectA.bottom - wrapperRect.top;
-            endX = rectB.left + rectB.width / 2 - wrapperRect.left;
-            endY = rectB.top - wrapperRect.top;
-            const midY = (startY + endY) / 2;
-            pathD = `M ${startX} ${startY} C ${startX} ${midY}, ${endX} ${midY}, ${endX} ${endY}`;
-          }
-
-          const isNodeDone = completedItems.has(items[i].id);
-          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('d', pathD);
-          path.setAttribute('class', `flow-line ${isNodeDone ? 'flow-line-done' : ''}`);
-          svg.appendChild(path);
-        }
-      });
     }
 
     function toggleItem(itemId) {
@@ -950,13 +804,12 @@
       else completedItems.delete(itemId);
       syncItemToSupabase(itemId, isDone);
       saveProgressToStorage();
-      renderInteractiveGraph();
+      renderVerticalRoadmapTree();
       updateProgressStats();
     }
 
     function updateProgressStats() {
-      let total = 0;
-      ROADMAP_DATA.forEach(p => total += p.items.length);
+      const total = ROADMAP_TREE_ITEMS.length;
       const done = completedItems.size;
       const remaining = total - done;
       const percent = total > 0 ? Math.round((done / total) * 100) : 0;
@@ -991,7 +844,7 @@
       document.getElementById('notes-saved-status').innerText = 'Salvo com sucesso!';
       setTimeout(() => {
         closeNotesModal();
-        renderInteractiveGraph();
+        renderVerticalRoadmapTree();
       }, 400);
     }
 
@@ -1084,7 +937,6 @@
       document.getElementById('stat-hours').innerText = `${hours}h`;
     }
 
-    // Modal de Configuração Supabase
     function toggleSettingsModal() {
       const modal = document.getElementById('settings-modal');
       modal.classList.toggle('hidden');
