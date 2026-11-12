@@ -70,13 +70,12 @@
     }
     .rm-node:hover {
       border-color: #38bdf8;
-      transform: translateY(-2px);
-      box-shadow: 0 15px 30px -10px rgba(56, 189, 248, 0.3);
+      box-shadow: 0 15px 30px -10px rgba(56, 189, 248, 0.25);
     }
     .rm-node-done {
       border-color: #10b981 !important;
-      background: linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, #0f172a 100%);
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.08) 0%, #0f172a 100%);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
     }
 
     /* Conector Horizontal de Galho para o Nó */
@@ -127,7 +126,7 @@
           Godoy Tech OS
           <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30 uppercase">roadmap.sh View</span>
         </h1>
-        <p class="text-[11px] text-slate-400">Árvore Conectada de Competências & IA</p>
+        <p class="text-[11px] text-slate-400">Árvore Conectada de Competências & Aulas</p>
       </div>
     </div>
 
@@ -170,8 +169,8 @@
           </div>
           <div class="w-px h-6 bg-slate-800"></div>
           <div class="text-center px-2">
-            <span class="text-base font-black text-sky-400 block" id="stat-remaining">18</span>
-            <span class="text-[9px] uppercase tracking-wider text-slate-500">Restam</span>
+            <span class="text-base font-black text-sky-400 block" id="stat-subtasks">0/0</span>
+            <span class="text-[9px] uppercase tracking-wider text-slate-500">Aulas OK</span>
           </div>
           <div class="w-px h-6 bg-slate-800"></div>
           <div class="text-center px-2">
@@ -193,7 +192,7 @@
         </div>
         <div class="flex items-center gap-3 text-[11px]">
           <a href="https://app.viverdeia.ai/formacoes" target="_blank" class="hover:text-sky-400 text-slate-300 flex items-center gap-1">
-            <i data-lucide="play" class="w-3 h-3 text-red-400"></i> Viver de IA
+            <i data-lucide="play" class="w-3 h-3 text-red-400"></i> Portal Viver de IA
           </a>
           <a href="https://learn.n8n.io" target="_blank" class="hover:text-sky-400 text-slate-300 flex items-center gap-1">
             <i data-lucide="award" class="w-3 h-3 text-orange-400"></i> n8n Academy
@@ -208,7 +207,7 @@
     <div class="flex items-center gap-2 border-b border-white/10 pb-3">
       <button onclick="switchView('tree')" id="tab-btn-tree" class="px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20">
         <i data-lucide="git-commit" class="w-4 h-4"></i>
-        Árvore Visual com Nós & Tronco
+        Árvore Visual com Nós & Aulas
       </button>
       <button onclick="switchView('labs')" id="tab-btn-labs" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2">
         <i data-lucide="flask-conical" class="w-4 h-4 text-purple-400"></i>
@@ -225,14 +224,14 @@
   <main class="max-w-5xl w-full mx-auto p-4 lg:p-6 flex-1">
 
     <!-- ============================================================= -->
-    <!-- VIEW 1: ÁRVORE CONECTADA REAL (ROADMAP.SH VERTICAL TRUNK)     -->
+    <!-- VIEW 1: ÁRVORE CONECTADA REAL (ROADMAP.SH COM AULAS EXPANSÍVEIS) -->
     <!-- ============================================================= -->
     <section id="view-tree" class="relative">
       
       <!-- Cabeçalho de Início da Árvore -->
       <div class="text-center pb-8">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-sky-400/40 text-sky-400 text-xs font-mono font-bold shadow-lg shadow-sky-500/10">
-          <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> PONTO DE PARTIDA: DEGRAU 1
+          <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> PONTO DE PARTIDA: DEGRAU 1 (ESTAGIÁRIO ➔ ANALISTA IA)
         </div>
       </div>
 
@@ -570,33 +569,306 @@
     const DEFAULT_SUPABASE_URL = 'https://yioanftwelrhyiuwmnrq.supabase.co';
     const DEFAULT_SUPABASE_KEY = 'sb_publishable_bkg3h3f-pQHi1XVxfPxv8Q_8Y-YAmAQ';
 
+    // ITENS DO ROADMAP COM SUBPASSOS/AULAS E LINKS DIRETOS
     const ROADMAP_TREE_ITEMS = [
       // FASE 1
-      { id: 'f1_1', phase: 'Fase 1: Motor n8n', step: 1, title: 'Fundamentos de nós e interface do n8n', platform: 'Viver de IA', duration: 'Aulas 1 a 4', tag: 'Core', side: 'left' },
-      { id: 'f1_2', phase: 'Fase 1: Motor n8n', step: 2, title: 'Estruturação de Webhooks e requisições HTTP', platform: 'Viver de IA', duration: 'Módulo Webhooks', tag: 'Prática', side: 'right' },
-      { id: 'f1_3', phase: 'Fase 1: Motor n8n', step: 3, title: 'Manipulação de dados em formato JSON & filtros', platform: 'Viver de IA', duration: 'Aulas de Dados', tag: 'Técnico', side: 'left' },
-      { id: 'f1_4', phase: 'Fase 1: Motor n8n', step: 4, title: 'Curso e Badge Oficial: n8n Quickstart (QS101)', platform: 'n8n Academy', duration: 'learn.n8n.io', tag: 'Certificação', side: 'right' },
-      { id: 'f1_5', phase: 'Fase 1: Motor n8n', step: 5, title: 'Certificação Oficial: n8n Essentials (N8N101)', platform: 'n8n Academy', duration: 'Exame Oficial', tag: 'Certificação', side: 'left' },
-      { id: 'f1_6', phase: 'Fase 1: Motor n8n', step: 6, title: 'PROVA DE TRABALHO 1: Webhook Ingest gravando dados', platform: 'Projeto Pessoal', duration: 'Entregável', tag: 'Entregável', side: 'right' },
+      { 
+        id: 'f1_1', 
+        phase: 'Fase 1: Motor n8n', 
+        step: 1, 
+        title: 'Fundamentos de nós e interface do n8n', 
+        platform: 'Viver de IA', 
+        duration: 'Aulas 1 a 4', 
+        tag: 'Core', 
+        side: 'left',
+        subtasks: [
+          { title: 'Aula 01: Visão Geral e Arquitetura de Nós no n8n', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 02: Interface Gráfica, Canvas e Atalhos de Produtividade', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 03: Tipos de Nós: Triggers, Actions e Transformações', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 04: Primeiro Workflow Ativo: Disparo Manual e Teste de Execução', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f1_2', 
+        phase: 'Fase 1: Motor n8n', 
+        step: 2, 
+        title: 'Estruturação de Webhooks e requisições HTTP', 
+        platform: 'Viver de IA', 
+        duration: 'Módulo Webhooks', 
+        tag: 'Prática', 
+        side: 'right',
+        subtasks: [
+          { title: 'Aula 05: Conceito de Webhooks (GET vs POST) e Endpoints de Teste', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 06: Configurando o Webhook Trigger Node com Payload Dinâmico', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 07: Requisições de Saída: Nó HTTP Request e Autenticação por Headers', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 08: Teste de Disparo via Terminal/Postman simulando chamada real', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f1_3', 
+        phase: 'Fase 1: Motor n8n', 
+        step: 3, 
+        title: 'Manipulação de dados em formato JSON & filtros', 
+        platform: 'Viver de IA', 
+        duration: 'Aulas de Dados', 
+        tag: 'Técnico', 
+        side: 'left',
+        subtasks: [
+          { title: 'Aula 09: Anatomia do JSON: Objetos aninhados, chaves e arrays', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 10: Expressões n8n ($json, $binary, $item, $now)', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 11: Nós de Filtragem e Lógica Condicional (IF / Switch Node)', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 12: Transformação com Nós Edit Fields (Set) e Code Node (JavaScript)', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f1_4', 
+        phase: 'Fase 1: Motor n8n', 
+        step: 4, 
+        title: 'Curso e Badge Oficial: n8n Quickstart (QS101)', 
+        platform: 'n8n Academy', 
+        duration: 'learn.n8n.io', 
+        tag: 'Certificação', 
+        side: 'right',
+        subtasks: [
+          { title: 'Módulo 1: Setup do ambiente oficial na n8n Academy', link: 'https://learn.n8n.io/courses/beginner-course-1' },
+          { title: 'Módulo 2: Construção do fluxo guiado de exercício', link: 'https://learn.n8n.io/courses/beginner-course-1' },
+          { title: 'Módulo 3: Submissão do workflow para validação automática', link: 'https://learn.n8n.io/courses/beginner-course-1' },
+          { title: 'Badge: Obtenção do selo oficial n8n Quickstart (QS101)', link: 'https://learn.n8n.io/courses/beginner-course-1' }
+        ]
+      },
+      { 
+        id: 'f1_5', 
+        phase: 'Fase 1: Motor n8n', 
+        step: 5, 
+        title: 'Certificação Oficial: n8n Essentials (N8N101)', 
+        platform: 'n8n Academy', 
+        duration: 'Exame Oficial', 
+        tag: 'Certificação', 
+        side: 'left',
+        subtasks: [
+          { title: 'Trilha Teórica: Data structures, looping and flow control', link: 'https://learn.n8n.io/courses/beginner-course-2' },
+          { title: 'Laboratório Prático: Tratamento de erros e nó Error Trigger', link: 'https://learn.n8n.io/courses/beginner-course-2' },
+          { title: 'Simulado de Exame: Resolução dos desafios propostos', link: 'https://learn.n8n.io/courses/beginner-course-2' },
+          { title: 'Prova Oficial: Emissão do Certificado n8n Essentials (N8N101)', link: 'https://learn.n8n.io/courses/beginner-course-2' }
+        ]
+      },
+      { 
+        id: 'f1_6', 
+        phase: 'Fase 1: Motor n8n', 
+        step: 6, 
+        title: 'PROVA DE TRABALHO 1: Webhook Ingest gravando dados', 
+        platform: 'Projeto Pessoal', 
+        duration: 'Entregável', 
+        tag: 'Entregável', 
+        side: 'right',
+        subtasks: [
+          { title: 'Passo 1: Criar tabela de staging no Supabase com tipos corretos', link: 'https://supabase.com/dashboard' },
+          { title: 'Passo 2: Montar fluxo n8n (Webhook -> Sanitize -> Insert Supabase)', link: 'https://godoydevv.github.io/career-os/#labs' },
+          { title: 'Passo 3: Criar script PowerShell para teste de carga com 10 requisições', link: 'https://godoydevv.github.io/career-os/#labs' },
+          { title: 'Passo 4: Commitar workflow exportado e README técnico no GitHub', link: 'https://github.com/GodoyDevv' }
+        ]
+      },
       
       // FASE 2
-      { id: 'f2_1', phase: 'Fase 2: Agentes & Antigravity', step: 7, title: 'Formação Completa de Google Antigravity', platform: 'Viver de IA', duration: 'Módulo Antigravity', tag: 'Core', side: 'left' },
-      { id: 'f2_2', phase: 'Fase 2: Agentes & Antigravity', step: 8, title: 'Criação de rotinas com Agentes Autônomos', platform: 'Viver de IA', duration: 'Aulas Práticas', tag: 'Agentes', side: 'right' },
-      { id: 'f2_3', phase: 'Fase 2: Agentes & Antigravity', step: 9, title: 'Curso Oficial: AI in Action (n8n N8N103)', platform: 'n8n Academy', duration: 'learn.n8n.io', tag: 'Certificação', side: 'left' },
-      { id: 'f2_4', phase: 'Fase 2: Agentes & Antigravity', step: 10, title: 'Conexão de nós de IA do n8n com APIs de LLM (Claude/Gemini)', platform: 'Prática Técnica', duration: 'Lab Pessoal', tag: 'Prática', side: 'right' },
-      { id: 'f2_5', phase: 'Fase 2: Agentes & Antigravity', step: 11, title: 'Engenharia de Prompts Estruturada para Agentes', platform: 'Viver de IA', duration: 'Módulo Prompting', tag: 'Técnico', side: 'left' },
-      { id: 'f2_6', phase: 'Fase 2: Agentes & Antigravity', step: 12, title: 'PROVA DE TRABALHO 2: Agente de Triagem de Incidentes', platform: 'Projeto Pessoal', duration: 'Entregável', tag: 'Entregável', side: 'right' },
+      { 
+        id: 'f2_1', 
+        phase: 'Fase 2: Agentes & Antigravity', 
+        step: 7, 
+        title: 'Formação Completa de Google Antigravity', 
+        platform: 'Viver de IA', 
+        duration: 'Módulo Antigravity', 
+        tag: 'Core', 
+        side: 'left',
+        subtasks: [
+          { title: 'Aula 01: Introdução ao Antigravity e Paradigma de Vibe Coding', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 02: Arquitetura de Multi-Agentes e Swarm de Tarefas', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 03: Protocolo MCP (Model Context Protocol) e integração de ferramentas', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 04: Prática: Criando agentes com papéis e ferramentas customizadas', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f2_2', 
+        phase: 'Fase 2: Agentes & Antigravity', 
+        step: 8, 
+        title: 'Criação de rotinas com Agentes Autônomos', 
+        platform: 'Viver de IA', 
+        duration: 'Aulas Práticas', 
+        tag: 'Agentes', 
+        side: 'right',
+        subtasks: [
+          { title: 'Aula 05: Definindo memória contextual e persistência do agente', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 06: Orquestração de Agente Decisor vs Agente Executor', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 07: Tratamento de alucinações e validação estrita de respostas', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 08: Automação em segundo plano com cron e triggers de evento', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f2_3', 
+        phase: 'Fase 2: Agentes & Antigravity', 
+        step: 9, 
+        title: 'Curso Oficial: AI in Action (n8n N8N103)', 
+        platform: 'n8n Academy', 
+        duration: 'learn.n8n.io', 
+        tag: 'Certificação', 
+        side: 'left',
+        subtasks: [
+          { title: 'Módulo 1: Arquitetura LangChain e nós Advanced AI no n8n', link: 'https://learn.n8n.io' },
+          { title: 'Módulo 2: Configuração de AI Agent Node (Tools, Memory e Model)', link: 'https://learn.n8n.io' },
+          { title: 'Módulo 3: Criação de Custom Tools com fluxos aninhados (Subworkflows)', link: 'https://learn.n8n.io' },
+          { title: 'Badge: Conclusão do curso oficial e emissão do badge AI in Action', link: 'https://learn.n8n.io' }
+        ]
+      },
+      { 
+        id: 'f2_4', 
+        phase: 'Fase 2: Agentes & Antigravity', 
+        step: 10, 
+        title: 'Conexão de nós de IA do n8n com APIs de LLM (Claude/Gemini)', 
+        platform: 'Prática Técnica', 
+        duration: 'Lab Pessoal', 
+        tag: 'Prática', 
+        side: 'right',
+        subtasks: [
+          { title: 'Passo 1: Geração e salvaguarda segura de credenciais de API', link: 'https://aistudio.google.com' },
+          { title: 'Passo 2: Configuração do nó Anthropic Chat Model e Gemini Model no n8n', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Passo 3: Comparativo de latência e consumo de tokens entre modelos', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Passo 4: Implementação de fallback automático em caso de timeout de API', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f2_5', 
+        phase: 'Fase 2: Agentes & Antigravity', 
+        step: 11, 
+        title: 'Engenharia de Prompts Estruturada para Agentes', 
+        platform: 'Viver de IA', 
+        duration: 'Módulo Prompting', 
+        tag: 'Técnico', 
+        side: 'left',
+        subtasks: [
+          { title: 'Aula 09: System Prompts de Alta Precisão (Role, Context, Constraints)', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 10: Few-Shot Prompting e Saída Estrita em JSON Schema', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 11: Estratégias Chain-of-Thought e validação de regras de negócio', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 12: Prevenção de Injeção de Prompt e Sanitização de Entrada', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f2_6', 
+        phase: 'Fase 2: Agentes & Antigravity', 
+        step: 12, 
+        title: 'PROVA DE TRABALHO 2: Agente de Triagem de Incidentes', 
+        platform: 'Projeto Pessoal', 
+        duration: 'Entregável', 
+        tag: 'Entregável', 
+        side: 'right',
+        subtasks: [
+          { title: 'Passo 1: Criar base de exemplos de chamados de TI (crítico, médio, baixo)', link: 'https://godoydevv.github.io/career-os/#labs' },
+          { title: 'Passo 2: Construir agente n8n que lê o texto e extrai urgência em JSON', link: 'https://godoydevv.github.io/career-os/#labs' },
+          { title: 'Passo 3: Integrar gravação no Supabase e alerta em caso de incidente crítico', link: 'https://godoydevv.github.io/career-os/#labs' },
+          { title: 'Passo 4: Publicar repositório com documentação e vídeo rápido demonstrativo', link: 'https://github.com/GodoyDevv' }
+        ]
+      },
 
       // FASE 3
-      { id: 'f3_1', phase: 'Fase 3: SQL & Portfólio', step: 13, title: 'Fundamentos de SQL: SELECT, WHERE e Filtros', platform: 'Viver de IA', duration: 'Módulo SQL (Início)', tag: 'Core', side: 'left' },
-      { id: 'f3_2', phase: 'Fase 3: SQL & Portfólio', step: 14, title: 'Relacionamento de Tabelas: INNER/LEFT JOIN & Agrupamentos', platform: 'Viver de IA', duration: 'Módulo SQL (Avançado)', tag: 'Técnico', side: 'right' },
-      { id: 'f3_3', phase: 'Fase 3: SQL & Portfólio', step: 15, title: 'Conexão direta Supabase (Postgres) com n8n via SQL', platform: 'Lab Prático', duration: 'Integração', tag: 'Prática', side: 'left' },
-      { id: 'f3_4', phase: 'Fase 3: SQL & Portfólio', step: 16, title: 'Exame de Certificação Final: n8n Foundations Certified', platform: 'n8n Academy', duration: 'Selo Oficial', tag: 'Certificação', side: 'right' },
-      { id: 'f3_5', phase: 'Fase 3: SQL & Portfólio', step: 17, title: 'PROVA DE TRABALHO 3: Agente de Saneamento de Master Data', platform: 'GitHub Portfólio', duration: 'Entregável Ouro', tag: 'Entregável', side: 'left' },
-      { id: 'f3_6', phase: 'Fase 3: SQL & Portfólio', step: 18, title: 'Publicação do 2º Case no LinkedIn & Atualização de Perfil', platform: 'LinkedIn', duration: 'Visibilidade', tag: 'Carreira', side: 'right' }
+      { 
+        id: 'f3_1', 
+        phase: 'Fase 3: SQL & Portfólio', 
+        step: 13, 
+        title: 'Fundamentos de SQL: SELECT, WHERE e Filtros', 
+        platform: 'Viver de IA', 
+        duration: 'Módulo SQL (Início)', 
+        tag: 'Core', 
+        side: 'left',
+        subtasks: [
+          { title: 'Aula 01: Introdução ao PostgreSQL e sintaxe básica ANSI SQL', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 02: Cláusulas SELECT, WHERE, Operadores Lógicos (AND, OR, NOT, IN)', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 03: Ordenação (ORDER BY) e Paginação eficiente (LIMIT, OFFSET)', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 04: Prática de queries no Supabase SQL Editor em base real', link: 'https://supabase.com/dashboard' }
+        ]
+      },
+      { 
+        id: 'f3_2', 
+        phase: 'Fase 3: SQL & Portfólio', 
+        step: 14, 
+        title: 'Relacionamento de Tabelas: INNER/LEFT JOIN & Agrupamentos', 
+        platform: 'Viver de IA', 
+        duration: 'Módulo SQL (Avançado)', 
+        tag: 'Técnico', 
+        side: 'right',
+        subtasks: [
+          { title: 'Aula 05: Chaves Primárias, Chaves Estrangeiras e Modelagem Relacional', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 06: Cruzamento de dados com INNER JOIN e LEFT JOIN', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 07: Funções de Agregação (COUNT, SUM, AVG) e GROUP BY / HAVING', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Aula 08: Criando Views e Views Materializadas para consultas pesadas', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f3_3', 
+        phase: 'Fase 3: SQL & Portfólio', 
+        step: 15, 
+        title: 'Conexão direta Supabase (Postgres) com n8n via SQL', 
+        platform: 'Lab Prático', 
+        duration: 'Integração', 
+        tag: 'Prática', 
+        side: 'left',
+        subtasks: [
+          { title: 'Passo 1: Obter credenciais de conexão direta do Postgres no Supabase', link: 'https://supabase.com/dashboard' },
+          { title: 'Passo 2: Configurar o Postgres Node nativo no n8n com SSL habilitado', link: 'https://learn.n8n.io' },
+          { title: 'Passo 3: Executar queries parametrizadas prevenindo SQL Injection', link: 'https://app.viverdeia.ai/formacoes' },
+          { title: 'Passo 4: Criar fluxo de atualização em lote (Batch Upsert) via nó SQL', link: 'https://app.viverdeia.ai/formacoes' }
+        ]
+      },
+      { 
+        id: 'f3_4', 
+        phase: 'Fase 3: SQL & Portfólio', 
+        step: 16, 
+        title: 'Exame de Certificação Final: n8n Foundations Certified', 
+        platform: 'n8n Academy', 
+        duration: 'Selo Oficial', 
+        tag: 'Certificação', 
+        side: 'right',
+        subtasks: [
+          { title: 'Revisão Geral: Todos os tópicos da n8n Academy (N8N101 a N8N103)', link: 'https://learn.n8n.io' },
+          { title: 'Simulado Final: Prova com restrição de tempo e casos reais', link: 'https://learn.n8n.io' },
+          { title: 'Exame Oficial: Conquistar o selo oficial de desenvolvedor certificado n8n', link: 'https://learn.n8n.io' },
+          { title: 'Vincular selo oficial na seção de Licenças e Certificados do LinkedIn', link: 'https://linkedin.com' }
+        ]
+      },
+      { 
+        id: 'f3_5', 
+        phase: 'Fase 3: SQL & Portfólio', 
+        step: 17, 
+        title: 'PROVA DE TRABALHO 3: Agente de Saneamento de Master Data', 
+        platform: 'GitHub Portfólio', 
+        duration: 'Entregável Ouro', 
+        tag: 'Entregável', 
+        side: 'left',
+        subtasks: [
+          { title: 'Passo 1: Montar dataset simulado de itens (Datasul/PDM com falhas cadastrais)', link: 'https://godoydevv.github.io/career-os/#labs' },
+          { title: 'Passo 2: Construir fluxo n8n com nó Postgres e nó de IA para auditoria PDM', link: 'https://godoydevv.github.io/career-os/#labs' },
+          { title: 'Passo 3: Geração automática de dashboard/relatório com erros apontados', link: 'https://godoydevv.github.io/career-os/#labs' },
+          { title: 'Passo 4: Publicar repositório no GitHub com documentação técnica impecável', link: 'https://github.com/GodoyDevv' }
+        ]
+      },
+      { 
+        id: 'f3_6', 
+        phase: 'Fase 3: SQL & Portfólio', 
+        step: 18, 
+        title: 'Publicação do 2º Case no LinkedIn & Atualização de Perfil', 
+        platform: 'LinkedIn', 
+        duration: 'Visibilidade', 
+        tag: 'Carreira', 
+        side: 'right',
+        subtasks: [
+          { title: 'Passo 1: Escrever artigo técnico dissecando a arquitetura do Agente', link: 'https://linkedin.com' },
+          { title: 'Passo 2: Gravar gravação de tela curta (GIF ou MP4 de 45s) com o fluxo rodando', link: 'https://linkedin.com' },
+          { title: 'Passo 3: Publicar post no LinkedIn usando estrutura gancho + problema + solução técnica', link: 'https://linkedin.com' },
+          { title: 'Passo 4: Conectar com 15 recrutadores e líderes técnicos de IA e automação', link: 'https://linkedin.com' }
+        ]
+      }
     ];
 
     let completedItems = new Set();
+    let completedSubtasks = {}; // { 'f1_1': [true, false, true, false] }
+    let expandedNodes = new Set(); // { 'f1_1' }
     let itemNotes = {};
     let labsData = {
       lab1: { status: 'pending', repo: '', steps: [false, false, false, false] },
@@ -625,6 +897,18 @@
       if (saved) {
         try { completedItems = new Set(JSON.parse(saved)); } catch (e) { completedItems = new Set(); }
       }
+      const savedSub = localStorage.getItem('careeros_subtasks');
+      if (savedSub) {
+        try { completedSubtasks = JSON.parse(savedSub); } catch (e) { completedSubtasks = {}; }
+      }
+      const savedExp = localStorage.getItem('careeros_expanded');
+      if (savedExp) {
+        try { expandedNodes = new Set(JSON.parse(savedExp)); } catch (e) { expandedNodes = new Set(); }
+      }
+      // Se for a primeira vez, expande o primeiro nó para o usuário ver de cara as aulas
+      if (expandedNodes.size === 0) {
+        expandedNodes.add('f1_1');
+      }
       const savedNotes = localStorage.getItem('careeros_notes');
       if (savedNotes) {
         try { itemNotes = JSON.parse(savedNotes); } catch (e) { itemNotes = {}; }
@@ -637,6 +921,8 @@
 
     function saveProgressToStorage() {
       localStorage.setItem('careeros_completed', JSON.stringify(Array.from(completedItems)));
+      localStorage.setItem('careeros_subtasks', JSON.stringify(completedSubtasks));
+      localStorage.setItem('careeros_expanded', JSON.stringify(Array.from(expandedNodes)));
       localStorage.setItem('careeros_notes', JSON.stringify(itemNotes));
       localStorage.setItem('careeros_labs', JSON.stringify(labsData));
     }
@@ -665,6 +951,9 @@
             if (row.completed) completedItems.add(row.item_id);
             else completedItems.delete(row.item_id);
             if (row.notes) itemNotes[row.item_id] = row.notes;
+            if (row.subtasks && Array.isArray(row.subtasks)) {
+              completedSubtasks[row.item_id] = row.subtasks;
+            }
           });
           saveProgressToStorage();
           renderVerticalRoadmapTree();
@@ -673,16 +962,22 @@
       } catch (e) { console.error('Fetch Supabase fail:', e); }
     }
 
-    async function syncItemToSupabase(itemId, isCompleted, notesText) {
+    async function syncItemToSupabase(itemId, isCompleted, notesText, subtasksArr) {
       if (!supabaseClient) return;
       try {
-        await supabaseClient.from('career_roadmap').upsert({
+        const payload = {
           item_id: itemId,
           completed: isCompleted,
           completed_at: isCompleted ? new Date().toISOString() : null,
           notes: notesText || (itemNotes[itemId] || ''),
           updated_at: new Date().toISOString()
-        });
+        };
+        if (subtasksArr !== undefined) {
+          payload.subtasks = subtasksArr;
+        } else if (completedSubtasks[itemId]) {
+          payload.subtasks = completedSubtasks[itemId];
+        }
+        await supabaseClient.from('career_roadmap').upsert(payload);
       } catch (e) { console.error('Save to Supabase error:', e); }
     }
 
@@ -710,7 +1005,45 @@
       lucide.createIcons();
     }
 
-    // RENDERIZADOR DA ÁRVORE VERTICAL REAL ESTILO ROADMAP.SH
+    // TOGGLE EXPANDIR / RECOLHER NÓ COM SUBPASSOS
+    function toggleNodeExpand(itemId) {
+      if (expandedNodes.has(itemId)) {
+        expandedNodes.delete(itemId);
+      } else {
+        expandedNodes.add(itemId);
+      }
+      saveProgressToStorage();
+      renderVerticalRoadmapTree();
+    }
+
+    // TOGGLE SUBTAREFA / AULA INDIVIDUAL
+    function toggleSubtask(itemId, index, isChecked, event) {
+      if (event) event.stopPropagation();
+      const item = ROADMAP_TREE_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+      const count = (item.subtasks || []).length;
+
+      if (!completedSubtasks[itemId]) {
+        completedSubtasks[itemId] = new Array(count).fill(false);
+      }
+      completedSubtasks[itemId][index] = isChecked;
+
+      // Se todas as subaulas foram concluídas, marca o nó principal como dominado automaticamente
+      const allDone = completedSubtasks[itemId].every(val => val === true);
+      if (allDone && count > 0) {
+        completedItems.add(itemId);
+      } else if (!isChecked && completedItems.has(itemId)) {
+        // Se desmarcou uma aula, o nó deixa de estar 100% completo
+        completedItems.delete(itemId);
+      }
+
+      saveProgressToStorage();
+      syncItemToSupabase(itemId, completedItems.has(itemId), itemNotes[itemId], completedSubtasks[itemId]);
+      renderVerticalRoadmapTree();
+      updateProgressStats();
+    }
+
+    // RENDERIZADOR DA ÁRVORE VERTICAL REAL COM AULAS EXPANSÍVEIS
     function renderVerticalRoadmapTree() {
       const container = document.getElementById('nodes-tree-container');
       if (!container) return;
@@ -720,21 +1053,24 @@
         const isDone = completedItems.has(item.id);
         const hasNotes = !!itemNotes[item.id];
         const isLeft = item.side === 'left';
+        const isExpanded = expandedNodes.has(item.id);
+
+        const subtasks = item.subtasks || [];
+        const subCount = subtasks.length;
+        const currentSubs = completedSubtasks[item.id] || [];
+        const completedSubCount = currentSubs.filter(Boolean).length;
 
         // Linha da Árvore
         const nodeRow = document.createElement('div');
         nodeRow.className = 'relative flex items-center justify-between md:justify-center w-full';
 
-        // Conector Horizontal (Galho)
-        let branchHtml = '';
-        let trunkPointHtml = '';
-
         // Ponto no Tronco Central
-        trunkPointHtml = `
+        const trunkPointHtml = `
           <div class="trunk-node-point ${isDone ? 'trunk-node-point-done' : ''} left-[19px] md:left-1/2 md:-translate-x-1/2"></div>
         `;
 
         // Galho conectando o tronco até o cartão
+        let branchHtml = '';
         if (window.innerWidth >= 768) {
           if (isLeft) {
             branchHtml = `<div class="tree-branch ${isDone ? 'tree-branch-done' : ''} right-1/2 w-8" style="top:36px;"></div>`;
@@ -745,34 +1081,85 @@
           branchHtml = `<div class="tree-branch ${isDone ? 'tree-branch-done' : ''} left-[28px] w-6" style="top:36px;"></div>`;
         }
 
+        // Subtarefas / Aulas HTML
+        let subtasksHtml = '';
+        if (isExpanded && subCount > 0) {
+          const listHtml = subtasks.map((st, sIdx) => {
+            const isSubDone = !!currentSubs[sIdx];
+            return `
+              <div class="flex items-center justify-between gap-2.5 p-2 rounded-xl bg-slate-950/80 border border-white/5 hover:border-white/10 transition-colors">
+                <label class="flex items-center gap-2.5 text-xs ${isSubDone ? 'line-through text-slate-500' : 'text-slate-200'} cursor-pointer flex-1">
+                  <input type="checkbox" ${isSubDone ? 'checked' : ''} onchange="toggleSubtask('${item.id}', ${sIdx}, this.checked, event)" class="rounded bg-slate-900 border-slate-700 text-sky-400 focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer">
+                  <span class="leading-snug">${st.title}</span>
+                </label>
+                ${st.link ? `
+                  <a href="${st.link}" target="_blank" onclick="event.stopPropagation()" class="p-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 transition-colors shrink-0 flex items-center gap-1 text-[10px] font-mono" title="Abrir aula/portal oficial">
+                    <span>Aula</span>
+                    <i data-lucide="external-link" class="w-3 h-3"></i>
+                  </a>
+                ` : ''}
+              </div>
+            `;
+          }).join('');
+
+          subtasksHtml = `
+            <div class="mt-3 pt-3 border-t border-white/10 space-y-2">
+              <div class="flex items-center justify-between text-[11px] font-semibold text-slate-300 mb-1">
+                <span class="flex items-center gap-1.5 font-mono text-sky-400">
+                  <i data-lucide="layers" class="w-3.5 h-3.5"></i> Subpassos & Aulas (${completedSubCount}/${subCount})
+                </span>
+                <span class="text-[10px] text-slate-500 font-mono">Flegue o que assistir</span>
+              </div>
+              <div class="space-y-1.5">
+                ${listHtml}
+              </div>
+            </div>
+          `;
+        }
+
         // Card do Nó
         const cardHtml = `
-          <div class="rm-node ${isDone ? 'rm-node-done' : ''} p-4 w-[calc(100%-60px)] ml-auto md:w-[420px] ${
+          <div class="rm-node ${isDone ? 'rm-node-done' : ''} p-4 w-[calc(100%-60px)] ml-auto md:w-[440px] ${
             isLeft ? 'md:mr-auto md:ml-0' : 'md:ml-auto md:mr-0'
           }">
-            <div class="flex items-center justify-between gap-2 mb-2">
-              <div class="flex items-center gap-2">
-                <span class="w-6 h-6 rounded-lg ${isDone ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300 font-bold'} flex items-center justify-center text-[11px] font-mono shadow-sm">
-                  ${isDone ? '✓' : item.step}
-                </span>
-                <span class="text-[10px] font-mono text-slate-400 font-semibold uppercase tracking-wider">${item.platform}</span>
+            <!-- Header do Card Clicável para Expandir/Recolher -->
+            <div class="cursor-pointer" onclick="toggleNodeExpand('${item.id}')">
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg ${isDone ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300 font-bold'} flex items-center justify-center text-[11px] font-mono shadow-sm">
+                    ${isDone ? '✓' : item.step}
+                  </span>
+                  <span class="text-[10px] font-mono text-slate-400 font-semibold uppercase tracking-wider">${item.platform}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    item.tag === 'Certificação' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30' :
+                    item.tag === 'Entregável' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                  }">${item.tag}</span>
+                  <button class="p-1 rounded text-slate-400 hover:text-white transition-transform" title="${isExpanded ? 'Recolher aulas' : 'Ver aulas'}">
+                    <i data-lucide="${isExpanded ? 'chevron-up' : 'chevron-down'}" class="w-4 h-4 text-sky-400"></i>
+                  </button>
+                </div>
               </div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                item.tag === 'Certificação' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30' :
-                item.tag === 'Entregável' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-              }">${item.tag}</span>
+
+              <h4 class="text-xs lg:text-[13px] font-bold ${isDone ? 'line-through text-slate-400' : 'text-white'} leading-snug tracking-tight">
+                ${item.title}
+              </h4>
+
+              <div class="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-mono">
+                <span class="flex items-center gap-1">
+                  <i data-lucide="clock" class="w-3 h-3 text-slate-500"></i> ${item.duration}
+                </span>
+                <span class="text-[10px] font-semibold ${completedSubCount === subCount && subCount > 0 ? 'text-emerald-400' : 'text-slate-400'}">
+                  ${subCount > 0 ? `${completedSubCount}/${subCount} aulas` : item.phase}
+                </span>
+              </div>
             </div>
 
-            <h4 class="text-xs lg:text-[13px] font-bold ${isDone ? 'line-through text-slate-400' : 'text-white'} leading-snug tracking-tight">
-              ${item.title}
-            </h4>
-            <div class="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-mono">
-              <span class="flex items-center gap-1">
-                <i data-lucide="clock" class="w-3 h-3 text-slate-500"></i> ${item.duration}
-              </span>
-              <span class="text-[10px] font-semibold text-slate-400">${item.phase}</span>
-            </div>
+            <!-- Bloco de Aulas Expansível -->
+            ${subtasksHtml}
 
+            <!-- Rodapé de Ações -->
             <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-3">
               <button onclick="toggleItem('${item.id}')" class="flex items-center gap-1.5 text-xs font-bold ${
                 isDone ? 'text-emerald-400' : 'text-slate-400 hover:text-sky-400'
@@ -780,7 +1167,7 @@
                 <span class="w-4 h-4 rounded border ${isDone ? 'bg-emerald-400 border-emerald-400 text-slate-950 flex items-center justify-center text-[10px] font-black' : 'border-slate-600 bg-slate-900'}">
                   ${isDone ? '✓' : ''}
                 </span>
-                <span>${isDone ? 'Dominado' : 'Marcar Dominado'}</span>
+                <span>${isDone ? 'Dominado' : 'Marcar Etapa Concluída'}</span>
               </button>
 
               <button onclick="openNotesModal('${item.id}', '${item.title}', '${item.tag}')" class="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-sky-400 transition-colors flex items-center gap-1 text-[11px]" title="Abrir Anotações e Código">
@@ -800,9 +1187,23 @@
 
     function toggleItem(itemId) {
       const isDone = !completedItems.has(itemId);
-      if (isDone) completedItems.add(itemId);
-      else completedItems.delete(itemId);
-      syncItemToSupabase(itemId, isDone);
+      const item = ROADMAP_TREE_ITEMS.find(i => i.id === itemId);
+      
+      if (isDone) {
+        completedItems.add(itemId);
+        // Se marcou o nó como concluído, flegue todas as subaulas também
+        if (item && item.subtasks) {
+          completedSubtasks[itemId] = new Array(item.subtasks.length).fill(true);
+        }
+      } else {
+        completedItems.delete(itemId);
+        // Se desmarcou, desmarca as subaulas
+        if (item && item.subtasks) {
+          completedSubtasks[itemId] = new Array(item.subtasks.length).fill(false);
+        }
+      }
+
+      syncItemToSupabase(itemId, isDone, itemNotes[itemId], completedSubtasks[itemId]);
       saveProgressToStorage();
       renderVerticalRoadmapTree();
       updateProgressStats();
@@ -811,12 +1212,21 @@
     function updateProgressStats() {
       const total = ROADMAP_TREE_ITEMS.length;
       const done = completedItems.size;
-      const remaining = total - done;
       const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+
+      // Calcular total de subaulas
+      let totalSubs = 0;
+      let doneSubs = 0;
+      ROADMAP_TREE_ITEMS.forEach(it => {
+        const count = (it.subtasks || []).length;
+        totalSubs += count;
+        const current = completedSubtasks[it.id] || [];
+        doneSubs += current.filter(Boolean).length;
+      });
 
       document.getElementById('progress-percent').innerText = `${percent}%`;
       document.getElementById('stat-completed').innerText = done;
-      document.getElementById('stat-remaining').innerText = remaining;
+      document.getElementById('stat-subtasks').innerText = `${doneSubs}/${totalSubs}`;
       document.getElementById('progress-bar-fill').style.width = `${percent}%`;
     }
 
@@ -840,7 +1250,7 @@
       const text = document.getElementById('notes-textarea').value.trim();
       itemNotes[activeNoteItemId] = text;
       saveProgressToStorage();
-      syncItemToSupabase(activeNoteItemId, completedItems.has(activeNoteItemId), text);
+      syncItemToSupabase(activeNoteItemId, completedItems.has(activeNoteItemId), text, completedSubtasks[activeNoteItemId]);
       document.getElementById('notes-saved-status').innerText = 'Salvo com sucesso!';
       setTimeout(() => {
         closeNotesModal();
