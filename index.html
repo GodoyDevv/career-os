@@ -170,7 +170,7 @@
           <div class="w-px h-6 bg-slate-800"></div>
           <div class="text-center px-2">
             <span class="text-base font-black text-sky-400 block" id="stat-subtasks">0/0</span>
-            <span class="text-[9px] uppercase tracking-wider text-slate-500">Aulas OK</span>
+            <span class="text-[9px] uppercase tracking-wider text-slate-500">Passos OK</span>
           </div>
           <div class="w-px h-6 bg-slate-800"></div>
           <div class="text-center px-2">
@@ -190,13 +190,8 @@
           <span id="sync-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           <span id="sync-text">Supabase Cloud Sync: Conectado</span>
         </div>
-        <div class="flex items-center gap-3 text-[11px]">
-          <a href="https://app.viverdeia.ai/formacoes" target="_blank" class="hover:text-sky-400 text-slate-300 flex items-center gap-1">
-            <i data-lucide="play" class="w-3 h-3 text-red-400"></i> Portal Viver de IA
-          </a>
-          <a href="https://learn.n8n.io" target="_blank" class="hover:text-sky-400 text-slate-300 flex items-center gap-1">
-            <i data-lucide="award" class="w-3 h-3 text-orange-400"></i> n8n Academy
-          </a>
+        <div class="flex items-center gap-3 text-[11px] font-mono">
+          <span class="text-slate-400">🎯 Plataformas de Estudo: Viver de IA & n8n Academy</span>
         </div>
       </div>
     </div>
@@ -569,7 +564,7 @@
     const DEFAULT_SUPABASE_URL = 'https://yioanftwelrhyiuwmnrq.supabase.co';
     const DEFAULT_SUPABASE_KEY = 'sb_publishable_bkg3h3f-pQHi1XVxfPxv8Q_8Y-YAmAQ';
 
-    // ITENS DO ROADMAP COM SUBPASSOS/AULAS E LINKS DIRETOS
+    // ITENS DO ROADMAP COM SUBPASSOS E DIRECIONAMENTO CLARO
     const ROADMAP_TREE_ITEMS = [
       // FASE 1
       { 
@@ -582,10 +577,10 @@
         tag: 'Core', 
         side: 'left',
         subtasks: [
-          { title: 'Aula 01: Visão Geral e Arquitetura de Nós no n8n', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 02: Interface Gráfica, Canvas e Atalhos de Produtividade', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 03: Tipos de Nós: Triggers, Actions e Transformações', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 04: Primeiro Workflow Ativo: Disparo Manual e Teste de Execução', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'Na Viver de IA: Assistir Aula 01 - Visão Geral e Arquitetura de Nós no n8n' },
+          { title: 'Na Viver de IA: Assistir Aula 02 - Interface Gráfica, Canvas e Atalhos' },
+          { title: 'Na Viver de IA: Assistir Aula 03 - Tipos de Nós (Triggers, Actions e Transformações)' },
+          { title: 'Na Viver de IA: Assistir Aula 04 - Primeiro Workflow Ativo e Teste Manual' }
         ]
       },
       { 
@@ -598,10 +593,10 @@
         tag: 'Prática', 
         side: 'right',
         subtasks: [
-          { title: 'Aula 05: Conceito de Webhooks (GET vs POST) e Endpoints de Teste', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 06: Configurando o Webhook Trigger Node com Payload Dinâmico', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 07: Requisições de Saída: Nó HTTP Request e Autenticação por Headers', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 08: Teste de Disparo via Terminal/Postman simulando chamada real', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'Na Viver de IA: Assistir Aula 05 - Conceito de Webhooks (GET vs POST)' },
+          { title: 'Na Viver de IA: Assistir Aula 06 - Webhook Trigger Node com Payload Dinâmico' },
+          { title: 'Na Viver de IA: Assistir Aula 07 - Nó HTTP Request e Autenticação por Headers' },
+          { title: 'Na Viver de IA: Prática da Aula 08 - Teste de Disparo via Terminal/cURL' }
         ]
       },
       { 
@@ -614,10 +609,10 @@
         tag: 'Técnico', 
         side: 'left',
         subtasks: [
-          { title: 'Aula 09: Anatomia do JSON: Objetos aninhados, chaves e arrays', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 10: Expressões n8n ($json, $binary, $item, $now)', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 11: Nós de Filtragem e Lógica Condicional (IF / Switch Node)', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 12: Transformação com Nós Edit Fields (Set) e Code Node (JavaScript)', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'Na Viver de IA: Assistir Aula 09 - Anatomia do JSON (Objetos, Chaves e Arrays)' },
+          { title: 'Na Viver de IA: Assistir Aula 10 - Expressões n8n ($json, $item, $now)' },
+          { title: 'Na Viver de IA: Assistir Aula 11 - Nós de Filtragem e Lógica (IF / Switch Node)' },
+          { title: 'Na Viver de IA: Assistir Aula 12 - Transformação com nós Set e Code Node' }
         ]
       },
       { 
@@ -630,10 +625,10 @@
         tag: 'Certificação', 
         side: 'right',
         subtasks: [
-          { title: 'Módulo 1: Setup do ambiente oficial na n8n Academy', link: 'https://learn.n8n.io/courses/beginner-course-1' },
-          { title: 'Módulo 2: Construção do fluxo guiado de exercício', link: 'https://learn.n8n.io/courses/beginner-course-1' },
-          { title: 'Módulo 3: Submissão do workflow para validação automática', link: 'https://learn.n8n.io/courses/beginner-course-1' },
-          { title: 'Badge: Obtenção do selo oficial n8n Quickstart (QS101)', link: 'https://learn.n8n.io/courses/beginner-course-1' }
+          { title: 'Na n8n Academy: Módulo 1 - Setup do ambiente oficial do curso' },
+          { title: 'Na n8n Academy: Módulo 2 - Construção do fluxo guiado de exercício' },
+          { title: 'Na n8n Academy: Módulo 3 - Submissão do workflow para validação' },
+          { title: 'Na n8n Academy: Conquista do Badge Oficial Quickstart (QS101)' }
         ]
       },
       { 
@@ -646,10 +641,10 @@
         tag: 'Certificação', 
         side: 'left',
         subtasks: [
-          { title: 'Trilha Teórica: Data structures, looping and flow control', link: 'https://learn.n8n.io/courses/beginner-course-2' },
-          { title: 'Laboratório Prático: Tratamento de erros e nó Error Trigger', link: 'https://learn.n8n.io/courses/beginner-course-2' },
-          { title: 'Simulado de Exame: Resolução dos desafios propostos', link: 'https://learn.n8n.io/courses/beginner-course-2' },
-          { title: 'Prova Oficial: Emissão do Certificado n8n Essentials (N8N101)', link: 'https://learn.n8n.io/courses/beginner-course-2' }
+          { title: 'Na n8n Academy: Estudar Data structures, looping and flow control' },
+          { title: 'Na n8n Academy: Laboratório de Tratamento de erros e nó Error Trigger' },
+          { title: 'Na n8n Academy: Resolver Simulado e Desafios Práticos do curso' },
+          { title: 'Na n8n Academy: Realizar Exame e emitir Certificado Essentials (N8N101)' }
         ]
       },
       { 
@@ -662,10 +657,10 @@
         tag: 'Entregável', 
         side: 'right',
         subtasks: [
-          { title: 'Passo 1: Criar tabela de staging no Supabase com tipos corretos', link: 'https://supabase.com/dashboard' },
-          { title: 'Passo 2: Montar fluxo n8n (Webhook -> Sanitize -> Insert Supabase)', link: 'https://godoydevv.github.io/career-os/#labs' },
-          { title: 'Passo 3: Criar script PowerShell para teste de carga com 10 requisições', link: 'https://godoydevv.github.io/career-os/#labs' },
-          { title: 'Passo 4: Commitar workflow exportado e README técnico no GitHub', link: 'https://github.com/GodoyDevv' }
+          { title: 'No Supabase: Criar tabela de staging com tipos de dados corretos' },
+          { title: 'No n8n: Montar fluxo Webhook -> Sanitize JSON -> Insert Supabase' },
+          { title: 'No Terminal: Disparar script PowerShell com 10 requisições de teste' },
+          { title: 'No GitHub: Commitar JSON do fluxo exportado com README documentado' }
         ]
       },
       
@@ -680,10 +675,10 @@
         tag: 'Core', 
         side: 'left',
         subtasks: [
-          { title: 'Aula 01: Introdução ao Antigravity e Paradigma de Vibe Coding', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 02: Arquitetura de Multi-Agentes e Swarm de Tarefas', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 03: Protocolo MCP (Model Context Protocol) e integração de ferramentas', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 04: Prática: Criando agentes com papéis e ferramentas customizadas', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'Na Viver de IA: Assistir Aula 01 - Introdução ao Antigravity & Vibe Coding' },
+          { title: 'Na Viver de IA: Assistir Aula 02 - Arquitetura Multi-Agentes & Swarms' },
+          { title: 'Na Viver de IA: Assistir Aula 03 - Protocolo MCP (Model Context Protocol)' },
+          { title: 'Na Viver de IA: Assistir Aula 04 - Prática de criação de ferramentas para o Agente' }
         ]
       },
       { 
@@ -696,10 +691,10 @@
         tag: 'Agentes', 
         side: 'right',
         subtasks: [
-          { title: 'Aula 05: Definindo memória contextual e persistência do agente', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 06: Orquestração de Agente Decisor vs Agente Executor', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 07: Tratamento de alucinações e validação estrita de respostas', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 08: Automação em segundo plano com cron e triggers de evento', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'Na Viver de IA: Assistir Aula 05 - Memória contextual e persistência do agente' },
+          { title: 'Na Viver de IA: Assistir Aula 06 - Orquestração: Agente Decisor vs Executor' },
+          { title: 'Na Viver de IA: Assistir Aula 07 - Tratamento de alucinações e validação' },
+          { title: 'Na Viver de IA: Assistir Aula 08 - Automação em segundo plano com cron' }
         ]
       },
       { 
@@ -712,10 +707,10 @@
         tag: 'Certificação', 
         side: 'left',
         subtasks: [
-          { title: 'Módulo 1: Arquitetura LangChain e nós Advanced AI no n8n', link: 'https://learn.n8n.io' },
-          { title: 'Módulo 2: Configuração de AI Agent Node (Tools, Memory e Model)', link: 'https://learn.n8n.io' },
-          { title: 'Módulo 3: Criação de Custom Tools com fluxos aninhados (Subworkflows)', link: 'https://learn.n8n.io' },
-          { title: 'Badge: Conclusão do curso oficial e emissão do badge AI in Action', link: 'https://learn.n8n.io' }
+          { title: 'Na n8n Academy: Módulo 1 - Arquitetura LangChain e nós Advanced AI' },
+          { title: 'Na n8n Academy: Módulo 2 - Configuração do nó AI Agent (Tools, Memory)' },
+          { title: 'Na n8n Academy: Módulo 3 - Criação de Custom Tools com Subworkflows' },
+          { title: 'Na n8n Academy: Concluir curso e emitir Badge Oficial AI in Action' }
         ]
       },
       { 
@@ -728,10 +723,10 @@
         tag: 'Prática', 
         side: 'right',
         subtasks: [
-          { title: 'Passo 1: Geração e salvaguarda segura de credenciais de API', link: 'https://aistudio.google.com' },
-          { title: 'Passo 2: Configuração do nó Anthropic Chat Model e Gemini Model no n8n', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Passo 3: Comparativo de latência e consumo de tokens entre modelos', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Passo 4: Implementação de fallback automático em caso de timeout de API', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'No Console de APIs: Gerar chaves de API seguras (Gemini / Anthropic)' },
+          { title: 'No n8n: Configurar credenciais e testar nós Anthropic Model e Gemini Model' },
+          { title: 'No n8n: Comparar latência de resposta e consumo de tokens entre modelos' },
+          { title: 'No n8n: Implementar rota de fallback caso ocorra erro ou timeout de API' }
         ]
       },
       { 
@@ -744,10 +739,10 @@
         tag: 'Técnico', 
         side: 'left',
         subtasks: [
-          { title: 'Aula 09: System Prompts de Alta Precisão (Role, Context, Constraints)', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 10: Few-Shot Prompting e Saída Estrita em JSON Schema', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 11: Estratégias Chain-of-Thought e validação de regras de negócio', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 12: Prevenção de Injeção de Prompt e Sanitização de Entrada', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'Na Viver de IA: Assistir Aula 09 - System Prompts de Alta Precisão' },
+          { title: 'Na Viver de IA: Assistir Aula 10 - Few-Shot Prompting e Saída Estrita em JSON' },
+          { title: 'Na Viver de IA: Assistir Aula 11 - Técnicas Chain-of-Thought e Validação' },
+          { title: 'Na Viver de IA: Assistir Aula 12 - Prevenção contra injeção e sanitização' }
         ]
       },
       { 
@@ -760,10 +755,10 @@
         tag: 'Entregável', 
         side: 'right',
         subtasks: [
-          { title: 'Passo 1: Criar base de exemplos de chamados de TI (crítico, médio, baixo)', link: 'https://godoydevv.github.io/career-os/#labs' },
-          { title: 'Passo 2: Construir agente n8n que lê o texto e extrai urgência em JSON', link: 'https://godoydevv.github.io/career-os/#labs' },
-          { title: 'Passo 3: Integrar gravação no Supabase e alerta em caso de incidente crítico', link: 'https://godoydevv.github.io/career-os/#labs' },
-          { title: 'Passo 4: Publicar repositório com documentação e vídeo rápido demonstrativo', link: 'https://github.com/GodoyDevv' }
+          { title: 'No Supabase: Criar base de chamados de teste (crítico, médio, baixo)' },
+          { title: 'No n8n: Montar Agente que lê o texto e extrai urgência e categoria em JSON' },
+          { title: 'No n8n: Gravar diagnóstico no Supabase e disparar alerta de incidente grave' },
+          { title: 'No GitHub: Publicar repositório com prints do fluxo e documentação clara' }
         ]
       },
 
@@ -778,10 +773,10 @@
         tag: 'Core', 
         side: 'left',
         subtasks: [
-          { title: 'Aula 01: Introdução ao PostgreSQL e sintaxe básica ANSI SQL', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 02: Cláusulas SELECT, WHERE, Operadores Lógicos (AND, OR, NOT, IN)', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 03: Ordenação (ORDER BY) e Paginação eficiente (LIMIT, OFFSET)', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 04: Prática de queries no Supabase SQL Editor em base real', link: 'https://supabase.com/dashboard' }
+          { title: 'Na Viver de IA: Assistir Aula 01 - Introdução ao PostgreSQL e sintaxe SQL' },
+          { title: 'Na Viver de IA: Assistir Aula 02 - Cláusulas SELECT, WHERE e Operadores' },
+          { title: 'Na Viver de IA: Assistir Aula 03 - Ordenação (ORDER BY) e Paginação (LIMIT)' },
+          { title: 'No Supabase: Executar comandos de prática direto no SQL Editor' }
         ]
       },
       { 
@@ -794,10 +789,10 @@
         tag: 'Técnico', 
         side: 'right',
         subtasks: [
-          { title: 'Aula 05: Chaves Primárias, Chaves Estrangeiras e Modelagem Relacional', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 06: Cruzamento de dados com INNER JOIN e LEFT JOIN', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 07: Funções de Agregação (COUNT, SUM, AVG) e GROUP BY / HAVING', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Aula 08: Criando Views e Views Materializadas para consultas pesadas', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'Na Viver de IA: Assistir Aula 05 - Chaves Primárias, Estrangeiras e Modelagem' },
+          { title: 'Na Viver de IA: Assistir Aula 06 - Cruzamento de tabelas com INNER e LEFT JOIN' },
+          { title: 'Na Viver de IA: Assistir Aula 07 - Funções de Agregação (COUNT, SUM) e GROUP BY' },
+          { title: 'Na Viver de IA: Assistir Aula 08 - Criação de Views para relatórios eficientes' }
         ]
       },
       { 
@@ -810,10 +805,10 @@
         tag: 'Prática', 
         side: 'left',
         subtasks: [
-          { title: 'Passo 1: Obter credenciais de conexão direta do Postgres no Supabase', link: 'https://supabase.com/dashboard' },
-          { title: 'Passo 2: Configurar o Postgres Node nativo no n8n com SSL habilitado', link: 'https://learn.n8n.io' },
-          { title: 'Passo 3: Executar queries parametrizadas prevenindo SQL Injection', link: 'https://app.viverdeia.ai/formacoes' },
-          { title: 'Passo 4: Criar fluxo de atualização em lote (Batch Upsert) via nó SQL', link: 'https://app.viverdeia.ai/formacoes' }
+          { title: 'No Supabase: Obter credenciais de conexão direta Postgres (URI e senha)' },
+          { title: 'No n8n: Configurar credencial do nó Postgres nativo com conexão SSL' },
+          { title: 'No n8n: Testar query SELECT parametrizada lendo dados da tabela' },
+          { title: 'No n8n: Testar operação INSERT/UPDATE em lote (Batch Upsert) via SQL' }
         ]
       },
       { 
@@ -826,10 +821,10 @@
         tag: 'Certificação', 
         side: 'right',
         subtasks: [
-          { title: 'Revisão Geral: Todos os tópicos da n8n Academy (N8N101 a N8N103)', link: 'https://learn.n8n.io' },
-          { title: 'Simulado Final: Prova com restrição de tempo e casos reais', link: 'https://learn.n8n.io' },
-          { title: 'Exame Oficial: Conquistar o selo oficial de desenvolvedor certificado n8n', link: 'https://learn.n8n.io' },
-          { title: 'Vincular selo oficial na seção de Licenças e Certificados do LinkedIn', link: 'https://linkedin.com' }
+          { title: 'Na n8n Academy: Fazer revisão geral dos cursos N8N101 a N8N103' },
+          { title: 'Na n8n Academy: Resolver simulado prático final com limite de tempo' },
+          { title: 'Na n8n Academy: Realizar exame oficial e conquistar certificado de desenvolvedor' },
+          { title: 'No LinkedIn: Adicionar a certificação oficial n8n no perfil' }
         ]
       },
       { 
@@ -842,10 +837,10 @@
         tag: 'Entregável', 
         side: 'left',
         subtasks: [
-          { title: 'Passo 1: Montar dataset simulado de itens (Datasul/PDM com falhas cadastrais)', link: 'https://godoydevv.github.io/career-os/#labs' },
-          { title: 'Passo 2: Construir fluxo n8n com nó Postgres e nó de IA para auditoria PDM', link: 'https://godoydevv.github.io/career-os/#labs' },
-          { title: 'Passo 3: Geração automática de dashboard/relatório com erros apontados', link: 'https://godoydevv.github.io/career-os/#labs' },
-          { title: 'Passo 4: Publicar repositório no GitHub com documentação técnica impecável', link: 'https://github.com/GodoyDevv' }
+          { title: 'No Supabase: Carregar dataset de materiais Datasul/PDM com falhas simuladas' },
+          { title: 'No n8n: Criar fluxo com nó Postgres e nó de IA para auditoria cadastral' },
+          { title: 'No n8n: Gerar relatório de inconsistências fiscais e duplicidades' },
+          { title: 'No GitHub: Publicar repositório com case completo, código e arquitetura' }
         ]
       },
       { 
@@ -858,10 +853,10 @@
         tag: 'Carreira', 
         side: 'right',
         subtasks: [
-          { title: 'Passo 1: Escrever artigo técnico dissecando a arquitetura do Agente', link: 'https://linkedin.com' },
-          { title: 'Passo 2: Gravar gravação de tela curta (GIF ou MP4 de 45s) com o fluxo rodando', link: 'https://linkedin.com' },
-          { title: 'Passo 3: Publicar post no LinkedIn usando estrutura gancho + problema + solução técnica', link: 'https://linkedin.com' },
-          { title: 'Passo 4: Conectar com 15 recrutadores e líderes técnicos de IA e automação', link: 'https://linkedin.com' }
+          { title: 'No LinkedIn: Escrever artigo dissecando o Agente de Auditoria de Master Data' },
+          { title: 'No LinkedIn: Gravar demonstração em vídeo (45s) com o fluxo n8n executando' },
+          { title: 'No LinkedIn: Publicar post no padrão gancho + dor corporativa + solução técnica' },
+          { title: 'No LinkedIn: Enviar conexão personalizada para 15 recrutadores de automação e IA' }
         ]
       }
     ];
@@ -1043,7 +1038,7 @@
       updateProgressStats();
     }
 
-    // RENDERIZADOR DA ÁRVORE VERTICAL REAL COM AULAS EXPANSÍVEIS
+    // RENDERIZADOR DA ÁRVORE VERTICAL REAL COM AULAS EXPANSÍVEIS (SEM LINKS EXTERNOS, FOCO EM PASSOS)
     function renderVerticalRoadmapTree() {
       const container = document.getElementById('nodes-tree-container');
       if (!container) return;
@@ -1081,7 +1076,7 @@
           branchHtml = `<div class="tree-branch ${isDone ? 'tree-branch-done' : ''} left-[28px] w-6" style="top:36px;"></div>`;
         }
 
-        // Subtarefas / Aulas HTML
+        // Subtarefas / Aulas HTML (Checklist Limpo, sem links externos quebrados)
         let subtasksHtml = '';
         if (isExpanded && subCount > 0) {
           const listHtml = subtasks.map((st, sIdx) => {
@@ -1092,12 +1087,6 @@
                   <input type="checkbox" ${isSubDone ? 'checked' : ''} onchange="toggleSubtask('${item.id}', ${sIdx}, this.checked, event)" class="rounded bg-slate-900 border-slate-700 text-sky-400 focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer">
                   <span class="leading-snug">${st.title}</span>
                 </label>
-                ${st.link ? `
-                  <a href="${st.link}" target="_blank" onclick="event.stopPropagation()" class="p-1.5 rounded-lg bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 transition-colors shrink-0 flex items-center gap-1 text-[10px] font-mono" title="Abrir aula/portal oficial">
-                    <span>Aula</span>
-                    <i data-lucide="external-link" class="w-3 h-3"></i>
-                  </a>
-                ` : ''}
               </div>
             `;
           }).join('');
@@ -1108,7 +1097,7 @@
                 <span class="flex items-center gap-1.5 font-mono text-sky-400">
                   <i data-lucide="layers" class="w-3.5 h-3.5"></i> Subpassos & Aulas (${completedSubCount}/${subCount})
                 </span>
-                <span class="text-[10px] text-slate-500 font-mono">Flegue o que assistir</span>
+                <span class="text-[10px] text-slate-500 font-mono">Flegue o que concluir</span>
               </div>
               <div class="space-y-1.5">
                 ${listHtml}
@@ -1151,7 +1140,7 @@
                   <i data-lucide="clock" class="w-3 h-3 text-slate-500"></i> ${item.duration}
                 </span>
                 <span class="text-[10px] font-semibold ${completedSubCount === subCount && subCount > 0 ? 'text-emerald-400' : 'text-slate-400'}">
-                  ${subCount > 0 ? `${completedSubCount}/${subCount} aulas` : item.phase}
+                  ${subCount > 0 ? `${completedSubCount}/${subCount} concluídos` : item.phase}
                 </span>
               </div>
             </div>
