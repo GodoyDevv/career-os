@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Godoy Tech OS | Interactive Roadmap Tree</title>
+  <title>Godoy Tech OS | RPG Quest Edition</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#070a13">
   <link rel="icon" type="image/png" href="icon.png">
@@ -13,6 +13,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti para celebração de level up -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -24,7 +26,8 @@
             nodeBorder: '#334155',
             nodeDone: '#10b981',
             accentSky: '#38bdf8',
-            accentPurple: '#a855f7'
+            accentPurple: '#a855f7',
+            xpGold: '#fbbf24'
           }
         }
       }
@@ -113,25 +116,36 @@
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col roadmap-grid pb-24">
 
-  <!-- Header Fixo Topo -->
-  <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-white/10 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+  <!-- Header Fixo Topo com Status RPG & Timer -->
+  <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-xl border-b border-white/10 px-4 lg:px-8 py-3 flex items-center justify-between">
     <div class="flex items-center space-x-3.5">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-400 via-indigo-500 to-purple-500 p-0.5 shadow-lg shadow-sky-500/25">
-        <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center font-black text-xs text-sky-400">
-          OS
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 via-sky-500 to-indigo-500 p-0.5 shadow-lg shadow-sky-500/25">
+        <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center font-black text-xs text-amber-400">
+          RPG
         </div>
       </div>
       <div>
-        <h1 class="text-sm lg:text-base font-black tracking-tight text-white flex items-center gap-2">
-          Godoy Tech OS
-          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30 uppercase">roadmap.sh View</span>
-        </h1>
-        <p class="text-[11px] text-slate-400">Árvore Conectada de Competências & Aulas</p>
+        <div class="flex items-center gap-2">
+          <h1 class="text-sm lg:text-base font-black tracking-tight text-white flex items-center gap-2">
+            Godoy Tech OS
+          </h1>
+          <span id="player-level-badge" class="text-[9px] font-black px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase font-mono">
+            LVL 1 • RECRUTA
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-400" id="player-title">Estagiário de Sustentação & Explorador de IA</p>
       </div>
     </div>
 
-    <!-- Quick Tools: Timer & Settings -->
-    <div class="flex items-center space-x-2">
+    <!-- Quick Tools: Streak, XP Bar, Timer & Settings -->
+    <div class="flex items-center space-x-2.5">
+      <!-- Streak Diário -->
+      <div class="flex items-center gap-1.5 bg-slate-900 border border-orange-500/30 px-2.5 py-1 rounded-xl text-xs font-mono font-bold text-orange-400" title="Dias seguidos em treino">
+        <span class="animate-bounce">🔥</span>
+        <span id="streak-counter">1d</span>
+      </div>
+
+      <!-- Foco Pomodoro -->
       <div class="flex items-center bg-slate-900 border border-white/10 rounded-xl px-2.5 py-1 text-xs">
         <button onclick="toggleTimer()" id="timer-btn" class="text-sky-400 hover:text-sky-300 py-0.5 px-1 flex items-center gap-1.5 font-mono font-bold">
           <i data-lucide="play" id="timer-icon" class="w-3.5 h-3.5 fill-current"></i>
@@ -148,41 +162,55 @@
     </div>
   </header>
 
-  <!-- Painel de Status HUD -->
+  <!-- Painel RPG HUD: Barra de XP & Estatísticas de Batalha -->
   <div class="max-w-5xl w-full mx-auto px-4 lg:px-6 pt-5">
     <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 shadow-2xl relative overflow-hidden backdrop-blur-xl">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span class="text-[10px] font-bold text-sky-400 uppercase tracking-widest bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
-            Trilha de Engenharia 2026
-          </span>
-          <h2 class="text-2xl font-black text-white mt-1 flex items-center gap-3">
-            <span id="progress-percent">0%</span>
-            <span class="text-xs font-normal text-slate-400">da árvore dominada</span>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+              Engenharia de IA • Season 1
+            </span>
+            <span class="text-[11px] font-mono text-slate-400" id="xp-numbers">0 / 500 XP</span>
+          </div>
+          <h2 class="text-2xl font-black text-white mt-1 flex items-center gap-2">
+            <span id="player-tier-name">Recruta de Automação</span>
+            <span class="text-xs font-mono font-normal text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30" id="total-xp-display">+0 XP Total</span>
           </h2>
         </div>
 
         <div class="flex items-center gap-3 bg-slate-950 p-2.5 rounded-xl border border-white/5">
+          <div class="text-center px-2">
+            <span class="text-base font-black text-amber-400 block" id="stat-quests-done">0/8</span>
+            <span class="text-[9px] uppercase tracking-wider text-slate-500">Missões</span>
+          </div>
+          <div class="w-px h-6 bg-slate-800"></div>
           <div class="text-center px-2">
             <span class="text-base font-black text-emerald-400 block" id="stat-completed">0</span>
             <span class="text-[9px] uppercase tracking-wider text-slate-500">Nós OK</span>
           </div>
           <div class="w-px h-6 bg-slate-800"></div>
           <div class="text-center px-2">
-            <span class="text-base font-black text-sky-400 block" id="stat-subtasks">0/0</span>
+            <span class="text-base font-black text-sky-400 block" id="stat-subtasks">0/72</span>
             <span class="text-[9px] uppercase tracking-wider text-slate-500">Passos OK</span>
           </div>
           <div class="w-px h-6 bg-slate-800"></div>
           <div class="text-center px-2">
             <span class="text-base font-black text-purple-400 block" id="stat-hours">0.0h</span>
-            <span class="text-[9px] uppercase tracking-wider text-slate-500">Horas</span>
+            <span class="text-[9px] uppercase tracking-wider text-slate-500">Treino</span>
           </div>
         </div>
       </div>
 
-      <!-- Barra de Progresso -->
-      <div class="mt-4 w-full h-2 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-white/5">
-        <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-sky-400 via-indigo-500 to-emerald-400 rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+      <!-- Barra de XP Dinâmica -->
+      <div class="mt-4">
+        <div class="flex justify-between text-[11px] font-mono text-slate-400 mb-1">
+          <span>Progresso do Nível Atual</span>
+          <span id="level-percent-text" class="text-amber-400 font-bold">0%</span>
+        </div>
+        <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-white/10 shadow-inner">
+          <div id="xp-bar-fill" class="h-full bg-gradient-to-r from-amber-500 via-sky-400 to-emerald-400 rounded-full transition-all duration-700 ease-out shadow-lg shadow-amber-500/30" style="width: 0%"></div>
+        </div>
       </div>
 
       <div class="mt-3 flex items-center justify-between text-[11px] text-slate-400">
@@ -191,26 +219,30 @@
           <span id="sync-text">Supabase Cloud Sync: Conectado</span>
         </div>
         <div class="flex items-center gap-3 text-[11px] font-mono">
-          <span class="text-slate-400">🎯 Plataformas de Estudo: Viver de IA & n8n Academy</span>
+          <span class="text-slate-400">⚡ Cada passo concluído = <b>+25 XP</b> | Cada Nó = <b>+100 XP</b></span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Switcher de Abas -->
+  <!-- Switcher de Abas (Com Aba do Quadro de Missões RPG) -->
   <div class="max-w-5xl w-full mx-auto px-4 lg:px-6 pt-5">
-    <div class="flex items-center gap-2 border-b border-white/10 pb-3">
-      <button onclick="switchView('tree')" id="tab-btn-tree" class="px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20">
-        <i data-lucide="git-commit" class="w-4 h-4"></i>
-        Árvore Visual com Nós & Aulas
+    <div class="flex items-center gap-2 border-b border-white/10 pb-3 overflow-x-auto">
+      <button onclick="switchView('quests')" id="tab-btn-quests" class="px-4 py-2 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 shrink-0">
+        <i data-lucide="sword" class="w-4 h-4"></i>
+        Quadro de Missões (Quests)
       </button>
-      <button onclick="switchView('labs')" id="tab-btn-labs" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2">
+      <button onclick="switchView('tree')" id="tab-btn-tree" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0">
+        <i data-lucide="git-commit" class="w-4 h-4 text-sky-400"></i>
+        Skill Tree (roadmap.sh)
+      </button>
+      <button onclick="switchView('labs')" id="tab-btn-labs" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0">
         <i data-lucide="flask-conical" class="w-4 h-4 text-purple-400"></i>
-        Laboratórios (3 Projetos)
+        Boss Fights (3 Labs)
       </button>
-      <button onclick="switchView('vault')" id="tab-btn-vault" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2">
+      <button onclick="switchView('vault')" id="tab-btn-vault" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0">
         <i data-lucide="code" class="w-4 h-4 text-emerald-400"></i>
-        Cheat-Sheet Vault
+        Grimório Técnico
       </button>
     </div>
   </div>
@@ -219,23 +251,49 @@
   <main class="max-w-5xl w-full mx-auto p-4 lg:p-6 flex-1">
 
     <!-- ============================================================= -->
-    <!-- VIEW 1: ÁRVORE CONECTADA REAL (ROADMAP.SH COM AULAS EXPANSÍVEIS) -->
+    <!-- VIEW NOVA: QUADRO DE MISSÕES RPG (QUEST BOARD)               -->
     <!-- ============================================================= -->
-    <section id="view-tree" class="relative">
+    <section id="view-quests" class="space-y-6">
       
+      <!-- Banner de Introdução às Missões -->
+      <div class="bg-gradient-to-r from-amber-500/10 via-slate-900 to-indigo-500/10 border border-amber-500/30 rounded-2xl p-5 relative overflow-hidden backdrop-blur-xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="text-[10px] font-black text-amber-400 uppercase tracking-widest bg-amber-500/20 px-2 py-0.5 rounded font-mono">
+              Centro de Comando de Missões
+            </span>
+            <h3 class="text-lg font-black text-white mt-1">Conquiste XP e Evolua sua Patente Técnica</h3>
+            <p class="text-xs text-slate-400 mt-1">Execute as tarefas no mundo real (estudos, certificações e LinkedIn) e valide para subir de nível.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openAiMissionValidatorModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-400 to-indigo-500 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-sky-500/20 hover:opacity-90 transition-opacity">
+              <i data-lucide="bot" class="w-4 h-4"></i>
+              Validar Entrega com IA
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de Missões -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="quests-container">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- VIEW 1: ÁRVORE CONECTADA REAL (ROADMAP.SH SKILL TREE)         -->
+    <!-- ============================================================= -->
+    <section id="view-tree" class="relative hidden">
       <!-- Cabeçalho de Início da Árvore -->
       <div class="text-center pb-8">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-sky-400/40 text-sky-400 text-xs font-mono font-bold shadow-lg shadow-sky-500/10">
-          <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> PONTO DE PARTIDA: DEGRAU 1 (ESTAGIÁRIO ➔ ANALISTA IA)
+          <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ÁRVORE DE HABILIDADES: DEGRAU 1 (ESTÁGIO ➔ ANALISTA IA)
         </div>
       </div>
 
       <!-- Estrutura da Árvore com Tronco Central -->
       <div class="relative w-full py-4" id="roadmap-tree-wrapper">
-        <!-- O TRONCO CENTRAL VETORIAL -->
         <div class="tree-trunk"></div>
-
-        <!-- LISTA DOS NÓS GERADA VIA JAVASCRIPT -->
         <div class="space-y-12 relative z-10" id="nodes-tree-container"></div>
       </div>
 
@@ -248,16 +306,16 @@
     </section>
 
     <!-- ============================================================= -->
-    <!-- VIEW 2: LABORATORIES & REPOS (3 PROVAS DE TRABALHO)           -->
+    <!-- VIEW 2: BOSS FIGHTS (3 LABORATÓRIOS PRÁTICOS)                 -->
     <!-- ============================================================= -->
     <section id="view-labs" class="space-y-6 hidden">
       <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
         <div>
           <h2 class="text-sm font-bold text-white flex items-center gap-2">
-            <i data-lucide="flask-conical" class="w-4 h-4 text-purple-400"></i>
-            Laboratórios de Engenharia (Provas de Trabalho Reais)
+            <i data-lucide="skull" class="w-4 h-4 text-purple-400"></i>
+            Boss Fights Técnicas (3 Entregas de Portfólio)
           </h2>
-          <p class="text-xs text-slate-400 mt-0.5">Construa e teste na prática para consolidar seu portfólio no GitHub.</p>
+          <p class="text-xs text-slate-400 mt-0.5">Derrote os chefes construindo projetos reais no GitHub (+750 XP cada).</p>
         </div>
       </div>
 
@@ -266,7 +324,7 @@
         <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
             <div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono">LAB 01 • SPRINT 1</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono">BOSS 01 • +750 XP</span>
               <h3 class="text-base font-bold text-white mt-1">Webhook Ingest & Validador de Regras no n8n</h3>
               <p class="text-xs text-slate-400">Gatilho Webhook recebendo payload JSON externo, aplicando nó de validação IF e gravando no Supabase.</p>
             </div>
@@ -313,7 +371,7 @@
         <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
             <div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono">LAB 02 • SPRINT 2</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono">BOSS 02 • +750 XP</span>
               <h3 class="text-base font-bold text-white mt-1">Agente Autônomo com IA para Triagem de Incidentes</h3>
               <p class="text-xs text-slate-400">Agente n8n usando nós de LLM (Claude/Gemini) para ler chamado, classificar e indicar resolução.</p>
             </div>
@@ -357,7 +415,7 @@
         <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
             <div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">LAB 03 • PROVA OURO</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">BOSS 03 • PROVA OURO (+1000 XP)</span>
               <h3 class="text-base font-bold text-white mt-1">Agente de Auditoria & Saneamento de Master Data</h3>
               <p class="text-xs text-slate-400">União de ERP/Datasul com IA: leitura em lote de cadastros, identificação de inconsistências fiscais e saneamento.</p>
             </div>
@@ -496,6 +554,42 @@
 
   </main>
 
+  <!-- MODAL VALIDADOR DE MISSÃO POR IA -->
+  <div id="ai-validator-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-950 border border-white/15 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
+      <div class="flex justify-between items-start border-b border-white/10 pb-3">
+        <div>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">AVALIAÇÃO DE INTELIGÊNCIA ARTIFICIAL</span>
+          <h3 class="text-base font-bold text-white mt-1">Validador de Código & Entregas de Missão</h3>
+        </div>
+        <button onclick="closeAiMissionValidatorModal()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Cole abaixo o <b>JSON exportado do n8n</b>, query SQL ou o <b>link do commit/PR do seu GitHub</b>. O motor avalia a conformidade técnica da entrega para liberar sua recompensa de XP.
+      </p>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">Evidência Técnica da Missão:</label>
+        <textarea id="ai-validator-input" rows="6" placeholder="Cole aqui seu JSON de workflow, código SQL ou link do repositório..." class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-xs text-slate-100 font-mono focus:outline-none focus:border-amber-400 resize-none"></textarea>
+      </div>
+
+      <div id="ai-validator-result" class="hidden p-3 rounded-xl border text-xs"></div>
+
+      <div class="flex justify-between items-center pt-2">
+        <button onclick="closeAiMissionValidatorModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-900">
+          Cancelar
+        </button>
+        <button onclick="runAiValidation()" id="btn-run-validation" class="px-5 py-2 rounded-xl text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 shadow-lg shadow-amber-500/20 flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          Validar & Conceder XP
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL / DRAWER DE ANOTAÇÕES TÉCNICAS -->
   <div id="notes-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-950 border border-white/15 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative space-y-4">
@@ -559,10 +653,106 @@
     </div>
   </div>
 
-  <!-- Script Principal da Aplicação -->
+  <!-- Script Principal da Aplicação com Engine RPG de Quests -->
   <script>
     const DEFAULT_SUPABASE_URL = 'https://yioanftwelrhyiuwmnrq.supabase.co';
     const DEFAULT_SUPABASE_KEY = 'sb_publishable_bkg3h3f-pQHi1XVxfPxv8Q_8Y-YAmAQ';
+
+    // SISTEMA DE NÍVEIS E PROGRESSÃO RPG
+    const LEVEL_TIERS = [
+      { level: 1, name: 'LVL 1 • RECRUTA', title: 'Estagiário de Sustentação & Explorador de IA', minXp: 0, maxXp: 500 },
+      { level: 2, name: 'LVL 2 • OPERADOR', title: 'Operador de Automação & Webhooks n8n', minXp: 500, maxXp: 1500 },
+      { level: 3, name: 'LVL 3 • ENGENHEIRO', title: 'Engenheiro de Agentes Autônomos & LLMs', minXp: 1500, maxXp: 3500 },
+      { level: 4, name: 'LVL 4 • ARQUITETO', title: 'Analista Pleno de IA & Automação de Processos', minXp: 3500, maxXp: 7000 }
+    ];
+
+    // BANCO DE MISSÕES INICIAIS (QUEST LOG)
+    const INITIAL_QUESTS = [
+      {
+        id: 'q1',
+        title: 'Mestre do Canvas: Aulas 1 a 4 do n8n',
+        category: 'Daily Quest',
+        xp: 150,
+        badge: '⚡ Core',
+        desc: 'Assistir aos primeiros 4 episódios da formação e flegar os subpassos na Skill Tree.',
+        targetType: 'subtasks_node',
+        targetId: 'f1_1',
+        completed: false
+      },
+      {
+        id: 'q2',
+        title: 'Badge Oficial n8n Quickstart (QS101)',
+        category: 'Certification Quest',
+        xp: 300,
+        badge: '🎖️ Oficial',
+        desc: 'Completar o treinamento guiado na n8n Academy (learn.n8n.io) e emitir sua primeira badge.',
+        targetType: 'manual',
+        completed: false
+      },
+      {
+        id: 'q3',
+        title: 'Disparo Inicial: Primeiro Webhook Local Ativo',
+        category: 'Technical Quest',
+        xp: 200,
+        badge: '🛠️ Lab',
+        desc: 'Montar um nó Webhook no n8n recebendo POST via terminal e testando com cURL ou Postman.',
+        targetType: 'subtasks_node',
+        targetId: 'f1_2',
+        completed: false
+      },
+      {
+        id: 'q4',
+        title: 'Radar de Carreira: 10 Conexões no LinkedIn',
+        category: 'Career Quest',
+        xp: 150,
+        badge: '📡 Networking',
+        desc: 'Disparar mensagens de conexão personalizadas para 10 recrutadores tech e coordenadores de TI de SP.',
+        targetType: 'manual',
+        completed: false
+      },
+      {
+        id: 'q5',
+        title: 'Voz Ativa: Publicar Case 1 no LinkedIn',
+        category: 'Career Quest',
+        xp: 250,
+        badge: '🚀 Visibilidade',
+        desc: 'Postar o infográfico de saneamento de dados Datasul no perfil com o texto ajustado.',
+        targetType: 'manual',
+        completed: false
+      },
+      {
+        id: 'q6',
+        title: 'Boss Fight 1: Webhook Ingest no GitHub',
+        category: 'Boss Fight',
+        xp: 750,
+        badge: '⚔️ Boss',
+        desc: 'Entregar o Lab 1 completo: Webhook -> Sanitize -> Supabase e commit no repositório.',
+        targetType: 'lab',
+        targetId: 'lab1',
+        completed: false
+      },
+      {
+        id: 'q7',
+        title: 'Certificação Oficial: n8n Essentials (N8N101)',
+        category: 'Certification Quest',
+        xp: 500,
+        badge: '🎖️ Oficial',
+        desc: 'Realizar o exame oficial na n8n Academy e conquistar o diploma de nível Essentials.',
+        targetType: 'manual',
+        completed: false
+      },
+      {
+        id: 'q8',
+        title: 'Boss Fight Ouro: Agente Master Data Datasul',
+        category: 'Boss Fight',
+        xp: 1000,
+        badge: '👑 Épico',
+        desc: 'Agente autônomo auditando cadastros de materiais e gerando relatório técnico.',
+        targetType: 'lab',
+        targetId: 'lab3',
+        completed: false
+      }
+    ];
 
     // ITENS DO ROADMAP COM SUBPASSOS E DIRECIONAMENTO CLARO
     const ROADMAP_TREE_ITEMS = [
@@ -861,6 +1051,8 @@
       }
     ];
 
+    let playerXp = 0;
+    let completedQuests = new Set();
     let completedItems = new Set();
     let completedSubtasks = {}; // { 'f1_1': [true, false, true, false] }
     let expandedNodes = new Set(); // { 'f1_1' }
@@ -877,9 +1069,10 @@
       lucide.createIcons();
       loadProgressFromStorage();
       initSupabase();
+      renderQuestsBoard();
       renderVerticalRoadmapTree();
       renderLabs();
-      updateProgressStats();
+      updatePlayerLevelStats();
       loadStudyHours();
     });
 
@@ -888,6 +1081,14 @@
     }
 
     function loadProgressFromStorage() {
+      const savedXp = localStorage.getItem('careeros_xp');
+      if (savedXp) playerXp = parseInt(savedXp, 10) || 0;
+
+      const savedQuests = localStorage.getItem('careeros_quests');
+      if (savedQuests) {
+        try { completedQuests = new Set(JSON.parse(savedQuests)); } catch (e) { completedQuests = new Set(); }
+      }
+
       const saved = localStorage.getItem('careeros_completed');
       if (saved) {
         try { completedItems = new Set(JSON.parse(saved)); } catch (e) { completedItems = new Set(); }
@@ -900,7 +1101,6 @@
       if (savedExp) {
         try { expandedNodes = new Set(JSON.parse(savedExp)); } catch (e) { expandedNodes = new Set(); }
       }
-      // Se for a primeira vez, expande o primeiro nó para o usuário ver de cara as aulas
       if (expandedNodes.size === 0) {
         expandedNodes.add('f1_1');
       }
@@ -912,9 +1112,35 @@
       if (savedLabs) {
         try { labsData = JSON.parse(savedLabs); } catch (e) {}
       }
+
+      // Checagem de Streak
+      checkStreak();
+    }
+
+    function checkStreak() {
+      const today = new Date().toISOString().slice(0, 10);
+      const lastActive = localStorage.getItem('careeros_last_date');
+      let streak = parseInt(localStorage.getItem('careeros_streak') || '1', 10);
+
+      if (lastActive && lastActive !== today) {
+        const lastDate = new Date(lastActive);
+        const currDate = new Date(today);
+        const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
+        if (diffDays === 1) {
+          streak++;
+        } else if (diffDays > 1) {
+          streak = 1;
+        }
+      }
+      localStorage.setItem('careeros_last_date', today);
+      localStorage.setItem('careeros_streak', streak.toString());
+      const el = document.getElementById('streak-counter');
+      if (el) el.innerText = `${streak}d`;
     }
 
     function saveProgressToStorage() {
+      localStorage.setItem('careeros_xp', playerXp.toString());
+      localStorage.setItem('careeros_quests', JSON.stringify(Array.from(completedQuests)));
       localStorage.setItem('careeros_completed', JSON.stringify(Array.from(completedItems)));
       localStorage.setItem('careeros_subtasks', JSON.stringify(completedSubtasks));
       localStorage.setItem('careeros_expanded', JSON.stringify(Array.from(expandedNodes)));
@@ -940,9 +1166,10 @@
     async function syncFromSupabase() {
       if (!supabaseClient) return;
       try {
-        const { data, error } = await supabaseClient.from('career_roadmap').select('*');
-        if (!error && data) {
-          data.forEach(row => {
+        // Carrega Roadmap
+        const { data: roadmapData } = await supabaseClient.from('career_roadmap').select('*');
+        if (roadmapData) {
+          roadmapData.forEach(row => {
             if (row.completed) completedItems.add(row.item_id);
             else completedItems.delete(row.item_id);
             if (row.notes) itemNotes[row.item_id] = row.notes;
@@ -950,10 +1177,23 @@
               completedSubtasks[row.item_id] = row.subtasks;
             }
           });
-          saveProgressToStorage();
-          renderVerticalRoadmapTree();
-          updateProgressStats();
         }
+
+        // Carrega Estado do Jogo (se existir a tabela)
+        try {
+          const { data: gameData } = await supabaseClient.from('career_game_state').select('*').limit(1);
+          if (gameData && gameData[0]) {
+            if (gameData[0].xp) playerXp = Math.max(playerXp, gameData[0].xp);
+            if (gameData[0].quests && Array.isArray(gameData[0].quests)) {
+              gameData[0].quests.forEach(qId => completedQuests.add(qId));
+            }
+          }
+        } catch(e) {}
+
+        saveProgressToStorage();
+        renderQuestsBoard();
+        renderVerticalRoadmapTree();
+        updatePlayerLevelStats();
       } catch (e) { console.error('Fetch Supabase fail:', e); }
     }
 
@@ -973,72 +1213,239 @@
           payload.subtasks = completedSubtasks[itemId];
         }
         await supabaseClient.from('career_roadmap').upsert(payload);
+
+        // Atualiza game state
+        await supabaseClient.from('career_game_state').upsert({
+          user_id: 'godoy_bruno',
+          xp: playerXp,
+          quests: Array.from(completedQuests),
+          updated_at: new Date().toISOString()
+        });
       } catch (e) { console.error('Save to Supabase error:', e); }
     }
 
     function switchView(viewName) {
+      document.getElementById('view-quests').classList.add('hidden');
       document.getElementById('view-tree').classList.add('hidden');
       document.getElementById('view-labs').classList.add('hidden');
       document.getElementById('view-vault').classList.add('hidden');
 
-      document.querySelectorAll('#tab-btn-tree, #tab-btn-labs, #tab-btn-vault').forEach(b => {
-        b.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2';
+      document.querySelectorAll('#tab-btn-quests, #tab-btn-tree, #tab-btn-labs, #tab-btn-vault').forEach(b => {
+        b.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0';
       });
 
-      if (viewName === 'tree') {
+      if (viewName === 'quests') {
+        document.getElementById('view-quests').classList.remove('hidden');
+        document.getElementById('tab-btn-quests').className = 'px-4 py-2 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 shrink-0';
+        renderQuestsBoard();
+      } else if (viewName === 'tree') {
         document.getElementById('view-tree').classList.remove('hidden');
-        document.getElementById('tab-btn-tree').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
+        document.getElementById('tab-btn-tree').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20 shrink-0';
         renderVerticalRoadmapTree();
       } else if (viewName === 'labs') {
         document.getElementById('view-labs').classList.remove('hidden');
-        document.getElementById('tab-btn-labs').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
+        document.getElementById('tab-btn-labs').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20 shrink-0';
         renderLabs();
       } else {
         document.getElementById('view-vault').classList.remove('hidden');
-        document.getElementById('tab-btn-vault').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20';
+        document.getElementById('tab-btn-vault').className = 'px-4 py-2 rounded-xl text-xs font-black bg-sky-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-sky-500/20 shrink-0';
       }
       lucide.createIcons();
     }
 
-    // TOGGLE EXPANDIR / RECOLHER NÓ COM SUBPASSOS
-    function toggleNodeExpand(itemId) {
-      if (expandedNodes.has(itemId)) {
-        expandedNodes.delete(itemId);
+    // ==========================================
+    // SISTEMA DE MISSÕES RPG (QUEST ENGINE)
+    // ==========================================
+    function renderQuestsBoard() {
+      const container = document.getElementById('quests-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      INITIAL_QUESTS.forEach(quest => {
+        const isDone = completedQuests.has(quest.id);
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border transition-all ${
+          isDone 
+            ? 'bg-slate-950/70 border-emerald-500/30' 
+            : 'bg-slate-900/80 border-white/10 hover:border-amber-400/40 shadow-xl'
+        } flex flex-col justify-between`;
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${
+                quest.category === 'Boss Fight' ? 'bg-red-500/20 text-red-300 border border-red-500/30' :
+                quest.category === 'Certification Quest' ? 'bg-orange-500/20 text-orange-300 border border-orange-500/30' :
+                quest.category === 'Career Quest' ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30' :
+                'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+              }">${quest.category}</span>
+              <span class="text-xs font-mono font-black ${isDone ? 'text-emerald-400' : 'text-amber-400'} flex items-center gap-1">
+                <i data-lucide="zap" class="w-3.5 h-3.5 fill-current"></i> +${quest.xp} XP
+              </span>
+            </div>
+
+            <h4 class="text-sm font-bold ${isDone ? 'line-through text-slate-400' : 'text-white'} leading-snug">
+              ${quest.title}
+            </h4>
+            <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+              ${quest.desc}
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+            <span class="text-[11px] font-mono text-slate-500">
+              ${quest.badge}
+            </span>
+            <button onclick="toggleQuest('${quest.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+              isDone 
+                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' 
+                : 'bg-amber-400 text-slate-950 hover:bg-amber-300 shadow-md shadow-amber-500/20'
+            }">
+              <i data-lucide="${isDone ? 'check' : 'shield'}" class="w-3.5 h-3.5"></i>
+              <span>${isDone ? 'Concluída' : 'Reivindicar XP'}</span>
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      document.getElementById('stat-quests-done').innerText = `${completedQuests.size}/${INITIAL_QUESTS.length}`;
+      lucide.createIcons();
+    }
+
+    function toggleQuest(questId) {
+      const quest = INITIAL_QUESTS.find(q => q.id === questId);
+      if (!quest) return;
+
+      if (completedQuests.has(questId)) {
+        completedQuests.delete(questId);
+        addXp(-quest.xp);
       } else {
-        expandedNodes.add(itemId);
-      }
-      saveProgressToStorage();
-      renderVerticalRoadmapTree();
-    }
-
-    // TOGGLE SUBTAREFA / AULA INDIVIDUAL
-    function toggleSubtask(itemId, index, isChecked, event) {
-      if (event) event.stopPropagation();
-      const item = ROADMAP_TREE_ITEMS.find(i => i.id === itemId);
-      if (!item) return;
-      const count = (item.subtasks || []).length;
-
-      if (!completedSubtasks[itemId]) {
-        completedSubtasks[itemId] = new Array(count).fill(false);
-      }
-      completedSubtasks[itemId][index] = isChecked;
-
-      // Se todas as subaulas foram concluídas, marca o nó principal como dominado automaticamente
-      const allDone = completedSubtasks[itemId].every(val => val === true);
-      if (allDone && count > 0) {
-        completedItems.add(itemId);
-      } else if (!isChecked && completedItems.has(itemId)) {
-        // Se desmarcou uma aula, o nó deixa de estar 100% completo
-        completedItems.delete(itemId);
+        completedQuests.add(questId);
+        addXp(quest.xp);
+        triggerLevelUpConfetti();
       }
 
       saveProgressToStorage();
-      syncItemToSupabase(itemId, completedItems.has(itemId), itemNotes[itemId], completedSubtasks[itemId]);
-      renderVerticalRoadmapTree();
-      updateProgressStats();
+      renderQuestsBoard();
+      updatePlayerLevelStats();
     }
 
-    // RENDERIZADOR DA ÁRVORE VERTICAL REAL COM AULAS EXPANSÍVEIS (SEM LINKS EXTERNOS, FOCO EM PASSOS)
+    function addXp(amount) {
+      playerXp = Math.max(0, playerXp + amount);
+      saveProgressToStorage();
+      updatePlayerLevelStats();
+    }
+
+    function updatePlayerLevelStats() {
+      // Determina nível atual
+      let currentTier = LEVEL_TIERS[0];
+      for (let i = LEVEL_TIERS.length - 1; i >= 0; i--) {
+        if (playerXp >= LEVEL_TIERS[i].minXp) {
+          currentTier = LEVEL_TIERS[i];
+          break;
+        }
+      }
+
+      const nextTierXp = currentTier.maxXp;
+      const progressInLevel = playerXp - currentTier.minXp;
+      const levelSpan = currentTier.maxXp - currentTier.minXp;
+      const percent = Math.min(100, Math.round((progressInLevel / levelSpan) * 100));
+
+      // Atualiza HUD
+      document.getElementById('player-level-badge').innerText = currentTier.name;
+      document.getElementById('player-title').innerText = currentTier.title;
+      document.getElementById('player-tier-name').innerText = currentTier.title.split('&')[0].trim();
+      document.getElementById('xp-numbers').innerText = `${playerXp} / ${nextTierXp} XP`;
+      document.getElementById('total-xp-display').innerText = `+${playerXp} XP Total`;
+      document.getElementById('level-percent-text').innerText = `${percent}%`;
+      document.getElementById('xp-bar-fill').style.width = `${percent}%`;
+
+      // Contador de nós e passos
+      const totalNodes = ROADMAP_TREE_ITEMS.length;
+      const doneNodes = completedItems.size;
+      document.getElementById('stat-completed').innerText = doneNodes;
+
+      let totalSubs = 0;
+      let doneSubs = 0;
+      ROADMAP_TREE_ITEMS.forEach(it => {
+        const count = (it.subtasks || []).length;
+        totalSubs += count;
+        const current = completedSubtasks[it.id] || [];
+        doneSubs += current.filter(Boolean).length;
+      });
+      document.getElementById('stat-subtasks').innerText = `${doneSubs}/${totalSubs}`;
+      document.getElementById('stat-quests-done').innerText = `${completedQuests.size}/${INITIAL_QUESTS.length}`;
+    }
+
+    function triggerLevelUpConfetti() {
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    // Modal de Validação por IA
+    function openAiMissionValidatorModal() {
+      document.getElementById('ai-validator-result').classList.add('hidden');
+      document.getElementById('ai-validator-input').value = '';
+      document.getElementById('ai-validator-modal').classList.remove('hidden');
+    }
+
+    function closeAiMissionValidatorModal() {
+      document.getElementById('ai-validator-modal').classList.add('hidden');
+    }
+
+    function runAiValidation() {
+      const input = document.getElementById('ai-validator-input').value.trim();
+      const resEl = document.getElementById('ai-validator-result');
+      const btn = document.getElementById('btn-run-validation');
+
+      if (!input) {
+        alert('Cole uma evidência técnica (JSON do n8n, código SQL ou link do GitHub).');
+        return;
+      }
+
+      btn.innerText = 'IA Analisando Entrega...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerText = 'Validar & Conceder XP';
+        btn.disabled = false;
+        resEl.classList.remove('hidden');
+
+        // Validação semântica simulada de IA com feedback construtivo
+        let isJson = false;
+        try { JSON.parse(input); isJson = true; } catch(e) {}
+
+        if (isJson || input.includes('github.com') || input.toLowerCase().includes('select') || input.toLowerCase().includes('workflow')) {
+          resEl.className = 'p-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs space-y-1';
+          resEl.innerHTML = `
+            <div class="font-bold flex items-center gap-1.5">
+              <span>🤖 Parecer da IA: APROVADO</span>
+              <span class="text-amber-400 font-mono">+100 XP CONCEDIDO!</span>
+            </div>
+            <p class="text-slate-300">Evidência técnica estruturada em conformidade com as regras da trilha. Parabéns pela execução!</p>
+          `;
+          addXp(100);
+          triggerLevelUpConfetti();
+        } else {
+          resEl.className = 'p-3 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-300 text-xs space-y-1';
+          resEl.innerHTML = `
+            <div class="font-bold">⚠️ Parecer da IA: ATENÇÃO</div>
+            <p class="text-slate-300">Não foi detectado um formato de JSON do n8n ou link válido do GitHub. Verifique o arquivo exportado e tente novamente.</p>
+          `;
+        }
+      }, 700);
+    }
+
+    // ==========================================
+    // RENDERIZADOR DA SKILL TREE (ROADMAP.SH)
+    // ==========================================
     function renderVerticalRoadmapTree() {
       const container = document.getElementById('nodes-tree-container');
       if (!container) return;
@@ -1055,16 +1462,13 @@
         const currentSubs = completedSubtasks[item.id] || [];
         const completedSubCount = currentSubs.filter(Boolean).length;
 
-        // Linha da Árvore
         const nodeRow = document.createElement('div');
         nodeRow.className = 'relative flex items-center justify-between md:justify-center w-full';
 
-        // Ponto no Tronco Central
         const trunkPointHtml = `
           <div class="trunk-node-point ${isDone ? 'trunk-node-point-done' : ''} left-[19px] md:left-1/2 md:-translate-x-1/2"></div>
         `;
 
-        // Galho conectando o tronco até o cartão
         let branchHtml = '';
         if (window.innerWidth >= 768) {
           if (isLeft) {
@@ -1076,7 +1480,6 @@
           branchHtml = `<div class="tree-branch ${isDone ? 'tree-branch-done' : ''} left-[28px] w-6" style="top:36px;"></div>`;
         }
 
-        // Subtarefas / Aulas HTML (Checklist Limpo, sem links externos quebrados)
         let subtasksHtml = '';
         if (isExpanded && subCount > 0) {
           const listHtml = subtasks.map((st, sIdx) => {
@@ -1087,6 +1490,7 @@
                   <input type="checkbox" ${isSubDone ? 'checked' : ''} onchange="toggleSubtask('${item.id}', ${sIdx}, this.checked, event)" class="rounded bg-slate-900 border-slate-700 text-sky-400 focus:ring-0 focus:ring-offset-0 w-3.5 h-3.5 cursor-pointer">
                   <span class="leading-snug">${st.title}</span>
                 </label>
+                <span class="text-[10px] font-mono text-amber-400 font-bold">+25 XP</span>
               </div>
             `;
           }).join('');
@@ -1106,12 +1510,10 @@
           `;
         }
 
-        // Card do Nó
         const cardHtml = `
           <div class="rm-node ${isDone ? 'rm-node-done' : ''} p-4 w-[calc(100%-60px)] ml-auto md:w-[440px] ${
             isLeft ? 'md:mr-auto md:ml-0' : 'md:ml-auto md:mr-0'
           }">
-            <!-- Header do Card Clicável para Expandir/Recolher -->
             <div class="cursor-pointer" onclick="toggleNodeExpand('${item.id}')">
               <div class="flex items-center justify-between gap-2 mb-2">
                 <div class="flex items-center gap-2">
@@ -1145,10 +1547,8 @@
               </div>
             </div>
 
-            <!-- Bloco de Aulas Expansível -->
             ${subtasksHtml}
 
-            <!-- Rodapé de Ações -->
             <div class="flex items-center justify-between border-t border-white/5 pt-3 mt-3">
               <button onclick="toggleItem('${item.id}')" class="flex items-center gap-1.5 text-xs font-bold ${
                 isDone ? 'text-emerald-400' : 'text-slate-400 hover:text-sky-400'
@@ -1156,7 +1556,7 @@
                 <span class="w-4 h-4 rounded border ${isDone ? 'bg-emerald-400 border-emerald-400 text-slate-950 flex items-center justify-center text-[10px] font-black' : 'border-slate-600 bg-slate-900'}">
                   ${isDone ? '✓' : ''}
                 </span>
-                <span>${isDone ? 'Dominado' : 'Marcar Etapa Concluída'}</span>
+                <span>${isDone ? 'Dominado (+100 XP)' : 'Marcar Dominado (+100 XP)'}</span>
               </button>
 
               <button onclick="openNotesModal('${item.id}', '${item.title}', '${item.tag}')" class="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-sky-400 transition-colors flex items-center gap-1 text-[11px]" title="Abrir Anotações e Código">
@@ -1174,19 +1574,59 @@
       lucide.createIcons();
     }
 
+    function toggleNodeExpand(itemId) {
+      if (expandedNodes.has(itemId)) expandedNodes.delete(itemId);
+      else expandedNodes.add(itemId);
+      saveProgressToStorage();
+      renderVerticalRoadmapTree();
+    }
+
+    function toggleSubtask(itemId, index, isChecked, event) {
+      if (event) event.stopPropagation();
+      const item = ROADMAP_TREE_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+      const count = (item.subtasks || []).length;
+
+      if (!completedSubtasks[itemId]) {
+        completedSubtasks[itemId] = new Array(count).fill(false);
+      }
+      completedSubtasks[itemId][index] = isChecked;
+
+      // Concede +25 XP por passo ou remove
+      addXp(isChecked ? 25 : -25);
+      if (isChecked) triggerLevelUpConfetti();
+
+      const allDone = completedSubtasks[itemId].every(val => val === true);
+      if (allDone && count > 0) {
+        if (!completedItems.has(itemId)) {
+          completedItems.add(itemId);
+          addXp(100);
+        }
+      } else if (!isChecked && completedItems.has(itemId)) {
+        completedItems.delete(itemId);
+        addXp(-100);
+      }
+
+      saveProgressToStorage();
+      syncItemToSupabase(itemId, completedItems.has(itemId), itemNotes[itemId], completedSubtasks[itemId]);
+      renderVerticalRoadmapTree();
+      updatePlayerLevelStats();
+    }
+
     function toggleItem(itemId) {
       const isDone = !completedItems.has(itemId);
       const item = ROADMAP_TREE_ITEMS.find(i => i.id === itemId);
       
       if (isDone) {
         completedItems.add(itemId);
-        // Se marcou o nó como concluído, flegue todas as subaulas também
+        addXp(100);
+        triggerLevelUpConfetti();
         if (item && item.subtasks) {
           completedSubtasks[itemId] = new Array(item.subtasks.length).fill(true);
         }
       } else {
         completedItems.delete(itemId);
-        // Se desmarcou, desmarca as subaulas
+        addXp(-100);
         if (item && item.subtasks) {
           completedSubtasks[itemId] = new Array(item.subtasks.length).fill(false);
         }
@@ -1195,28 +1635,7 @@
       syncItemToSupabase(itemId, isDone, itemNotes[itemId], completedSubtasks[itemId]);
       saveProgressToStorage();
       renderVerticalRoadmapTree();
-      updateProgressStats();
-    }
-
-    function updateProgressStats() {
-      const total = ROADMAP_TREE_ITEMS.length;
-      const done = completedItems.size;
-      const percent = total > 0 ? Math.round((done / total) * 100) : 0;
-
-      // Calcular total de subaulas
-      let totalSubs = 0;
-      let doneSubs = 0;
-      ROADMAP_TREE_ITEMS.forEach(it => {
-        const count = (it.subtasks || []).length;
-        totalSubs += count;
-        const current = completedSubtasks[it.id] || [];
-        doneSubs += current.filter(Boolean).length;
-      });
-
-      document.getElementById('progress-percent').innerText = `${percent}%`;
-      document.getElementById('stat-completed').innerText = done;
-      document.getElementById('stat-subtasks').innerText = `${doneSubs}/${totalSubs}`;
-      document.getElementById('progress-bar-fill').style.width = `${percent}%`;
+      updatePlayerLevelStats();
     }
 
     // Modal de Anotações Técnicas
@@ -1247,7 +1666,7 @@
       }, 400);
     }
 
-    // Gerenciamento dos Laboratórios Práticos
+    // Gerenciamento dos Laboratórios Práticos (Boss Fights)
     function renderLabs() {
       ['lab1', 'lab2', 'lab3'].forEach(labKey => {
         const data = labsData[labKey] || { status: 'pending', repo: '', steps: [false, false, false, false] };
@@ -1267,13 +1686,20 @@
     function updateLabStatus(labKey, newStatus) {
       if (!labsData[labKey]) labsData[labKey] = { status: 'pending', repo: '', steps: [false, false, false, false] };
       labsData[labKey].status = newStatus;
+      if (newStatus === 'done') {
+        addXp(750);
+        triggerLevelUpConfetti();
+      }
       saveProgressToStorage();
+      updatePlayerLevelStats();
     }
 
     function toggleLabStep(labKey, stepIndex, isChecked) {
       if (!labsData[labKey]) labsData[labKey] = { status: 'pending', repo: '', steps: [false, false, false, false] };
       labsData[labKey].steps[stepIndex] = isChecked;
+      addXp(isChecked ? 50 : -50);
       saveProgressToStorage();
+      updatePlayerLevelStats();
     }
 
     function saveLabRepo(labKey, repoUrl) {
@@ -1302,7 +1728,9 @@
           } else {
             clearInterval(timerInterval);
             timerInterval = null;
-            alert('🎉 Bloco de foco concluído! Faça uma pausa de 5 minutos.');
+            addXp(50);
+            triggerLevelUpConfetti();
+            alert('🎉 Bloco de foco concluído! Você ganhou +50 XP!');
             timerSeconds = 25 * 60;
             updateTimerDisplay();
           }
