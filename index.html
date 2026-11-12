@@ -49,7 +49,7 @@
       <div>
         <h1 class="text-base font-bold tracking-tight text-white flex items-center gap-2">
           Godoy Tech OS
-          <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-sky-500/10 text-accentCyan border border-sky-500/30">Laboratório Técnico</span>
+          <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-sky-500/10 text-accentCyan border border-sky-500/30">Engineering Hub</span>
         </h1>
         <p class="text-xs text-slate-400">Roadmap Prático • n8n, Agentes & SQL</p>
       </div>
@@ -122,16 +122,20 @@
       </div>
     </section>
 
-    <!-- Main Navigation Tabs: Roadmap vs Cheat-Sheet -->
+    <!-- Main Navigation Views (3 Pilares Técnicos) -->
     <div class="flex items-center justify-between border-b border-borderDark pb-2 gap-2 flex-wrap">
       <div class="flex items-center space-x-2">
-        <button onclick="switchView('roadmap')" id="view-roadmap-btn" class="px-4 py-2 rounded-xl text-xs font-bold bg-accentCyan text-slate-950 transition-all flex items-center gap-1.5">
+        <button onclick="switchView('roadmap')" id="view-roadmap-btn" class="view-nav-btn px-4 py-2 rounded-xl text-xs font-bold bg-accentCyan text-slate-950 transition-all flex items-center gap-1.5">
           <i data-lucide="map" class="w-3.5 h-3.5"></i>
-          Roadmap & Laboratórios
+          Trilha & Nós
         </button>
-        <button onclick="switchView('cheatsheet')" id="view-cheatsheet-btn" class="px-4 py-2 rounded-xl text-xs font-bold bg-cardDark hover:bg-slate-800 text-slate-300 border border-borderDark transition-all flex items-center gap-1.5">
-          <i data-lucide="code" class="w-3.5 h-3.5"></i>
-          Cheat-Sheet Vault (Sintaxes)
+        <button onclick="switchView('labs')" id="view-labs-btn" class="view-nav-btn px-4 py-2 rounded-xl text-xs font-bold bg-cardDark hover:bg-slate-800 text-slate-300 border border-borderDark transition-all flex items-center gap-1.5">
+          <i data-lucide="flask-conical" class="w-3.5 h-3.5 text-accentPurple"></i>
+          Laboratórios & Repos (3 Provas)
+        </button>
+        <button onclick="switchView('cheatsheet')" id="view-cheatsheet-btn" class="view-nav-btn px-4 py-2 rounded-xl text-xs font-bold bg-cardDark hover:bg-slate-800 text-slate-300 border border-borderDark transition-all flex items-center gap-1.5">
+          <i data-lucide="code" class="w-3.5 h-3.5 text-emerald-400"></i>
+          Cheat-Sheet Vault
         </button>
       </div>
 
@@ -146,7 +150,7 @@
       </div>
     </div>
 
-    <!-- VIEW 1: ROADMAP SECTION -->
+    <!-- VIEW 1: ROADMAP SECTION (Com visual de Nós estilo roadmap.sh) -->
     <div id="roadmap-view" class="space-y-6">
       <!-- Phase Filter Buttons -->
       <div class="flex items-center space-x-2 overflow-x-auto no-scrollbar py-1">
@@ -168,7 +172,178 @@
       <div id="roadmap-container" class="space-y-6"></div>
     </div>
 
-    <!-- VIEW 2: CHEAT-SHEET VAULT -->
+    <!-- VIEW 2: LABORATORIES & REPOS (As 3 Provas de Trabalho) -->
+    <div id="labs-view" class="space-y-6 hidden">
+      <div class="bg-cardDark border border-borderDark rounded-2xl p-4 shadow-lg flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <i data-lucide="flask-conical" class="w-4 h-4 text-accentPurple"></i>
+            Laboratórios de Engenharia (Provas de Trabalho Reais)
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">Construa e teste na prática para consolidar o portfólio no GitHub.</p>
+        </div>
+      </div>
+
+      <!-- Grid dos 3 Labs -->
+      <div class="grid grid-cols-1 gap-6">
+
+        <!-- LAB 1 -->
+        <div class="bg-cardDark border border-borderDark rounded-2xl p-5 shadow-lg space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-borderDark pb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300">LAB 01 • SPRINT 1</span>
+                <h3 class="text-base font-bold text-white">Webhook Ingest & Validador de Regras no n8n</h3>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">Gatilho Webhook recebendo payload JSON externo, aplicando nó de validação IF e gravando no Supabase.</p>
+            </div>
+            <select onchange="updateLabStatus('lab1', this.value)" id="lab1-status" class="bg-slate-900 border border-borderDark rounded-xl px-3 py-1.5 text-xs text-accentCyan focus:outline-none">
+              <option value="pending">🟡 Em Planejamento</option>
+              <option value="building">🔵 Construindo Fluxo</option>
+              <option value="testing">🟣 Homologando / Testes</option>
+              <option value="done">🟢 Concluído & no GitHub</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <span class="text-xs font-semibold text-slate-300 block">Checklist Técnico de Implementação:</span>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab1', 0, this.checked)" id="lab1-step-0" class="rounded bg-slate-800 border-slate-700 text-accentCyan">
+                <span>Criar Webhook Trigger Node (método POST)</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab1', 1, this.checked)" id="lab1-step-1" class="rounded bg-slate-800 border-slate-700 text-accentCyan">
+                <span>Tratar e sanitizar JSON de entrada (nó Code/Set)</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab1', 2, this.checked)" id="lab1-step-2" class="rounded bg-slate-800 border-slate-700 text-accentCyan">
+                <span>Inserir registro via nó HTTP Request no Supabase</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab1', 3, this.checked)" id="lab1-step-3" class="rounded bg-slate-800 border-slate-700 text-accentCyan">
+                <span>Exportar JSON do workflow e commitar no GitHub</span>
+              </label>
+            </div>
+
+            <div class="space-y-2 flex flex-col justify-between">
+              <div>
+                <label class="text-xs font-semibold text-slate-300 block mb-1">Repositório / Link do Fluxo (GitHub):</label>
+                <input type="text" id="lab1-repo" placeholder="https://github.com/GodoyDevv/n8n-webhook-lab" onblur="saveLabRepo('lab1', this.value)" class="w-full bg-slate-900 border border-borderDark rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-accentCyan focus:outline-none">
+              </div>
+              <div class="bg-slate-900/40 p-3 rounded-xl border border-borderDark text-[11px] text-slate-400">
+                💡 <b class="text-slate-200">Dica de Bancada:</b> Teste o disparo do Webhook usando o Postman ou comando cURL pelo terminal PowerShell.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAB 2 -->
+        <div class="bg-cardDark border border-borderDark rounded-2xl p-5 shadow-lg space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-borderDark pb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300">LAB 02 • SPRINT 2</span>
+                <h3 class="text-base font-bold text-white">Agente Autônomo com IA para Triagem de Incidentes</h3>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">Agente n8n usando nós de LLM (Claude/Gemini) para ler descrição de chamado de TI, classificar gravidade e sugerir correção técnica.</p>
+            </div>
+            <select onchange="updateLabStatus('lab2', this.value)" id="lab2-status" class="bg-slate-900 border border-borderDark rounded-xl px-3 py-1.5 text-xs text-accentPurple focus:outline-none">
+              <option value="pending">🟡 Em Planejamento</option>
+              <option value="building">🔵 Construindo Fluxo</option>
+              <option value="testing">🟣 Homologando / Testes</option>
+              <option value="done">🟢 Concluído & no GitHub</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <span class="text-xs font-semibold text-slate-300 block">Checklist Técnico de Implementação:</span>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab2', 0, this.checked)" id="lab2-step-0" class="rounded bg-slate-800 border-slate-700 text-accentPurple">
+                <span>Configurar nó AI Agent no n8n</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab2', 1, this.checked)" id="lab2-step-1" class="rounded bg-slate-800 border-slate-700 text-accentPurple">
+                <span>Conectar nó Anthropic / Claude ou Google Gemini</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab2', 2, this.checked)" id="lab2-step-2" class="rounded bg-slate-800 border-slate-700 text-accentPurple">
+                <span>Engenharia de Prompt estruturada com Output JSON</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab2', 3, this.checked)" id="lab2-step-3" class="rounded bg-slate-800 border-slate-700 text-accentPurple">
+                <span>Gravação da análise e rota no Supabase</span>
+              </label>
+            </div>
+
+            <div class="space-y-2 flex flex-col justify-between">
+              <div>
+                <label class="text-xs font-semibold text-slate-300 block mb-1">Repositório / Link do Fluxo (GitHub):</label>
+                <input type="text" id="lab2-repo" placeholder="https://github.com/GodoyDevv/ai-ticket-triage" onblur="saveLabRepo('lab2', this.value)" class="w-full bg-slate-900 border border-borderDark rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-accentPurple focus:outline-none">
+              </div>
+              <div class="bg-slate-900/40 p-3 rounded-xl border border-borderDark text-[11px] text-slate-400">
+                💡 <b class="text-slate-200">Dica de Bancada:</b> Simule chamados reais de erro de tela ou inconsistência de ERP para testar a precisão da IA.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAB 3 -->
+        <div class="bg-cardDark border border-borderDark rounded-2xl p-5 shadow-lg space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-borderDark pb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">LAB 03 • PROVA OURO</span>
+                <h3 class="text-base font-bold text-white">Agente de Auditoria & Saneamento de Master Data</h3>
+              </div>
+              <p class="text-xs text-slate-400 mt-1">A união do seu diferencial de ERP/Datasul com IA: leitura em lote de cadastros, identificação de inconsistências fiscais/descritivas e saneamento automático.</p>
+            </div>
+            <select onchange="updateLabStatus('lab3', this.value)" id="lab3-status" class="bg-slate-900 border border-borderDark rounded-xl px-3 py-1.5 text-xs text-emerald-400 focus:outline-none">
+              <option value="pending">🟡 Em Planejamento</option>
+              <option value="building">🔵 Construindo Fluxo</option>
+              <option value="testing">🟣 Homologando / Testes</option>
+              <option value="done">🟢 Concluído & no GitHub</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <span class="text-xs font-semibold text-slate-300 block">Checklist Técnico de Implementação:</span>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab3', 0, this.checked)" id="lab3-step-0" class="rounded bg-slate-800 border-slate-700 text-emerald-400">
+                <span>Consulta SQL via nó Supabase/Postgres buscando itens</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab3', 1, this.checked)" id="lab3-step-1" class="rounded bg-slate-800 border-slate-700 text-emerald-400">
+                <span>Nó de IA analisando padrão PDM, duplicatas e NCM</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab3', 2, this.checked)" id="lab3-step-2" class="rounded bg-slate-800 border-slate-700 text-emerald-400">
+                <span>Geração de relatório executivo em JSON e tabela</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-900/60 p-2 rounded-lg border border-borderDark">
+                <input type="checkbox" onchange="toggleLabStep('lab3', 3, this.checked)" id="lab3-step-3" class="rounded bg-slate-800 border-slate-700 text-emerald-400">
+                <span>README no GitHub com prints, diagrama e métricas</span>
+              </label>
+            </div>
+
+            <div class="space-y-2 flex flex-col justify-between">
+              <div>
+                <label class="text-xs font-semibold text-slate-300 block mb-1">Repositório / Link do Fluxo (GitHub):</label>
+                <input type="text" id="lab3-repo" placeholder="https://github.com/GodoyDevv/masterdata-ai-audit" onblur="saveLabRepo('lab3', this.value)" class="w-full bg-slate-900 border border-borderDark rounded-xl p-2.5 text-xs text-slate-100 font-mono focus:border-emerald-400 focus:outline-none">
+              </div>
+              <div class="bg-slate-900/40 p-3 rounded-xl border border-borderDark text-[11px] text-slate-400">
+                💎 <b class="text-slate-200">Projeto Carro-Chefe:</b> Este é o projeto que justifica a sua contratação de R$ 4.000 a R$ 6.000 como Analista de Automação/IA.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIEW 3: CHEAT-SHEET VAULT -->
     <div id="cheatsheet-view" class="space-y-4 hidden">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -388,6 +563,11 @@
 
     let completedItems = new Set();
     let itemNotes = {};
+    let labsData = {
+      lab1: { status: 'pending', repo: '', steps: [false, false, false, false] },
+      lab2: { status: 'pending', repo: '', steps: [false, false, false, false] },
+      lab3: { status: 'pending', repo: '', steps: [false, false, false, false] }
+    };
     let supabaseClient = null;
     let activeNoteItemId = null;
 
@@ -397,6 +577,7 @@
       loadProgressFromStorage();
       initSupabase();
       renderRoadmap('all');
+      renderLabs();
       updateProgressStats();
       loadStudyHours();
     });
@@ -414,11 +595,16 @@
       if (savedNotes) {
         try { itemNotes = JSON.parse(savedNotes); } catch (e) { itemNotes = {}; }
       }
+      const savedLabs = localStorage.getItem('careeros_labs');
+      if (savedLabs) {
+        try { labsData = JSON.parse(savedLabs); } catch (e) {}
+      }
     }
 
     function saveProgressToStorage() {
       localStorage.setItem('careeros_completed', JSON.stringify(Array.from(completedItems)));
       localStorage.setItem('careeros_notes', JSON.stringify(itemNotes));
+      localStorage.setItem('careeros_labs', JSON.stringify(labsData));
     }
 
     function initSupabase() {
@@ -466,23 +652,26 @@
       } catch (e) { console.error('Save to Supabase error:', e); }
     }
 
-    // Alternar Visualizações (Roadmap vs Cheat-Sheet)
+    // Alternar Visualizações (Trilha vs Labs vs Cheat-Sheet)
     function switchView(viewName) {
-      const roadmapView = document.getElementById('roadmap-view');
-      const cheatsheetView = document.getElementById('cheatsheet-view');
-      const roadmapBtn = document.getElementById('view-roadmap-btn');
-      const cheatsheetBtn = document.getElementById('view-cheatsheet-btn');
+      document.getElementById('roadmap-view').classList.add('hidden');
+      document.getElementById('labs-view').classList.add('hidden');
+      document.getElementById('cheatsheet-view').classList.add('hidden');
+
+      document.querySelectorAll('.view-nav-btn').forEach(b => {
+        b.className = 'view-nav-btn px-4 py-2 rounded-xl text-xs font-bold bg-cardDark hover:bg-slate-800 text-slate-300 border border-borderDark transition-all flex items-center gap-1.5';
+      });
 
       if (viewName === 'roadmap') {
-        roadmapView.classList.remove('hidden');
-        cheatsheetView.classList.add('hidden');
-        roadmapBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-accentCyan text-slate-950 transition-all flex items-center gap-1.5';
-        cheatsheetBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-cardDark hover:bg-slate-800 text-slate-300 border border-borderDark transition-all flex items-center gap-1.5';
+        document.getElementById('roadmap-view').classList.remove('hidden');
+        document.getElementById('view-roadmap-btn').className = 'view-nav-btn px-4 py-2 rounded-xl text-xs font-bold bg-accentCyan text-slate-950 transition-all flex items-center gap-1.5';
+      } else if (viewName === 'labs') {
+        document.getElementById('labs-view').classList.remove('hidden');
+        document.getElementById('view-labs-btn').className = 'view-nav-btn px-4 py-2 rounded-xl text-xs font-bold bg-accentCyan text-slate-950 transition-all flex items-center gap-1.5';
+        renderLabs();
       } else {
-        roadmapView.classList.add('hidden');
-        cheatsheetView.classList.remove('hidden');
-        cheatsheetBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-accentCyan text-slate-950 transition-all flex items-center gap-1.5';
-        roadmapBtn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-cardDark hover:bg-slate-800 text-slate-300 border border-borderDark transition-all flex items-center gap-1.5';
+        document.getElementById('cheatsheet-view').classList.remove('hidden');
+        document.getElementById('view-cheatsheet-btn').className = 'view-nav-btn px-4 py-2 rounded-xl text-xs font-bold bg-accentCyan text-slate-950 transition-all flex items-center gap-1.5';
       }
       lucide.createIcons();
     }
@@ -497,6 +686,7 @@
       renderRoadmap(tabId);
     }
 
+    // Renderização dos Nós do Roadmap (com indicador de dependências)
     function renderRoadmap(tabFilter) {
       const container = document.getElementById('roadmap-container');
       container.innerHTML = '';
@@ -504,6 +694,11 @@
       const phases = tabFilter === 'all' 
         ? ROADMAP_DATA 
         : ROADMAP_DATA.filter(f => f.id === tabFilter);
+
+      // Checar status da Fase 1 para indicar destravamento da Fase 2
+      const fase1Total = ROADMAP_DATA[0].items.length;
+      const fase1Completed = ROADMAP_DATA[0].items.filter(i => completedItems.has(i.id)).length;
+      const isFase2Unlocked = (fase1Completed >= 3);
 
       phases.forEach(phase => {
         const phaseCard = document.createElement('div');
@@ -513,12 +708,18 @@
         const phaseTotal = phase.items.length;
         const phasePercent = Math.round((phaseCompletedCount / phaseTotal) * 100);
 
+        let lockBadge = '';
+        if (phase.id === 'fase2' && !isFase2Unlocked) {
+          lockBadge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-300 border border-amber-500/20 flex items-center gap-1">🔒 Complete 3 nós da Fase 1</span>`;
+        }
+
         phaseCard.innerHTML = `
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-borderDark/60 pb-3">
             <div>
               <div class="flex items-center gap-2">
                 <h3 class="text-base font-bold text-white tracking-tight">${phase.title}</h3>
                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-500/10 text-purple-300 border border-purple-500/20">${phase.badge}</span>
+                ${lockBadge}
               </div>
               <p class="text-xs text-slate-400 mt-0.5">${phase.description}</p>
             </div>
@@ -617,11 +818,46 @@
       itemNotes[activeNoteItemId] = text;
       saveProgressToStorage();
       syncItemToSupabase(activeNoteItemId, completedItems.has(activeNoteItemId), text);
-      document.getElementById('notes-saved-status').innerText = 'Salvo no Supabase com sucesso!';
+      document.getElementById('notes-saved-status').innerText = 'Salvo com sucesso!';
       setTimeout(() => {
         closeNotesModal();
         renderRoadmap(currentTab);
       }, 500);
+    }
+
+    // Gerenciamento dos Laboratórios Práticos
+    function renderLabs() {
+      ['lab1', 'lab2', 'lab3'].forEach(labKey => {
+        const data = labsData[labKey] || { status: 'pending', repo: '', steps: [false, false, false, false] };
+        const statusEl = document.getElementById(`${labKey}-status`);
+        const repoEl = document.getElementById(`${labKey}-repo`);
+        if (statusEl) statusEl.value = data.status || 'pending';
+        if (repoEl) repoEl.value = data.repo || '';
+        if (data.steps) {
+          data.steps.forEach((checked, idx) => {
+            const chk = document.getElementById(`${labKey}-step-${idx}`);
+            if (chk) chk.checked = !!checked;
+          });
+        }
+      });
+    }
+
+    function updateLabStatus(labKey, newStatus) {
+      if (!labsData[labKey]) labsData[labKey] = { status: 'pending', repo: '', steps: [false, false, false, false] };
+      labsData[labKey].status = newStatus;
+      saveProgressToStorage();
+    }
+
+    function toggleLabStep(labKey, stepIndex, isChecked) {
+      if (!labsData[labKey]) labsData[labKey] = { status: 'pending', repo: '', steps: [false, false, false, false] };
+      labsData[labKey].steps[stepIndex] = isChecked;
+      saveProgressToStorage();
+    }
+
+    function saveLabRepo(labKey, repoUrl) {
+      if (!labsData[labKey]) labsData[labKey] = { status: 'pending', repo: '', steps: [false, false, false, false] };
+      labsData[labKey].repo = repoUrl.trim();
+      saveProgressToStorage();
     }
 
     // Timer de Estudo & Horas
@@ -678,7 +914,7 @@
       document.getElementById('stat-hours').innerText = `${hours}h`;
     }
 
-    // Modal de Configuração
+    // Modal de Configuração Supabase
     function toggleSettingsModal() {
       const modal = document.getElementById('settings-modal');
       modal.classList.toggle('hidden');
