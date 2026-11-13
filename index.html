@@ -244,32 +244,32 @@
     </div>
   </div>
 
-  <!-- Switcher de Abas Completo (6 Modos RPG) -->
+  <!-- Switcher de Abas Completo (Design Responsivo em Grade Sem Scroll) -->
   <div class="max-w-5xl w-full mx-auto px-4 lg:px-6 pt-5">
-    <div class="flex items-center gap-2 border-b border-white/10 pb-3 overflow-x-auto">
-      <button onclick="switchView('quests')" id="tab-btn-quests" class="px-4 py-2 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 shrink-0">
-        <i data-lucide="sword" class="w-4 h-4"></i>
-        Quadro de Missões
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 border-b border-white/10 pb-3">
+      <button onclick="switchView('quests')" id="tab-btn-quests" class="w-full py-2.5 px-3 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20">
+        <i data-lucide="sword" class="w-4 h-4 shrink-0"></i>
+        <span class="truncate">Missões</span>
       </button>
-      <button onclick="switchView('stats')" id="tab-btn-stats" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0">
-        <i data-lucide="shield-alert" class="w-4 h-4 text-sky-400"></i>
-        Atributos de Engenharia
+      <button onclick="switchView('stats')" id="tab-btn-stats" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+        <i data-lucide="shield-alert" class="w-4 h-4 text-sky-400 shrink-0"></i>
+        <span class="truncate">Atributos</span>
       </button>
-      <button onclick="switchView('boss')" id="tab-btn-boss" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0">
-        <i data-lucide="skull" class="w-4 h-4 text-red-400"></i>
-        Boss Fights (Labs)
+      <button onclick="switchView('boss')" id="tab-btn-boss" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+        <i data-lucide="skull" class="w-4 h-4 text-red-400 shrink-0"></i>
+        <span class="truncate">Boss Fights</span>
       </button>
-      <button onclick="switchView('inventory')" id="tab-btn-inventory" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0">
-        <i data-lucide="package" class="w-4 h-4 text-purple-400"></i>
-        Mochila & Loot
+      <button onclick="switchView('inventory')" id="tab-btn-inventory" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+        <i data-lucide="package" class="w-4 h-4 text-purple-400 shrink-0"></i>
+        <span class="truncate">Mochila</span>
       </button>
-      <button onclick="switchView('rewards')" id="tab-btn-rewards" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0">
-        <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-300"></i>
-        Loja de Recompensas
+      <button onclick="switchView('rewards')" id="tab-btn-rewards" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+        <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-300 shrink-0"></i>
+        <span class="truncate">Loja Real</span>
       </button>
-      <button onclick="switchView('tree')" id="tab-btn-tree" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0">
-        <i data-lucide="git-commit" class="w-4 h-4 text-emerald-400"></i>
-        Skill Tree
+      <button onclick="switchView('tree')" id="tab-btn-tree" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+        <i data-lucide="git-commit" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+        <span class="truncate">Skill Tree</span>
       </button>
     </div>
   </div>
@@ -1370,13 +1370,13 @@
       });
 
       document.querySelectorAll('#tab-btn-quests, #tab-btn-stats, #tab-btn-boss, #tab-btn-inventory, #tab-btn-rewards, #tab-btn-tree').forEach(b => {
-        b.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center gap-2 shrink-0';
+        b.className = 'w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5';
       });
 
       const activeBtn = document.getElementById(`tab-btn-${viewName}`);
       const activeView = document.getElementById(`view-${viewName}`);
 
-      if (activeBtn) activeBtn.className = 'px-4 py-2 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center gap-2 shadow-lg shadow-amber-500/20 shrink-0';
+      if (activeBtn) activeBtn.className = 'w-full py-2.5 px-3 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20';
       if (activeView) activeView.classList.remove('hidden');
 
       if (viewName === 'quests') renderQuestsBoard();
