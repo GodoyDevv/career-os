@@ -13,6 +13,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js para Radar Chart e Gráficos RPG -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- Canvas Confetti para celebrações de XP e Boss Fights -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
@@ -321,62 +323,73 @@
           </div>
         </div>
 
-        <!-- Barras de Atributos -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
-          <!-- 1. Engenharia n8n -->
-          <div class="bg-slate-950/70 p-4 rounded-xl border border-white/5 space-y-2">
-            <div class="flex justify-between items-center text-xs font-mono">
-              <span class="font-bold text-sky-400 flex items-center gap-1.5">
-                <i data-lucide="workflow" class="w-4 h-4"></i> Automação & n8n
-              </span>
-              <span id="attr-n8n-val" class="font-bold text-white">LVL 1 (25 pts)</span>
+        <!-- Visual Gráfico: Radar de Atributos + Barras -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6 items-center">
+          <!-- Gráfico Radar Interativo (Chart.js) -->
+          <div class="lg:col-span-5 bg-slate-950/70 p-4 rounded-2xl border border-white/5 flex flex-col items-center justify-center">
+            <span class="text-[10px] font-mono text-slate-400 font-bold uppercase tracking-wider mb-2">Polígono de Competências Técnicas</span>
+            <div class="w-full max-w-[280px] h-[280px]">
+              <canvas id="attributesRadarChart"></canvas>
             </div>
-            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-white/5">
-              <div id="attr-n8n-bar" class="h-full bg-sky-400 rounded-full transition-all duration-500" style="width: 25%"></div>
-            </div>
-            <p class="text-[11px] text-slate-400">Sobe com aulas de nós, webhooks e expressões JSON.</p>
           </div>
 
-          <!-- 2. Banco de Dados & SQL -->
-          <div class="bg-slate-950/70 p-4 rounded-xl border border-white/5 space-y-2">
-            <div class="flex justify-between items-center text-xs font-mono">
-              <span class="font-bold text-emerald-400 flex items-center gap-1.5">
-                <i data-lucide="database" class="w-4 h-4"></i> Banco de Dados & SQL
-              </span>
-              <span id="attr-sql-val" class="font-bold text-white">LVL 1 (15 pts)</span>
+          <!-- Barras de Atributos -->
+          <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- 1. Engenharia n8n -->
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-white/5 space-y-2">
+              <div class="flex justify-between items-center text-xs font-mono">
+                <span class="font-bold text-sky-400 flex items-center gap-1.5">
+                  <i data-lucide="workflow" class="w-4 h-4"></i> Automação & n8n
+                </span>
+                <span id="attr-n8n-val" class="font-bold text-white">LVL 1 (25 pts)</span>
+              </div>
+              <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="attr-n8n-bar" class="h-full bg-sky-400 rounded-full transition-all duration-500" style="width: 25%"></div>
+              </div>
+              <p class="text-[11px] text-slate-400">Sobe com aulas de nós, webhooks e expressões JSON.</p>
             </div>
-            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-white/5">
-              <div id="attr-sql-bar" class="h-full bg-emerald-400 rounded-full transition-all duration-500" style="width: 15%"></div>
-            </div>
-            <p class="text-[11px] text-slate-400">Sobe com queries Supabase, modelagem e filtros relacionais.</p>
-          </div>
 
-          <!-- 3. IA & Agentes -->
-          <div class="bg-slate-950/70 p-4 rounded-xl border border-white/5 space-y-2">
-            <div class="flex justify-between items-center text-xs font-mono">
-              <span class="font-bold text-purple-400 flex items-center gap-1.5">
-                <i data-lucide="bot" class="w-4 h-4"></i> Agentes Autônomos & LLM
-              </span>
-              <span id="attr-ai-val" class="font-bold text-white">LVL 1 (10 pts)</span>
+            <!-- 2. Banco de Dados & SQL -->
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-white/5 space-y-2">
+              <div class="flex justify-between items-center text-xs font-mono">
+                <span class="font-bold text-emerald-400 flex items-center gap-1.5">
+                  <i data-lucide="database" class="w-4 h-4"></i> Banco & SQL
+                </span>
+                <span id="attr-sql-val" class="font-bold text-white">LVL 1 (15 pts)</span>
+              </div>
+              <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="attr-sql-bar" class="h-full bg-emerald-400 rounded-full transition-all duration-500" style="width: 15%"></div>
+              </div>
+              <p class="text-[11px] text-slate-400">Sobe com queries Supabase, modelagem e filtros.</p>
             </div>
-            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-white/5">
-              <div id="attr-ai-bar" class="h-full bg-purple-400 rounded-full transition-all duration-500" style="width: 10%"></div>
-            </div>
-            <p class="text-[11px] text-slate-400">Sobe com orquestração de LLMs, MCP e engenharia de prompts.</p>
-          </div>
 
-          <!-- 4. Networking & Presença -->
-          <div class="bg-slate-950/70 p-4 rounded-xl border border-white/5 space-y-2">
-            <div class="flex justify-between items-center text-xs font-mono">
-              <span class="font-bold text-amber-400 flex items-center gap-1.5">
-                <i data-lucide="share-2" class="w-4 h-4"></i> Networking & Carreira
-              </span>
-              <span id="attr-net-val" class="font-bold text-white">LVL 1 (20 pts)</span>
+            <!-- 3. IA & Agentes -->
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-white/5 space-y-2">
+              <div class="flex justify-between items-center text-xs font-mono">
+                <span class="font-bold text-purple-400 flex items-center gap-1.5">
+                  <i data-lucide="bot" class="w-4 h-4"></i> Agentes & LLM
+                </span>
+                <span id="attr-ai-val" class="font-bold text-white">LVL 1 (10 pts)</span>
+              </div>
+              <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="attr-ai-bar" class="h-full bg-purple-400 rounded-full transition-all duration-500" style="width: 10%"></div>
+              </div>
+              <p class="text-[11px] text-slate-400">Sobe com orquestração de LLMs e prompts.</p>
             </div>
-            <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-white/5">
-              <div id="attr-net-bar" class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width: 20%"></div>
+
+            <!-- 4. Networking & Presença -->
+            <div class="bg-slate-950/70 p-4 rounded-xl border border-white/5 space-y-2">
+              <div class="flex justify-between items-center text-xs font-mono">
+                <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                  <i data-lucide="share-2" class="w-4 h-4"></i> Networking
+                </span>
+                <span id="attr-net-val" class="font-bold text-white">LVL 1 (20 pts)</span>
+              </div>
+              <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-white/5">
+                <div id="attr-net-bar" class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width: 20%"></div>
+              </div>
+              <p class="text-[11px] text-slate-400">Sobe com conexões e artigos no LinkedIn.</p>
             </div>
-            <p class="text-[11px] text-slate-400">Sobe com conexões no LinkedIn e artigos técnicos publicados.</p>
           </div>
         </div>
       </div>
@@ -401,21 +414,20 @@
       </div>
 
       <!-- BOSS 1 -->
-      <div id="boss-card-lab1" class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-black px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-mono">CHEFE 1 • NÍVEL 1</span>
-              <span class="text-xs font-mono font-bold text-amber-400">+750 XP | +250 Coins</span>
-            </div>
-            <h4 class="text-base font-black text-white mt-1 flex items-center gap-2">
-              👾 O Dragão do Payload Malformado (Lab 1: Webhook Ingest)
-            </h4>
-            <p class="text-xs text-slate-400">Criar ingestão de Webhook com validação de payload JSON e persistência no Supabase.</p>
+      <div id="boss-card-lab1" class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl relative overflow-hidden">
+        <!-- Visual Gráfico: Sprite / Avatar do Chefe -->
+        <div class="flex items-center gap-4 bg-slate-950/80 p-3.5 rounded-xl border border-red-500/20">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 via-orange-600 to-amber-700 p-0.5 shadow-lg shadow-red-500/30 flex items-center justify-center shrink-0">
+            <span class="text-3xl animate-pulse">🐉</span>
           </div>
-          <span id="boss-badge-lab1" class="text-xs font-mono font-bold px-3 py-1 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30">
-            EM COMBATE
-          </span>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono font-black text-red-400 uppercase tracking-widest bg-red-500/10 px-2 py-0.5 rounded border border-red-500/30">BOSS FIGHT • LAB 01</span>
+              <span id="boss-badge-lab1" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30">EM COMBATE</span>
+            </div>
+            <h4 class="text-sm font-black text-white mt-1">O Dragão do Payload Malformado</h4>
+            <p class="text-xs text-slate-400">Gatilho Webhook n8n com sanitização de JSON e persistência no Supabase.</p>
+          </div>
         </div>
 
         <!-- Barra de Vida do Chefe (HP) -->
@@ -462,21 +474,20 @@
       </div>
 
       <!-- BOSS 2 -->
-      <div id="boss-card-lab2" class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-black px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono">CHEFE 2 • NÍVEL 2</span>
-              <span class="text-xs font-mono font-bold text-amber-400">+750 XP | +300 Coins</span>
-            </div>
-            <h4 class="text-base font-black text-white mt-1 flex items-center gap-2">
-              🧠 O Golem do Incidente Crítico (Lab 2: Agente de Triagem)
-            </h4>
-            <p class="text-xs text-slate-400">Agente n8n usando nós de LLM (Claude/Gemini) para ler e categorizar chamados.</p>
+      <div id="boss-card-lab2" class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl relative overflow-hidden">
+        <!-- Visual Gráfico: Sprite / Avatar do Chefe 2 -->
+        <div class="flex items-center gap-4 bg-slate-950/80 p-3.5 rounded-xl border border-purple-500/20">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 via-indigo-600 to-sky-700 p-0.5 shadow-lg shadow-purple-500/30 flex items-center justify-center shrink-0">
+            <span class="text-3xl animate-pulse">🤖</span>
           </div>
-          <span id="boss-badge-lab2" class="text-xs font-mono font-bold px-3 py-1 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30">
-            EM COMBATE
-          </span>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono font-black text-purple-400 uppercase tracking-widest bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/30">BOSS FIGHT • LAB 02</span>
+              <span id="boss-badge-lab2" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30">EM COMBATE</span>
+            </div>
+            <h4 class="text-sm font-black text-white mt-1">O Golem do Incidente Crítico</h4>
+            <p class="text-xs text-slate-400">Agente autônomo com LLMs para triagem semântica de chamados corporativos.</p>
+          </div>
         </div>
 
         <div>
@@ -519,21 +530,20 @@
       </div>
 
       <!-- BOSS 3 -->
-      <div id="boss-card-lab3" class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-black px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">CHEFE FINAL • NÍVEL 3 (PROVA OURO)</span>
-              <span class="text-xs font-mono font-bold text-amber-400">+1000 XP | +500 Coins</span>
-            </div>
-            <h4 class="text-base font-black text-white mt-1 flex items-center gap-2">
-              👑 O Titã do Master Data Corrompido (Lab 3: Auditoria Datasul)
-            </h4>
-            <p class="text-xs text-slate-400">Leitura em lote de cadastros Datasul, saneamento com IA e emissão de relatório.</p>
+      <div id="boss-card-lab3" class="bg-slate-900/80 border border-white/10 rounded-2xl p-5 space-y-4 shadow-xl relative overflow-hidden">
+        <!-- Visual Gráfico: Sprite / Avatar do Chefe 3 -->
+        <div class="flex items-center gap-4 bg-slate-950/80 p-3.5 rounded-xl border border-emerald-500/20">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-600 via-teal-600 to-amber-700 p-0.5 shadow-lg shadow-emerald-500/30 flex items-center justify-center shrink-0">
+            <span class="text-3xl animate-pulse">👑</span>
           </div>
-          <span id="boss-badge-lab3" class="text-xs font-mono font-bold px-3 py-1 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30">
-            EM COMBATE
-          </span>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono font-black text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">BOSS FINAL • LAB 03 (PROVA OURO)</span>
+              <span id="boss-badge-lab3" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30">EM COMBATE</span>
+            </div>
+            <h4 class="text-sm font-black text-white mt-1">O Titã do Master Data Corrompido</h4>
+            <p class="text-xs text-slate-400">Auditoria inteligente de itens Datasul/ERP, saneamento fiscal e relatório executivo.</p>
+          </div>
         </div>
 
         <div>
@@ -1592,6 +1602,59 @@
       setAttr('sql', sqlPoints);
       setAttr('ai', aiPoints);
       setAttr('net', netPoints);
+
+      renderRadarChart(n8nPoints, sqlPoints, aiPoints, netPoints);
+    }
+
+    let radarChartInstance = null;
+    function renderRadarChart(n8n, sql, ai, net) {
+      const ctx = document.getElementById('attributesRadarChart');
+      if (!ctx || !window.Chart) return;
+
+      const data = {
+        labels: ['Automação (n8n)', 'Banco (SQL)', 'Agentes (LLM)', 'Networking'],
+        datasets: [{
+          label: 'Pontos de Competência',
+          data: [n8n, sql, ai, net],
+          fill: true,
+          backgroundColor: 'rgba(56, 189, 248, 0.25)',
+          borderColor: '#38bdf8',
+          pointBackgroundColor: '#fbbf24',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: '#fbbf24'
+        }]
+      };
+
+      const config = {
+        type: 'radar',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          elements: { line: { borderWidth: 2 } },
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+              grid: { color: 'rgba(255, 255, 255, 0.08)' },
+              pointLabels: { color: '#94a3b8', font: { size: 10, family: 'monospace' } },
+              ticks: { display: false, stepSize: 20 },
+              suggestedMin: 0,
+              suggestedMax: 100
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      };
+
+      if (radarChartInstance) {
+        radarChartInstance.data.datasets[0].data = [n8n, sql, ai, net];
+        radarChartInstance.update();
+      } else {
+        radarChartInstance = new Chart(ctx, config);
+      }
     }
 
     // ==========================================
