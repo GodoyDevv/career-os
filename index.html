@@ -127,6 +127,50 @@
     .boss-damaged {
       animation: damageShake 0.4s ease-in-out;
     }
+
+    /* AWS Card Clash / Cloud Quest Arcade Styles */
+    .arcade-slot {
+      border: 2px dashed #334155;
+      background: rgba(15, 23, 42, 0.75);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .arcade-slot-active {
+      border-color: #38bdf8;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.08);
+    }
+    .arcade-slot-filled {
+      border: 2px solid #818cf8;
+      background: linear-gradient(145deg, rgba(99, 102, 241, 0.15) 0%, #0f172a 100%);
+    }
+    .arcade-slot-valid {
+      border-color: #10b981 !important;
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.2) 0%, #0f172a 100%) !important;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.4) !important;
+    }
+    .arcade-slot-error {
+      border-color: #ef4444 !important;
+      background: linear-gradient(145deg, rgba(239, 68, 68, 0.2) 0%, #0f172a 100%) !important;
+      animation: damageShake 0.4s ease-in-out;
+    }
+    .deck-card {
+      background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid #334155;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .deck-card:hover {
+      transform: translateY(-5px);
+      border-color: #38bdf8;
+      box-shadow: 0 12px 24px -6px rgba(56, 189, 248, 0.4);
+    }
+    @keyframes packetFlow {
+      0% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.06); filter: brightness(1.4); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+    .packet-testing {
+      animation: packetFlow 0.5s ease-in-out;
+    }
   </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col roadmap-grid pb-24">
@@ -200,7 +244,12 @@
           </h2>
         </div>
 
-        <div class="flex items-center gap-3 bg-slate-950 p-2.5 rounded-xl border border-white/5">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3 bg-slate-950 p-2.5 rounded-xl border border-white/5">
+          <div class="text-center px-2">
+            <span class="text-base font-black text-cyan-400 block" id="stat-arcade-done">0/6</span>
+            <span class="text-[9px] uppercase tracking-wider text-slate-500">Arcade</span>
+          </div>
+          <div class="w-px h-6 bg-slate-800"></div>
           <div class="text-center px-2">
             <span class="text-base font-black text-amber-400 block" id="stat-quests-done">0/8</span>
             <span class="text-[9px] uppercase tracking-wider text-slate-500">Missões</span>
@@ -240,7 +289,7 @@
           <span id="sync-text">Supabase Cloud Sync: Conectado</span>
         </div>
         <div class="flex items-center gap-3 text-[11px] font-mono">
-          <span class="text-slate-400">⚡ Ganhe XP & Moedas ao concluir tarefas e derrotar Chefes de Código</span>
+          <span class="text-slate-400">🕹️ Estude jogando no Arcade Lab (estilo AWS Cloud Quest & Card Clash)</span>
         </div>
       </div>
     </div>
@@ -248,28 +297,32 @@
 
   <!-- Switcher de Abas Completo (Design Responsivo em Grade Sem Scroll) -->
   <div class="max-w-5xl w-full mx-auto px-4 lg:px-6 pt-5">
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 border-b border-white/10 pb-3">
-      <button onclick="switchView('quests')" id="tab-btn-quests" class="w-full py-2.5 px-3 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20">
-        <i data-lucide="sword" class="w-4 h-4 shrink-0"></i>
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 border-b border-white/10 pb-3">
+      <button onclick="switchView('arcade')" id="tab-btn-arcade" class="w-full py-2.5 px-2.5 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20">
+        <i data-lucide="gamepad-2" class="w-4 h-4 shrink-0"></i>
+        <span class="truncate">🕹️ Arcade Lab</span>
+      </button>
+      <button onclick="switchView('quests')" id="tab-btn-quests" class="w-full py-2.5 px-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+        <i data-lucide="sword" class="w-4 h-4 text-amber-400 shrink-0"></i>
         <span class="truncate">Missões</span>
       </button>
-      <button onclick="switchView('stats')" id="tab-btn-stats" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+      <button onclick="switchView('stats')" id="tab-btn-stats" class="w-full py-2.5 px-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
         <i data-lucide="shield-alert" class="w-4 h-4 text-sky-400 shrink-0"></i>
         <span class="truncate">Atributos</span>
       </button>
-      <button onclick="switchView('boss')" id="tab-btn-boss" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+      <button onclick="switchView('boss')" id="tab-btn-boss" class="w-full py-2.5 px-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
         <i data-lucide="skull" class="w-4 h-4 text-red-400 shrink-0"></i>
         <span class="truncate">Boss Fights</span>
       </button>
-      <button onclick="switchView('inventory')" id="tab-btn-inventory" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+      <button onclick="switchView('inventory')" id="tab-btn-inventory" class="w-full py-2.5 px-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
         <i data-lucide="package" class="w-4 h-4 text-purple-400 shrink-0"></i>
         <span class="truncate">Mochila</span>
       </button>
-      <button onclick="switchView('rewards')" id="tab-btn-rewards" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+      <button onclick="switchView('rewards')" id="tab-btn-rewards" class="w-full py-2.5 px-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
         <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-300 shrink-0"></i>
         <span class="truncate">Loja Real</span>
       </button>
-      <button onclick="switchView('tree')" id="tab-btn-tree" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5">
+      <button onclick="switchView('tree')" id="tab-btn-tree" class="w-full py-2.5 px-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5 col-span-2 sm:col-span-2 lg:col-span-1">
         <i data-lucide="git-commit" class="w-4 h-4 text-emerald-400 shrink-0"></i>
         <span class="truncate">Skill Tree</span>
       </button>
@@ -280,9 +333,169 @@
   <main class="max-w-5xl w-full mx-auto p-4 lg:p-6 flex-1">
 
     <!-- ============================================================= -->
+    <!-- VIEW 0: SIMULADOR ARCADE (ESTILO AWS CLOUD QUEST & CARD CLASH) -->
+    <!-- ============================================================= -->
+    <section id="view-arcade" class="space-y-6">
+      <!-- Banner Superior Fliperama AWS Skill Builder Style -->
+      <div class="bg-gradient-to-r from-cyan-500/15 via-slate-900 to-amber-500/15 border border-cyan-500/30 rounded-2xl p-5 relative overflow-hidden backdrop-blur-xl shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[10px] font-black text-cyan-300 uppercase tracking-widest bg-cyan-500/20 px-2.5 py-0.5 rounded border border-cyan-400/30 font-mono">
+                🕹️ MODO FLIPERAMA • AWS CLOUD QUEST + CARD CLASH ENGINE
+              </span>
+              <span class="text-[10px] font-mono text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20" id="arcade-progress-pill">
+                0/6 Certificações de Arquitetura Concluídas
+              </span>
+            </div>
+            <h3 class="text-lg font-black text-white mt-1.5">Estude Jogando: Resolva Crises Reais & Monte Arquiteturas em Tabuleiro</h3>
+            <p class="text-xs text-slate-300 mt-1">
+              1️⃣ Leia o chamado do cliente (Cloud Quest) e estude a <b>Pílula de Certificação</b> • 2️⃣ Escale as <b>Cartas de Serviço</b> nos 4 Slots do Pipeline (Card Clash) • 3️⃣ Rode a <b>Simulação de Tráfego</b> e responda o <b>Exame Oficial</b>!
+            </p>
+          </div>
+        </div>
+
+        <!-- Seletor de Fases do Fliperama (6 Cenários de Certificação) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mt-4 pt-4 border-t border-white/10" id="arcade-mission-selector">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+
+      <!-- Grid Principal do Jogo: Briefing NPC + Pílula Teórica (Esquerda) | Tabuleiro Card Clash (Direita) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- COLUNA 1: NPC CLOUD QUEST + LIÇÃO DE CERTIFICAÇÃO (5 Colunas) -->
+        <div class="lg:col-span-5 space-y-4">
+          <!-- Card do Chamado do NPC (AWS Cloud Quest Style) -->
+          <div class="bg-slate-900/90 border border-white/10 rounded-2xl p-4 relative overflow-hidden shadow-xl">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20" id="arcade-mission-badge">
+                FASE 1 • N8N101 CERT
+              </span>
+              <span class="text-xs font-mono font-black text-emerald-400" id="arcade-mission-reward">
+                +250 XP • 🪙 +90
+              </span>
+            </div>
+
+            <div class="flex items-start gap-3.5 bg-slate-950/90 p-3.5 rounded-xl border border-white/10">
+              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-cyan-500/20 border border-amber-400/40 flex items-center justify-center text-2xl shrink-0 shadow-inner" id="arcade-npc-avatar">
+                👷‍♂️
+              </div>
+              <div>
+                <h4 class="text-sm font-black text-white" id="arcade-npc-name">Carlos Mendes</h4>
+                <p class="text-[10px] font-mono text-cyan-400 uppercase" id="arcade-npc-role">Gerente Industrial • Planta Química</p>
+                <p class="text-xs text-slate-300 mt-2 leading-relaxed italic" id="arcade-npc-dialogue">
+                  "Bruno! Nossos sensores de pressão estão enviando alertas via HTTP, mas os dados chegam sujos e precisamos gravar tudo no banco em tempo real sem perder pacotes!"
+                </p>
+              </div>
+            </div>
+
+            <!-- Pílula Didática de Estudo (Onde você aprende a matéria da certificação) -->
+            <div class="mt-4 bg-cyan-950/30 border border-cyan-500/30 rounded-xl p-3.5">
+              <div class="flex items-center gap-1.5 text-cyan-300 font-black text-xs mb-1.5">
+                <i data-lucide="book-open-check" class="w-4 h-4 text-cyan-400"></i>
+                <span>PÍLULA DE ESTUDO (CONCEITO DE PROVA)</span>
+              </div>
+              <div class="text-xs text-slate-200 leading-relaxed space-y-1.5" id="arcade-theory-content">
+                <!-- Preenchido via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUNA 2: TABULEIRO DE ARQUITETURA AWS CARD CLASH (7 Colunas) -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="bg-slate-900/90 border border-white/10 rounded-2xl p-4 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div>
+                <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase tracking-wider">Tabuleiro de Arquitetura • Card Clash</span>
+                <h4 class="text-sm font-black text-white" id="arcade-board-title">Monte o Pipeline de 4 Estágios na Ordem Correta</h4>
+              </div>
+              <button onclick="resetArcadeBoard()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold flex items-center gap-1 border border-white/10 transition-colors">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                Limpar Tabuleiro
+              </button>
+            </div>
+
+            <!-- Os 4 Slots Conectados do Pipeline -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 relative" id="arcade-slots-container">
+              <!-- Renderizado via JS -->
+            </div>
+
+            <!-- Instrução do Slot Selecionado -->
+            <div class="mt-3 flex items-center justify-between bg-slate-950/80 px-3 py-2 rounded-xl border border-white/5 text-[11px]">
+              <span class="text-slate-300" id="arcade-slot-hint">
+                👉 <b>Passo 1:</b> Clique em uma carta abaixo para alocá-la no <b class="text-amber-400">Slot 1</b> selecionado.
+              </span>
+              <span class="font-mono text-cyan-400 font-bold" id="arcade-slots-filled-count">0/4 Slots</span>
+            </div>
+
+            <!-- Mão de Cartas (Deck de Componentes de Arquitetura) -->
+            <div class="mt-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-black uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+                  <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                  Sua Mão de Cartas Técnicas (Cuidado com as 2 Cartas Armadilha!)
+                </span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5" id="arcade-deck-container">
+                <!-- Renderizado via JS -->
+              </div>
+            </div>
+
+            <!-- Botão de Deploy & Simulação de Tráfego em Tempo Real -->
+            <div class="mt-4 pt-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div class="text-[11px] text-slate-400">
+                Preencha os 4 slots da arquitetura e dispare o teste de carga para validar seu projeto.
+              </div>
+              <button onclick="runArcadeSimulation()" id="btn-run-simulation" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 hover:scale-[1.02] transition-all">
+                <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
+                <span>SIMULAR TRÁFEGO & VALIDAR ARQUITETURA</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Console Visual de Simulação de Pacotes + Desbloqueio do Exame de Certificação -->
+          <div id="arcade-simulation-panel" class="hidden bg-slate-950 border border-cyan-500/30 rounded-2xl p-4 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" id="sim-status-dot"></span>
+                <span class="text-xs font-mono font-bold text-cyan-300">LIVE TRAFFIC TELEMETRY • AWS/N8N RUNTIME ENGINE</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-400" id="sim-status-badge">Executando...</span>
+            </div>
+
+            <!-- Logs do Terminal de Tráfego -->
+            <div id="arcade-terminal-logs" class="font-mono text-xs space-y-1.5 bg-slate-900/90 p-3 rounded-xl border border-white/5 max-h-48 overflow-y-auto">
+              <!-- Logs aparecem passo a passo -->
+            </div>
+
+            <!-- Desafio Final de Certificação (Aparece quando a arquitetura passa no teste!) -->
+            <div id="arcade-quiz-box" class="hidden bg-gradient-to-br from-indigo-950/70 via-slate-900 to-slate-950 border border-indigo-400/40 rounded-xl p-4 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono font-black uppercase tracking-widest bg-indigo-500/20 text-indigo-300 px-2.5 py-0.5 rounded border border-indigo-400/30">
+                  🎓 QUESTÃO OFICIAL DE CERTIFICAÇÃO (FINALIZAR FASE)
+                </span>
+                <span class="text-[11px] font-mono text-amber-300 font-bold">Validação Teórica</span>
+              </div>
+              <p class="text-xs sm:text-sm font-bold text-white leading-relaxed" id="arcade-quiz-question">
+                <!-- Pergunta -->
+              </p>
+              <div class="space-y-2" id="arcade-quiz-options">
+                <!-- Opções clicáveis -->
+              </div>
+              <div id="arcade-quiz-feedback" class="hidden p-3 rounded-xl text-xs leading-relaxed"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
     <!-- VIEW 1: QUADRO DE MISSÕES (QUEST LOG)                         -->
     <!-- ============================================================= -->
-    <section id="view-quests" class="space-y-6">
+    <section id="view-quests" class="space-y-6 hidden">
       <div class="bg-gradient-to-r from-amber-500/10 via-slate-900 to-indigo-500/10 border border-amber-500/30 rounded-2xl p-5 relative overflow-hidden backdrop-blur-xl">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -1202,6 +1415,10 @@
     let playerXp = 0;
     let playerCoins = 0;
     let completedQuests = new Set();
+    let completedArcadeMissions = new Set();
+    let currentArcadeMissionIdx = 0;
+    let selectedSlotIdx = 0;
+    let arcadeBoardState = [null, null, null, null];
     let completedItems = new Set();
     let completedSubtasks = {};
     let expandedNodes = new Set();
@@ -1214,10 +1431,257 @@
     let supabaseClient = null;
     let activeNoteItemId = null;
 
+    // =========================================================================
+    // BANCO DE CENÁRIOS DO FLIPERAMA (ESTILO AWS CLOUD QUEST + AWS CARD CLASH)
+    // =========================================================================
+    const ARCADE_MISSIONS = [
+      {
+        id: 'arc_1',
+        shortName: '1. Webhook Ingest',
+        badge: 'FASE 1 • N8N101 CERT',
+        xp: 250,
+        coins: 90,
+        npcName: 'Carlos Mendes',
+        npcRole: 'Gerente Industrial • Planta Química',
+        npcAvatar: '👷‍♂️',
+        npcDialogue: '"Bruno! Nossos sensores industriais estão disparando alertas via HTTP POST a cada 5 segundos, mas o JSON chega cheio de campos nulos, senhas expostas e tipos errados. Precisamos receber, sanitizar, gravar no banco e devolver 200 OK imediato!"',
+        theoryLesson: `
+          <p>📌 <b>Regra de Ouro (Certificação N8N101):</b> Um <code>Webhook Node</code> em produção trabalha de forma <b>Event-Driven (orientada a eventos)</b>, ao contrário do <code>Schedule/Cron</code> que faz polling por tempo.</p>
+          <p>📌 <b>Higiene de Payload:</b> Nunca grave o payload bruto de um webhook externo direto no banco! Use sempre o nó <code>Edit Fields (Set)</code> para <b>tipar dados (String/Number)</b> e descartar campos sensíveis antes do <code>Supabase Insert</code>.</p>
+        `,
+        slotLabels: [
+          '1. Gatilho HTTP',
+          '2. Higienização JSON',
+          '3. Persistência Cloud',
+          '4. Resposta HTTP'
+        ],
+        correctOrder: ['c1_webhook', 'c1_set', 'c1_supabase', 'c1_respond'],
+        deck: [
+          { id: 'c1_webhook', icon: '📡', title: 'Webhook POST Node', type: 'Trigger', desc: 'Escuta requisições HTTP POST em tempo real na porta segura.' },
+          { id: 'c1_set', icon: '🧹', title: 'Edit Fields (Set)', type: 'Transform', desc: 'Filtra chaves, converte tipos (String/Number) e limpa lixo do JSON.' },
+          { id: 'c1_supabase', icon: '🗄️', title: 'Supabase Insert', type: 'Database', desc: 'Insere o registro limpo na tabela de telemetria PostgreSQL.' },
+          { id: 'c1_respond', icon: '✅', title: 'Respond to Webhook', type: 'Output', desc: 'Devolve Status 200 OK com recibo JSON para o sensor industrial.' },
+          { id: 'c1_trap1', icon: '⏰', title: 'Cron Schedule 24h', type: 'Trap', desc: 'Roda apenas 1x por dia (Causaria perda de alertas em tempo real!).' },
+          { id: 'c1_trap2', icon: '🗑️', title: 'Drop Table SQL', type: 'Trap', desc: 'Apaga a estrutura da tabela de produção (Perigo crítico!).' }
+        ],
+        quiz: {
+          question: 'Na certificação n8n Essentials (N8N101), por que devemos usar o nó "Edit Fields (Set)" com a opção "Include Other Input Fields = OFF" antes de inserir dados de um Webhook no Supabase?',
+          options: [
+            'Para aumentar o consumo de memória RAM do servidor n8n.',
+            'Para garantir sanitização de schema (Data Hygiene), enviando ao banco apenas colunas validadas e descartando headers/lixo malicioso.',
+            'Porque o nó Webhook não suporta o formato JSON nativamente.'
+          ],
+          correctIdx: 1,
+          explanation: 'Perfeito! Desativar campos extras no Edit Fields garante um contrato estrito de dados (Schema Enforcement), evitando que campos inesperados quebrem o INSERT no PostgreSQL ou vazem headers HTTP.'
+        }
+      },
+      {
+        id: 'arc_2',
+        shortName: '2. Roteamento & Erros',
+        badge: 'FASE 2 • N8N102 FLOW',
+        xp: 280,
+        coins: 100,
+        npcName: 'Fernanda Costa',
+        npcRole: 'Head de Operações Logísticas',
+        npcAvatar: '👩‍💼',
+        npcDialogue: '"Bruno, quando a API da Receita Federal cai no meio da madrugada, nosso fluxo de notas fiscais simplesmente trava e ninguém fica sabendo! Além disso, notas acima de R$ 50 mil precisam ir para aprovação especial."',
+        theoryLesson: `
+          <p>📌 <b>Controle de Fluxo (Switch vs If):</b> Usamos <code>If / Switch Node</code> para ramificar pacotes baseados em regras de negócio (ex: <code>$json.valor > 50000</code>).</p>
+          <p>📌 <b>Resiliência & Error Workflow:</b> No n8n, configurar <code>Retry On Fail</code> protege contra quedas rápidas de rede, e o <code>Error Trigger</code> captura falhas definitivas para alertar a equipe com o stacktrace exato.</p>
+        `,
+        slotLabels: [
+          '1. Busca Externa c/ Retry',
+          '2. Roteador Condicional',
+          '3. Tratamento de Exceção',
+          '4. Alerta de Incidente'
+        ],
+        correctOrder: ['c2_http', 'c2_switch', 'c2_errtrigger', 'c2_alert'],
+        deck: [
+          { id: 'c2_http', icon: '🌐', title: 'HTTP Request (Retry 3x)', type: 'Integration', desc: 'Consulta API externa com política de backoff exponencial ativa.' },
+          { id: 'c2_switch', icon: '🔀', title: 'Switch / If Router', type: 'Flow Control', desc: 'Separa notas > R$ 50k para auditoria e libera notas padrão.' },
+          { id: 'c2_errtrigger', icon: '🚨', title: 'Error Trigger Node', type: 'Resilience', desc: 'Captura automaticamente qualquer crash de execução do workflow.' },
+          { id: 'c2_alert', icon: '📲', title: 'Slack/Telegram Alert', type: 'Notification', desc: 'Envia o ID da execução falha e o erro exato para o plantão TI.' },
+          { id: 'c2_trap1', icon: '🙈', title: 'Ignore All Errors', type: 'Trap', desc: 'Engole falhas silenciosamente gerando perda invisível de notas fiscais.' },
+          { id: 'c2_trap2', icon: '♾️', title: 'Infinite Loop Node', type: 'Trap', desc: 'Trava o worker do n8n em loop infinito até dar Out Of Memory.' }
+        ],
+        quiz: {
+          question: 'Quando uma API externa retorna erro temporário HTTP 503 (Service Unavailable), qual combinação arquitetural é recomendada nas boas práticas do n8n?',
+          options: [
+            'Ativar "Retry On Fail" (com intervalo entre tentativas) no nó HTTP Request e vincular um Error Workflow com Error Trigger caso todas as tentativas falhem.',
+            'Criar 10 cópias idênticas do nó HTTP Request seguidas uma da outra.',
+            'Reiniciar o banco de dados PostgreSQL a cada 5 minutos.'
+          ],
+          correctIdx: 0,
+          explanation: 'Exato! O Retry On Fail resolve instabilidades transitórias (micro-quedas), enquanto o Error Trigger garante observabilidade total se o serviço externo continuar fora do ar.'
+        }
+      },
+      {
+        id: 'arc_3',
+        shortName: '3. Agente IA & LLM',
+        badge: 'FASE 3 • N8N103 AI',
+        xp: 320,
+        coins: 120,
+        npcName: 'Dr. Roberto Almeida',
+        npcRole: 'Diretor de Atendimento Técnico',
+        npcAvatar: '🧑‍🔬',
+        npcDialogue: '"Recebemos 400 chamados por dia em texto livre no e-mail. Preciso de um Agente de IA que leia o relato do usuário, consulte a base de histórico, classifique a urgência em JSON estrito sem alucinar e abra o ticket!"',
+        theoryLesson: `
+          <p>📌 <b>Arquitetura do AI Agent (n8n Advanced AI):</b> O nó <code>AI Agent</code> é o orquestrador central. Ele exige 3 conexões essenciais: um <b>Chat Model (LLM)</b> (cérebro), uma <b>Memory</b> (contexto) e <b>Tools</b> (ferramentas de consulta/ação).</p>
+          <p>📌 <b>Structured Output Parser:</b> Para evitar que o LLM responda texto solto ("Claro, aqui está..."), conectamos o <code>Structured Output Parser</code> obrigando retorno em <b>JSON validado por Schema</b>.</p>
+        `,
+        slotLabels: [
+          '1. Cérebro LLM + Prompt',
+          '2. Orquestrador AI Agent',
+          '3. Validador JSON Schema',
+          '4. Gravação do Ticket'
+        ],
+        correctOrder: ['c3_llm', 'c3_agent', 'c3_parser', 'c3_db'],
+        deck: [
+          { id: 'c3_llm', icon: '🧠', title: 'Claude 3.5 / Gemini LLM', type: 'Model', desc: 'Modelo fundacional configurado com temperatura 0.1 para precisão.' },
+          { id: 'c3_agent', icon: '🤖', title: 'AI Agent + Window Memory', type: 'Orchestrator', desc: 'Analisa o chamado usando System Prompt técnico e ferramentas.' },
+          { id: 'c3_parser', icon: '📐', title: 'Structured Output Parser', type: 'Validator', desc: 'Garante saída estrita: {"urgencia": "ALTA", "setor": "ERP"}.' },
+          { id: 'c3_db', icon: '🎫', title: 'Supabase Ticket Upsert', type: 'Database', desc: 'Salva o chamado já triado e categorizado na fila de atendimento.' },
+          { id: 'c3_trap1', icon: '🎲', title: 'Temperature 2.0 Creative', type: 'Trap', desc: 'Aumenta alucinação do modelo e inventa dados inexistentes.' },
+          { id: 'c3_trap2', icon: '📝', title: 'Raw Free-Text Output', type: 'Trap', desc: 'Retorna prosa desestruturada que quebra a integração com o banco.' }
+        ],
+        quiz: {
+          question: 'Em uma arquitetura de Agente Autônomo no n8n (Curso N8N103), qual é a função exata do componente "Structured Output Parser"?',
+          options: [
+            'Traduzir o idioma do chamado do português para o mandarim.',
+            'Forçar o LLM a responder estritamente dentro de um JSON Schema predefinido, impedindo textos conversacionais que quebrariam os nós seguintes.',
+            'Substituir a necessidade de usar uma chave de API do Gemini ou Anthropic.'
+          ],
+          correctIdx: 1,
+          explanation: 'Na mosca! Em automação corporativa, IA precisa retornar dados determinísticos (JSON tipado) para que o próximo nó consiga ler campos como $json.urgencia sem erros de parsing.'
+        }
+      },
+      {
+        id: 'arc_4',
+        shortName: '4. Antigravity MCP',
+        badge: 'FASE 4 • VIBE CODING',
+        xp: 350,
+        coins: 130,
+        npcName: 'Lucas Shinoda',
+        npcRole: 'Staff AI Architect • Tech Lead',
+        npcAvatar: '🕶️',
+        npcDialogue: '"Bruno, queremos que nosso Agente no Google Antigravity não apenas escreva código, mas conecte com segurança no banco de dados e nos repositórios via protocolo padronizado, validando cada execução antes do deploy!"',
+        theoryLesson: `
+          <p>📌 <b>O que é MCP (Model Context Protocol)?</b> É o protocolo universal que permite que agentes (como no Google Antigravity) se conectem a fontes de dados e ferramentas externas (Supabase, GitHub, BigQuery) com <b>schemas tipados e permissões controladas</b>.</p>
+          <p>📌 <b>Padrão Planejador ➔ Executor ➔ Verificador:</b> Em vez de deixar um único prompt fazer tudo às cegas, dividimos em planejamento, chamada de Tool via MCP e verificação automatizada.</p>
+        `,
+        slotLabels: [
+          '1. Agente Planejador',
+          '2. Ponte Protocolo MCP',
+          '3. Execução de Tool Segura',
+          '4. Agente Verificador QA'
+        ],
+        correctOrder: ['c4_planner', 'c4_mcp', 'c4_tool', 'c4_verifier'],
+        deck: [
+          { id: 'c4_planner', icon: '🗺️', title: 'Antigravity Planner Agent', type: 'Agent', desc: 'Decompõe o requisito de engenharia em passos verificáveis.' },
+          { id: 'c4_mcp', icon: '🔌', title: 'MCP Server Bridge', type: 'Protocol', desc: 'Expõe ferramentas e recursos com contrato JSON-RPC seguro.' },
+          { id: 'c4_tool', icon: '🛠️', title: 'Sandboxed Tool Execution', type: 'Action', desc: 'Executa consulta SQL/Git respeitando limites de permissão.' },
+          { id: 'c4_verifier', icon: '🛡️', title: 'QA Verifier Subagent', type: 'Validation', desc: 'Testa o output gerado e confirma zero regressão antes do commit.' },
+          { id: 'c4_trap1', icon: '🔓', title: 'Hardcoded Root Password', type: 'Trap', desc: 'Expõe credenciais sensíveis diretamente no código-fonte.' },
+          { id: 'c4_trap2', icon: '💥', title: 'Unverified Force Push', type: 'Trap', desc: 'Joga código não testado direto na branch main de produção.' }
+        ],
+        quiz: {
+          question: 'Por que o protocolo MCP (Model Context Protocol) revolucionou a engenharia de agentes no Google Antigravity?',
+          options: [
+            'Porque ele padroniza a comunicação entre LLMs e ferramentas externas (bancos, APIs, arquivos) através de contratos seguros e reutilizáveis.',
+            'Porque ele serve apenas para estilizar páginas com cores neon no CSS.',
+            'Porque ele desativa todas as verificações de segurança do sistema operacional.'
+          ],
+          correctIdx: 0,
+          explanation: 'Excelente! O MCP funciona como uma "porta USB-C universal para IA", permitindo que o agente descubra e invoque ferramentas (Tools) com parâmetros validados e governança.'
+        }
+      },
+      {
+        id: 'arc_5',
+        shortName: '5. SQL Joins & Views',
+        badge: 'FASE 5 • SQL ARCHITECT',
+        xp: 380,
+        coins: 140,
+        npcName: 'Patrícia Viana',
+        npcRole: 'Controller Financeira & Dados',
+        npcAvatar: '📊',
+        npcDialogue: '"Bruno, a diretoria quer um painel unificando a tabela de Pedidos com a tabela de Fornecedores no Supabase, somando o gasto por categoria fiscal, mas sem travar o banco com buscas lentas!"',
+        theoryLesson: `
+          <p>📌 <b>INNER JOIN vs LEFT JOIN:</b> O <code>INNER JOIN</code> traz apenas registros que existem nas duas tabelas. Já o <code>LEFT JOIN</code> preserva todos os registros da tabela da esquerda mesmo que o fornecedor esteja nulo (ótimo para achar cadastros órfãos!).</p>
+          <p>📌 <b>Agregação + Views:</b> Usamos <code>GROUP BY</code> com <code>SUM()/COUNT()</code> para consolidar métricas e encapsulamos em uma <code>CREATE VIEW</code> indexada para consumo rápido pelo n8n.</p>
+        `,
+        slotLabels: [
+          '1. Seleção & Índices',
+          '2. Cruzamento Relacional',
+          '3. Agregação Analítica',
+          '4. Camada de View SQL'
+        ],
+        correctOrder: ['c5_select', 'c5_join', 'c5_group', 'c5_view'],
+        deck: [
+          { id: 'c5_select', icon: '🔍', title: 'SELECT Colunas Indexadas', type: 'SQL Core', desc: 'Seleciona apenas as colunas necessárias filtrando por chave indexada.' },
+          { id: 'c5_join', icon: '🔗', title: 'LEFT/INNER JOIN ON FK', type: 'Relational', desc: 'Cruza tb_pedidos.fornecedor_id = tb_fornecedores.id com precisão.' },
+          { id: 'c5_group', icon: '🧮', title: 'GROUP BY + SUM(valor)', type: 'Aggregation', desc: 'Consolida totais financeiros e contagem de itens por categoria.' },
+          { id: 'c5_view', icon: '🖼️', title: 'CREATE VIEW vw_auditoria', type: 'Data Layer', desc: 'Disponibiliza consulta pronta e segura para leitura no n8n.' },
+          { id: 'c5_trap1', icon: '🐌', title: 'SELECT * Cross Join Sem ON', type: 'Trap', desc: 'Gera produto cartesiano explosivo (milhões de linhas duplicadas!).' },
+          { id: 'c5_trap2', icon: '🔓', title: 'Disable RLS Public Write', type: 'Trap', desc: 'Deixa o banco aberto para escrita anônima na internet.' }
+        ],
+        quiz: {
+          question: 'Se você precisa listar TODOS os materiais cadastrados na tabela "materiais", incluindo aqueles que AINDA NÃO possuem fornecedor vinculado na tabela "fornecedores", qual comando SQL deve usar?',
+          options: [
+            'INNER JOIN, pois ele oculta linhas sem correspondência.',
+            'LEFT JOIN a partir da tabela "materiais", pois ele mantém 100% dos materiais e preenche com NULL onde não houver fornecedor (ideal para auditoria de cadastros incompletos).',
+            'DELETE FROM materiais WHERE fornecedor_id IS NULL.'
+          ],
+          correctIdx: 1,
+          explanation: 'Domínio total de SQL! Na área de Master Data (Dados Mestres), o LEFT JOIN combinado com WHERE b.id IS NULL é a técnica clássica para encontrar cadastros órfãos ou incompletos no ERP.'
+        }
+      },
+      {
+        id: 'arc_6',
+        shortName: '6. Master Data ERP AI',
+        badge: 'FASE 6 • BOSS ARCHITECT',
+        xp: 450,
+        coins: 180,
+        npcName: 'Diretoria Executiva',
+        npcRole: 'Comitê de Transformação Digital & ERP',
+        npcAvatar: '🏛️',
+        npcDialogue: '"Chegou sua prova de fogo, Bruno! Queremos o pipeline completo do Agente de Saneamento de Master Data: ler cadastros suspeitos do ERP via SQL, auditar NCM e descrição técnica com IA, atualizar o status no banco e publicar o relatório executivo!"',
+        theoryLesson: `
+          <p>📌 <b>Arquitetura End-to-End (Seu Case de Ouro de Portfólio):</b> Esta missão une seu domínio real de negócio (<b>ERP Datasul / PDM / Saneamento de Cadastros</b>) com a engenharia moderna de <b>SQL + n8n + Agentes de IA</b>.</p>
+          <p>📌 <b>Fluxo de Produção:</b> 1. Extração SQL de registros pendentes ➔ 2. Auditoria Semântica com AI Agent (detectando duplicidade e NCM incoerente) ➔ 3. Batch Upsert do laudo no Supabase ➔ 4. Disparo de Relatório Executivo.</p>
+        `,
+        slotLabels: [
+          '1. Extração SQL Staging',
+          '2. Auditoria AI Master Data',
+          '3. Batch Upsert Laudo SQL',
+          '4. Dashboard & Alerta'
+        ],
+        correctOrder: ['c6_sqlread', 'c6_ai_audit', 'c6_upsert', 'c6_report'],
+        deck: [
+          { id: 'c6_sqlread', icon: '📥', title: 'Postgres SELECT Pendentes', type: 'Data Ingest', desc: 'Busca lotes de materiais do ERP com status_auditoria = PENDENTE.' },
+          { id: 'c6_ai_audit', icon: '🕵️‍♂️', title: 'AI Agent Auditor PDM/NCM', type: 'AI Engine', desc: 'Valida descrição padronizada, unidade de medida e coerência fiscal.' },
+          { id: 'c6_upsert', icon: '💾', title: 'Postgres Batch Upsert', type: 'Persistence', desc: 'Grava score de qualidade, justificativa técnica e flag de revisão.' },
+          { id: 'c6_report', icon: '📈', title: 'Executive Report & Webhook', type: 'Delivery', desc: 'Notifica governança de dados com métricas de saneamento concluído.' },
+          { id: 'c6_trap1', icon: '📝', title: 'Planilha Excel Manual Local', type: 'Trap', desc: 'Processo manual sem rastreabilidade, lento e sujeito a erro humano.' },
+          { id: 'c6_trap2', icon: '🔥', title: 'Overwrite ERP Sem Validação', type: 'Trap', desc: 'Altera impostos em produção sem log de auditoria nem aprovação.' }
+        ],
+        quiz: {
+          question: 'Por que um Agente de Saneamento de Master Data que grava um "Laudo de Auditoria + Score de Confiabilidade" em uma tabela de Staging/Governança é muito mais seguro para empresas com ERP (como Datasul/SAP) do que sobrescrever o banco do ERP às cegas?',
+          options: [
+            'Porque garante governança (Human-in-the-Loop), trilha de auditoria completa e zero risco de corromper lançamentos fiscais em produção.',
+            'Porque bancos de dados relacionais não aceitam textos gerados por IA.',
+            'Porque planilhas impressas em papel são mais rápidas que o PostgreSQL.'
+          ],
+          correctIdx: 0,
+          explanation: 'Visão de Arquiteto Sênior! Empresas valorizam profissionais que aliam IA com Governança Corporativa (Human-in-the-Loop e trilha de auditoria). Esse argumento em uma entrevista técnica destaca você imediatamente!'
+        }
+      }
+    ];
+
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       loadProgressFromStorage();
       initSupabase();
+      renderArcadeSimulator();
       renderQuestsBoard();
       renderVerticalRoadmapTree();
       renderBossArena();
@@ -1240,6 +1704,11 @@
       const savedQuests = localStorage.getItem('careeros_quests');
       if (savedQuests) {
         try { completedQuests = new Set(JSON.parse(savedQuests)); } catch (e) { completedQuests = new Set(); }
+      }
+
+      const savedArcade = localStorage.getItem('careeros_arcade');
+      if (savedArcade) {
+        try { completedArcadeMissions = new Set(JSON.parse(savedArcade)); } catch (e) { completedArcadeMissions = new Set(); }
       }
 
       const saved = localStorage.getItem('careeros_completed');
@@ -1291,6 +1760,7 @@
       localStorage.setItem('careeros_xp', playerXp.toString());
       localStorage.setItem('careeros_coins', playerCoins.toString());
       localStorage.setItem('careeros_quests', JSON.stringify(Array.from(completedQuests)));
+      localStorage.setItem('careeros_arcade', JSON.stringify(Array.from(completedArcadeMissions)));
       localStorage.setItem('careeros_completed', JSON.stringify(Array.from(completedItems)));
       localStorage.setItem('careeros_subtasks', JSON.stringify(completedSubtasks));
       localStorage.setItem('careeros_expanded', JSON.stringify(Array.from(expandedNodes)));
@@ -1339,6 +1809,7 @@
         } catch(e) {}
 
         saveProgressToStorage();
+        renderArcadeSimulator();
         renderQuestsBoard();
         renderVerticalRoadmapTree();
         renderBossArena();
@@ -1374,27 +1845,380 @@
     }
 
     function switchView(viewName) {
-      ['view-quests', 'view-stats', 'view-boss', 'view-inventory', 'view-rewards', 'view-tree'].forEach(id => {
+      ['view-arcade', 'view-quests', 'view-stats', 'view-boss', 'view-inventory', 'view-rewards', 'view-tree'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
       });
 
-      document.querySelectorAll('#tab-btn-quests, #tab-btn-stats, #tab-btn-boss, #tab-btn-inventory, #tab-btn-rewards, #tab-btn-tree').forEach(b => {
-        b.className = 'w-full py-2.5 px-3 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5';
+      document.querySelectorAll('#tab-btn-arcade, #tab-btn-quests, #tab-btn-stats, #tab-btn-boss, #tab-btn-inventory, #tab-btn-rewards, #tab-btn-tree').forEach(b => {
+        const extraSpan = b.id === 'tab-btn-tree' ? ' col-span-2 sm:col-span-2 lg:col-span-1' : '';
+        b.className = 'w-full py-2.5 px-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-400 border border-white/5 transition-all flex items-center justify-center gap-1.5' + extraSpan;
       });
 
       const activeBtn = document.getElementById(`tab-btn-${viewName}`);
       const activeView = document.getElementById(`view-${viewName}`);
 
-      if (activeBtn) activeBtn.className = 'w-full py-2.5 px-3 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20';
+      if (activeBtn) {
+        const extraSpan = activeBtn.id === 'tab-btn-tree' ? ' col-span-2 sm:col-span-2 lg:col-span-1' : '';
+        activeBtn.className = 'w-full py-2.5 px-2.5 rounded-xl text-xs font-black bg-amber-400 text-slate-950 transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20' + extraSpan;
+      }
       if (activeView) activeView.classList.remove('hidden');
 
-      if (viewName === 'quests') renderQuestsBoard();
+      if (viewName === 'arcade') renderArcadeSimulator();
+      else if (viewName === 'quests') renderQuestsBoard();
       else if (viewName === 'stats') updateAttributesView();
       else if (viewName === 'boss') renderBossArena();
       else if (viewName === 'inventory') renderInventory();
       else if (viewName === 'tree') renderVerticalRoadmapTree();
 
+      lucide.createIcons();
+    }
+
+    // =========================================================================
+    // ENGINE DO SIMULADOR ARCADE (AWS CLOUD QUEST + CARD CLASH)
+    // =========================================================================
+    function renderArcadeSimulator() {
+      const mission = ARCADE_MISSIONS[currentArcadeMissionIdx];
+      if (!mission) return;
+
+      // Atualiza pílula de progresso geral do Arcade
+      const doneCount = completedArcadeMissions.size;
+      const pillEl = document.getElementById('arcade-progress-pill');
+      if (pillEl) pillEl.innerText = `${doneCount}/${ARCADE_MISSIONS.length} Certificações de Arquitetura Concluídas`;
+      const statArcadeEl = document.getElementById('stat-arcade-done');
+      if (statArcadeEl) statArcadeEl.innerText = `${doneCount}/${ARCADE_MISSIONS.length}`;
+
+      // Renderiza os botões das 6 Fases do Fliperama
+      const selectorEl = document.getElementById('arcade-mission-selector');
+      if (selectorEl) {
+        selectorEl.innerHTML = '';
+        ARCADE_MISSIONS.forEach((m, idx) => {
+          const isCompleted = completedArcadeMissions.has(m.id);
+          const isCurrent = idx === currentArcadeMissionIdx;
+          const btn = document.createElement('button');
+          btn.onclick = () => selectArcadeMission(idx);
+          btn.className = `p-2.5 rounded-xl border text-left transition-all flex items-center justify-between gap-1.5 ${
+            isCurrent
+              ? 'bg-cyan-500/20 border-cyan-400 text-white shadow-lg shadow-cyan-500/10'
+              : isCompleted
+              ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/40'
+              : 'bg-slate-950/70 border-white/10 text-slate-400 hover:border-white/25 hover:text-slate-200'
+          }`;
+          btn.innerHTML = `
+            <div class="truncate">
+              <span class="text-[9px] font-mono uppercase block ${isCompleted ? 'text-emerald-400' : isCurrent ? 'text-cyan-300' : 'text-slate-500'}">
+                ${isCompleted ? '✓ CERTIFICADO' : `MISSÃO 0${idx + 1}`}
+              </span>
+              <span class="text-xs font-black truncate block">${m.shortName}</span>
+            </div>
+            <span class="text-sm shrink-0">${isCompleted ? '🏅' : m.npcAvatar}</span>
+          `;
+          selectorEl.appendChild(btn);
+        });
+      }
+
+      // Atualiza painel NPC Cloud Quest e Pílula Teórica
+      document.getElementById('arcade-mission-badge').innerText = mission.badge;
+      document.getElementById('arcade-mission-reward').innerText = `+${mission.xp} XP • 🪙 +${mission.coins}`;
+      document.getElementById('arcade-npc-avatar').innerText = mission.npcAvatar;
+      document.getElementById('arcade-npc-name').innerText = mission.npcName;
+      document.getElementById('arcade-npc-role').innerText = mission.npcRole;
+      document.getElementById('arcade-npc-dialogue').innerText = mission.npcDialogue;
+      document.getElementById('arcade-theory-content').innerHTML = mission.theoryLesson;
+
+      renderArcadeBoardAndDeck();
+      lucide.createIcons();
+    }
+
+    function selectArcadeMission(idx) {
+      currentArcadeMissionIdx = idx;
+      selectedSlotIdx = 0;
+      arcadeBoardState = [null, null, null, null];
+      const simPanel = document.getElementById('arcade-simulation-panel');
+      if (simPanel) simPanel.classList.add('hidden');
+      renderArcadeSimulator();
+    }
+
+    function resetArcadeBoard() {
+      selectedSlotIdx = 0;
+      arcadeBoardState = [null, null, null, null];
+      const simPanel = document.getElementById('arcade-simulation-panel');
+      if (simPanel) simPanel.classList.add('hidden');
+      renderArcadeBoardAndDeck();
+      lucide.createIcons();
+    }
+
+    function selectArcadeSlot(slotIdx) {
+      selectedSlotIdx = slotIdx;
+      renderArcadeBoardAndDeck();
+    }
+
+    function clearArcadeSlot(slotIdx, event) {
+      if (event) event.stopPropagation();
+      arcadeBoardState[slotIdx] = null;
+      selectedSlotIdx = slotIdx;
+      const simPanel = document.getElementById('arcade-simulation-panel');
+      if (simPanel) simPanel.classList.add('hidden');
+      renderArcadeBoardAndDeck();
+    }
+
+    function playCardToSlot(cardId) {
+      const mission = ARCADE_MISSIONS[currentArcadeMissionIdx];
+      if (!mission) return;
+
+      // Se a carta já está em algum slot, remove de lá primeiro
+      const existingIdx = arcadeBoardState.indexOf(cardId);
+      if (existingIdx !== -1) {
+        arcadeBoardState[existingIdx] = null;
+      }
+
+      arcadeBoardState[selectedSlotIdx] = cardId;
+
+      // Avança automaticamente para o próximo slot vazio
+      const nextEmpty = arcadeBoardState.findIndex(s => s === null);
+      if (nextEmpty !== -1) {
+        selectedSlotIdx = nextEmpty;
+      }
+
+      renderArcadeBoardAndDeck();
+    }
+
+    function renderArcadeBoardAndDeck() {
+      const mission = ARCADE_MISSIONS[currentArcadeMissionIdx];
+      if (!mission) return;
+
+      const slotsContainer = document.getElementById('arcade-slots-container');
+      const deckContainer = document.getElementById('arcade-deck-container');
+      if (!slotsContainer || !deckContainer) return;
+
+      slotsContainer.innerHTML = '';
+      mission.slotLabels.forEach((label, idx) => {
+        const cardId = arcadeBoardState[idx];
+        const cardObj = mission.deck.find(c => c.id === cardId);
+        const isSelected = idx === selectedSlotIdx;
+
+        const slotDiv = document.createElement('div');
+        slotDiv.id = `arcade-slot-box-${idx}`;
+        slotDiv.onclick = () => selectArcadeSlot(idx);
+        slotDiv.className = `arcade-slot rounded-xl p-3 cursor-pointer flex flex-col justify-between min-h-[118px] relative ${
+          isSelected ? 'arcade-slot-active' : cardObj ? 'arcade-slot-filled' : ''
+        }`;
+
+        if (cardObj) {
+          slotDiv.innerHTML = `
+            <div class="flex items-center justify-between gap-1">
+              <span class="text-[9px] font-mono uppercase font-bold text-cyan-400 truncate">${label}</span>
+              <button onclick="clearArcadeSlot(${idx}, event)" class="text-slate-400 hover:text-red-400 text-xs font-bold px-1" title="Remover carta">✕</button>
+            </div>
+            <div class="my-1.5 flex items-center gap-2">
+              <span class="text-xl">${cardObj.icon}</span>
+              <span class="text-xs font-black text-white leading-tight">${cardObj.title}</span>
+            </div>
+            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 w-fit">
+              Alocado no Slot ${idx + 1}
+            </span>
+          `;
+        } else {
+          slotDiv.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-[9px] font-mono uppercase font-bold ${isSelected ? 'text-amber-400' : 'text-slate-500'}">${label}</span>
+              <span class="text-[9px] font-mono ${isSelected ? 'text-amber-400 animate-pulse' : 'text-slate-600'}">Vazio</span>
+            </div>
+            <div class="my-auto py-3 text-center">
+              <span class="text-xs font-bold ${isSelected ? 'text-amber-300' : 'text-slate-500'} block">
+                ${isSelected ? '➕ Clique numa carta abaixo' : 'Clique para selecionar'}
+              </span>
+            </div>
+            <div class="h-1 w-full rounded bg-slate-800"></div>
+          `;
+        }
+        slotsContainer.appendChild(slotDiv);
+      });
+
+      const filledCount = arcadeBoardState.filter(Boolean).length;
+      document.getElementById('arcade-slots-filled-count').innerText = `${filledCount}/4 Slots Preenchidos`;
+      document.getElementById('arcade-slot-hint').innerHTML =
+        filledCount === 4
+          ? `⚡ <b class="text-emerald-400">Arquitetura Pronta!</b> Clique em <b>"SIMULAR TRÁFEGO & VALIDAR ARQUITETURA"</b> abaixo!`
+          : `👉 <b>Slot ${selectedSlotIdx + 1} selecionado (${mission.slotLabels[selectedSlotIdx]}):</b> Clique em uma carta da sua mão abaixo para encaixá-la.`;
+
+      // Renderiza o Deck de Cartas
+      deckContainer.innerHTML = '';
+      mission.deck.forEach(card => {
+        const allocatedSlot = arcadeBoardState.indexOf(card.id);
+        const isUsed = allocatedSlot !== -1;
+
+        const cardEl = document.createElement('div');
+        cardEl.onclick = () => playCardToSlot(card.id);
+        cardEl.className = `deck-card rounded-xl p-3 border flex flex-col justify-between ${
+          isUsed
+            ? 'bg-slate-950/60 border-cyan-500/40 opacity-65'
+            : 'bg-slate-950 border-white/10 hover:border-amber-400/50 shadow-md'
+        }`;
+
+        cardEl.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1.5">
+              <span class="text-lg">${card.icon}</span>
+              <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                isUsed
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                  : 'bg-slate-800 text-slate-300 border border-white/5'
+              }">
+                ${isUsed ? `No Slot ${allocatedSlot + 1}` : 'Carta Técnica'}
+              </span>
+            </div>
+            <h5 class="text-xs font-black text-white leading-snug">${card.title}</h5>
+            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">${card.desc}</p>
+          </div>
+          <div class="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between text-[10px] font-mono">
+            <span class="text-amber-400 font-bold">${isUsed ? '🔄 Clicar move p/ Slot ' + (selectedSlotIdx + 1) : '➕ Jogar no Slot ' + (selectedSlotIdx + 1)}</span>
+          </div>
+        `;
+        deckContainer.appendChild(cardEl);
+      });
+    }
+
+    function runArcadeSimulation() {
+      const mission = ARCADE_MISSIONS[currentArcadeMissionIdx];
+      if (!mission) return;
+
+      if (arcadeBoardState.some(s => s === null)) {
+        alert('⚠️ Preencha todos os 4 Slots do Tabuleiro de Arquitetura antes de iniciar a simulação de tráfego!');
+        return;
+      }
+
+      const simPanel = document.getElementById('arcade-simulation-panel');
+      const logsEl = document.getElementById('arcade-terminal-logs');
+      const quizBox = document.getElementById('arcade-quiz-box');
+      const statusBadge = document.getElementById('sim-status-badge');
+
+      simPanel.classList.remove('hidden');
+      quizBox.classList.add('hidden');
+      logsEl.innerHTML = '';
+      statusBadge.innerText = 'Injetando pacotes HTTP/JSON...';
+
+      let hasError = false;
+
+      // Valida cada slot sequencialmente com efeito de telemetria
+      arcadeBoardState.forEach((playedCardId, idx) => {
+        const expectedCardId = mission.correctOrder[idx];
+        const playedCard = mission.deck.find(c => c.id === playedCardId);
+        const expectedCard = mission.deck.find(c => c.id === expectedCardId);
+        const slotBox = document.getElementById(`arcade-slot-box-${idx}`);
+
+        if (playedCardId === expectedCardId && !hasError) {
+          if (slotBox) {
+            slotBox.classList.remove('arcade-slot-error');
+            slotBox.classList.add('arcade-slot-valid');
+          }
+          logsEl.innerHTML += `
+            <div class="text-emerald-400 flex items-start gap-2">
+              <span>[200 OK • Estágio ${idx + 1}]</span>
+              <span><b>${playedCard.title}:</b> Pacote processado com sucesso (${playedCard.desc})</span>
+            </div>
+          `;
+        } else {
+          hasError = true;
+          if (slotBox) {
+            slotBox.classList.remove('arcade-slot-valid');
+            slotBox.classList.add('arcade-slot-error');
+          }
+          const isTrap = playedCard.type === 'Trap';
+          logsEl.innerHTML += `
+            <div class="text-red-400 bg-red-950/40 p-2 rounded border border-red-500/30">
+              <b>[500 CRITICAL ERROR • Slot ${idx + 1} (${mission.slotLabels[idx]})]:</b> Você colocou <b>"${playedCard.title}"</b>.
+              ${isTrap ? `⚠️ ARMADILHA DETECTADA: ${playedCard.desc}` : `Ordem incorreta! Neste estágio a arquitetura exige: <b>${expectedCard.title}</b>.`}
+            </div>
+          `;
+        }
+      });
+
+      if (hasError) {
+        statusBadge.innerText = '❌ Falha de Arquitetura';
+        logsEl.innerHTML += `
+          <div class="text-amber-300 font-bold pt-2 border-t border-white/10">
+            💡 Dica do Mentor: Revise o slot marcado em vermelho acima, ajuste as cartas no tabuleiro e clique em "SIMULAR TRÁFEGO" novamente!
+          </div>
+        `;
+      } else {
+        statusBadge.innerText = '✅ Pipeline 100% Validado!';
+        logsEl.innerHTML += `
+          <div class="text-cyan-300 font-bold pt-2 border-t border-white/10">
+            🚀 SLA 99.99% ATINGIDO! Todos os 4 estágios da arquitetura passaram no teste de estresse. Responda a questão oficial abaixo para emitir seu selo e receber XP!
+          </div>
+        `;
+        renderArcadeQuiz();
+      }
+    }
+
+    function renderArcadeQuiz() {
+      const mission = ARCADE_MISSIONS[currentArcadeMissionIdx];
+      const quizBox = document.getElementById('arcade-quiz-box');
+      const qText = document.getElementById('arcade-quiz-question');
+      const qOpts = document.getElementById('arcade-quiz-options');
+      const qFeedback = document.getElementById('arcade-quiz-feedback');
+
+      quizBox.classList.remove('hidden');
+      qFeedback.classList.add('hidden');
+      qText.innerText = mission.quiz.question;
+      qOpts.innerHTML = '';
+
+      mission.quiz.options.forEach((optText, idx) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => answerArcadeQuiz(idx);
+        btn.className = 'w-full text-left p-3 rounded-xl bg-slate-900 hover:bg-indigo-950/80 border border-white/10 hover:border-indigo-400/50 text-xs text-slate-200 transition-all flex items-start gap-2.5';
+        btn.innerHTML = `
+          <span class="w-5 h-5 rounded-lg bg-indigo-500/20 border border-indigo-400/40 text-indigo-300 font-mono font-bold flex items-center justify-center shrink-0">
+            ${String.fromCharCode(65 + idx)}
+          </span>
+          <span class="leading-relaxed">${optText}</span>
+        `;
+        qOpts.appendChild(btn);
+      });
+    }
+
+    function answerArcadeQuiz(selectedIdx) {
+      const mission = ARCADE_MISSIONS[currentArcadeMissionIdx];
+      const qFeedback = document.getElementById('arcade-quiz-feedback');
+      qFeedback.classList.remove('hidden');
+
+      if (selectedIdx === mission.quiz.correctIdx) {
+        const alreadyDone = completedArcadeMissions.has(mission.id);
+        if (!alreadyDone) {
+          completedArcadeMissions.add(mission.id);
+          addXp(mission.xp);
+          addCoins(mission.coins);
+          triggerLevelUpConfetti();
+          saveProgressToStorage();
+          syncItemToSupabase(mission.id, true, 'Arcade Cert Completed', []);
+        }
+
+        const hasNext = currentArcadeMissionIdx < ARCADE_MISSIONS.length - 1;
+        qFeedback.className = 'p-3.5 rounded-xl text-xs leading-relaxed bg-emerald-950/70 border border-emerald-400/50 text-emerald-200 space-y-2';
+        qFeedback.innerHTML = `
+          <div class="font-black text-emerald-300 text-sm flex items-center justify-between">
+            <span>🏆 RESPOSTA CORRETA! ${alreadyDone ? '(Fase já certificada)' : `+${mission.xp} XP & +${mission.coins} Tech Coins creditados!`}</span>
+          </div>
+          <p>${mission.quiz.explanation}</p>
+          ${
+            hasNext
+              ? `<button onclick="selectArcadeMission(${currentArcadeMissionIdx + 1})" class="mt-2 px-4 py-2 rounded-xl bg-emerald-400 text-slate-950 font-black text-xs inline-flex items-center gap-1.5 shadow-lg hover:bg-emerald-300 transition-all">
+                   <span>Avançar para a Fase ${currentArcadeMissionIdx + 2}</span>
+                   <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                 </button>`
+              : `<div class="mt-2 font-black text-amber-300">🎉 PARABÉNS! Você zerou todas as 6 Fases de Arquitetura do Modo Arcade!</div>`
+          }
+        `;
+        renderArcadeSimulator();
+        updatePlayerLevelStats();
+      } else {
+        qFeedback.className = 'p-3.5 rounded-xl text-xs leading-relaxed bg-red-950/70 border border-red-400/50 text-red-200';
+        qFeedback.innerHTML = `
+          <b class="text-red-300 block mb-1">❌ Alternativa Incorreta!</b>
+          Releia a <b>Pílula de Estudo</b> no painel à esquerda e tente outra alternativa para conquistar a certificação desta fase.
+        `;
+      }
       lucide.createIcons();
     }
 
@@ -1534,6 +2358,8 @@
       });
       document.getElementById('stat-subtasks').innerText = `${doneSubs}/${totalSubs}`;
       document.getElementById('stat-quests-done').innerText = `${completedQuests.size}/${INITIAL_QUESTS.length}`;
+      const statArcadeEl = document.getElementById('stat-arcade-done');
+      if (statArcadeEl) statArcadeEl.innerText = `${completedArcadeMissions.size}/${ARCADE_MISSIONS.length}`;
 
       // Conta chefes derrotados
       let defeated = 0;
@@ -1557,6 +2383,14 @@
       let sqlPoints = 15;
       let aiPoints = 10;
       let netPoints = 20;
+
+      // Arcade AWS Missions pontuam diretamente nos atributos técnicos
+      if (completedArcadeMissions.has('arc_1')) n8nPoints += 35;
+      if (completedArcadeMissions.has('arc_2')) n8nPoints += 35;
+      if (completedArcadeMissions.has('arc_3')) aiPoints += 40;
+      if (completedArcadeMissions.has('arc_4')) aiPoints += 40;
+      if (completedArcadeMissions.has('arc_5')) sqlPoints += 40;
+      if (completedArcadeMissions.has('arc_6')) { sqlPoints += 30; aiPoints += 30; n8nPoints += 30; }
 
       // Fase 1 pontua n8n
       ['f1_1', 'f1_2', 'f1_3', 'f1_4', 'f1_5'].forEach(id => {
